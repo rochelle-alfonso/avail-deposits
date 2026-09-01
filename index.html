@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avail Trading | Cross-Chain Deposit Infrastructure</title>
+<meta name="description" content="Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.">
+<link rel="icon" href="assets/avail-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="frame">
+
+<!-- ========================= HERO ========================= -->
+<header class="hero">
+  <div class="header">
+    <a class="brand" href="https://www.availproject.org/" aria-label="Avail home">
+      <img class="brand__mark" src="assets/avail-mark.svg" alt="" width="30" height="30">
+      <img class="brand__word" src="assets/avail-wordmark.svg" alt="Avail" width="57" height="21">
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Menu">
+      <span></span>
+    </button>
+
+    <nav class="nav" id="primaryNav">
+      <div class="nav__links">
+        <div class="nav__item">
+          <button class="nav__link nav__toggle" aria-expanded="false" aria-controls="menu-products">Products</button>
+          <div class="nav__menu" id="menu-products">
+            <a href="https://www.availproject.org/deposits.html">Deposits</a>
+            <a href="https://www.availproject.org/nexus.html">Nexus</a>
+            <a href="https://www.availproject.org/da.html">DA</a>
+            <a href="https://www.availproject.org/atomic.html">Atomic</a>
+            <a href="https://fastbridge.availproject.org/">FastBridge</a>
+            <a href="https://www.shieldtx.xyz/">ShieldTX</a>
+          </div>
+        </div>
+        <div class="nav__item">
+          <button class="nav__link nav__toggle" aria-expanded="false" aria-controls="menu-solutions">Solutions</button>
+          <div class="nav__menu" id="menu-solutions">
+            <a href="https://www.availproject.org/prediction-markets.html">Prediction Markets</a>
+            <a href="https://www.availproject.org/trading.html">Trading Platforms</a>
+            <a href="https://www.availproject.org/nexus.html">Multi-Chain Solutions</a>
+            <a href="https://www.availproject.org/da.html">Data Availability</a>
+          </div>
+        </div>
+        <a class="nav__link" href="https://www.availproject.org/ecosystem.html">Ecosystem</a>
+        <a class="nav__link" href="https://docs.availproject.org/">Docs</a>
+        <a class="nav__link" href="https://blog.availproject.org/">Blog</a>
+      </div>
+      <a class="nav__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call">Let's Talk</a>
+    </nav>
+  </div>
+
+  <div class="hero__inner">
+    <div class="hero__copy">
+      <h1 class="hero__title">Multichain Deposits</h1>
+      <p class="hero__lede">Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.</p>
+      <div class="hero__actions">
+        <a class="btn btn--dark" href="https://docs.availproject.org/">Docs</a>
+        <a class="btn btn--outline" href="#">Interactive demo</a>
+      </div>
+    </div>
+
+    <div class="hero__visual">
+      <img class="hero__art" src="assets/hero-visual.png" width="2055" height="1779"
+           alt="A trading app with the Deposit USDC modal open, offering wallet, cash, crypto transfer and Hyperliquid funding methods">
+      <div class="hero__rowhint" aria-hidden="true"></div>
+      <div class="hero__radio" aria-hidden="true"></div>
+      <div class="hero__cta" aria-hidden="true"><i></i></div>
+      <div class="hero__cursor" aria-hidden="true">
+        <svg viewBox="0 0 16 20" width="100%" height="100%" focusable="false">
+          <path d="M1.2 .8 L1.2 16.4 L5.3 12.7 L7.9 18.2 L10.4 17 L7.8 11.7 L13 11.7 Z"
+                fill="#101a33" stroke="#101a33" stroke-width=".7" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust">
+    <div class="trust__marquee">
+      <div class="trust__row">
+        <span class="trust__item"><img src="assets/chain-ethereum.svg" alt="Ethereum" width="141" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-optimism.svg" alt="Optimism" width="122" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-polygon.svg" alt="Polygon" width="122" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-arbitrum.svg" alt="Arbitrum" width="138" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-avalanche.svg" alt="Avalanche" width="142" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-base.svg" alt="Base" width="73" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-scroll.svg" alt="Scroll" width="92" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-bnb-chain.svg" alt="BNB Chain" width="160" height="38" decoding="async"></span>
+        <span class="trust__item"><img src="assets/chain-hyperevm.svg" alt="HyperEVM" width="135" height="38" decoding="async"></span>
+        <span class="trust__item"><img class="trust__team" src="assets/team-stationx.webp" alt="StationX" width="382" height="77" decoding="async"></span>
+        <span class="trust__item"><img class="trust__team" src="assets/team-fuffletools.webp" alt="FuffleTools" width="444" height="157" decoding="async"></span>
+        <span class="trust__item"><img class="trust__team" src="assets/team-lemonade.webp" alt="Lemonade" width="441" height="95" decoding="async"></span>
+        <span class="trust__item"><img class="trust__team" src="assets/team-crest.svg" alt="Crest" width="154" height="45" decoding="async"></span>
+        <span class="trust__item"><img class="trust__team" src="assets/team-signal.webp" alt="Signals" width="512" height="109" decoding="async"></span>
+        <!-- second pass: the track loops on translateX(-50%), so it holds two identical halves -->
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-ethereum.svg" alt="" width="141" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-optimism.svg" alt="" width="122" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-polygon.svg" alt="" width="122" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-arbitrum.svg" alt="" width="138" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-avalanche.svg" alt="" width="142" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-base.svg" alt="" width="73" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-scroll.svg" alt="" width="92" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-bnb-chain.svg" alt="" width="160" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img src="assets/chain-hyperevm.svg" alt="" width="135" height="38" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img class="trust__team" src="assets/team-stationx.webp" alt="" width="382" height="77" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img class="trust__team" src="assets/team-fuffletools.webp" alt="" width="444" height="157" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img class="trust__team" src="assets/team-lemonade.webp" alt="" width="441" height="95" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img class="trust__team" src="assets/team-crest.svg" alt="" width="154" height="45" decoding="async"></span>
+        <span class="trust__item" aria-hidden="true"><img class="trust__team" src="assets/team-signal.webp" alt="" width="512" height="109" decoding="async"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= Fast Cross-Chain Deposits ================= -->
+<section class="stats">
+  <div class="container">
+    <div class="stats__head">
+      <h2 class="h2 h2--light">Fast Cross-Chain Deposits</h2>
+      <p class="stats__lede">Deposit infrastructure that gets users funded and ready to trade.</p>
+    </div>
+
+    <div class="stats__grid">
+      <div class="stat"><div class="stat__value">&lt;20s</div><div class="stat__label">Deposit Confirmation</div></div>
+      <div class="stat"><div class="stat__value">40%</div><div class="stat__label">increase in deposit volume</div></div>
+      <div class="stat"><div class="stat__value">99.9%</div><div class="stat__label">Uptime SLA</div></div>
+      <div class="stat"><div class="stat__value">&lt;4s</div><div class="stat__label">quote Generation</div></div>
+    </div>
+  </div>
+
+  <div class="ready">
+    <div>
+      <h2 class="ready__title">Ready to Trade.<br>Not Ready to Deposit.</h2>
+      <div class="ready__body">
+        <p>A trader can arrive with funds spread across different chains and tokens, while your platform accepts one collateral asset on one destination chain.</p>
+        <p>When traders leave your app to bridge, swap or find gas, every handoff creates another chance for the deposit to be delayed, reduced or abandoned.</p>
+      </div>
+    </div>
+    <div class="diagram">
+      <img class="diagram__base" src="assets/diagram-card.png" alt="Capital scattered across chains — Ethereum, Base, Arbitrum, Avalanche and 8 other chains routing through Avail Deposits into a trading app on one destination chain">
+      <img class="diagram__pin" data-row="1" src="assets/dg-icon-1.png" alt="">
+      <img class="diagram__pin" data-row="2" src="assets/dg-icon-2.png" alt="">
+      <img class="diagram__pin" data-row="3" src="assets/dg-icon-3.png" alt="">
+      <img class="diagram__pin" data-row="4" src="assets/dg-icon-4.png" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- ============== Get Traders to Their First Trade ============== -->
+<section class="section-light">
+  <div class="container">
+    <h2 class="h2 section__title">Get Traders to Their First Trade</h2>
+
+    <div class="feature-grid">
+      <article class="fcard">
+        <div class="fcard__art"><img src="assets/illo-convert.png" alt="" loading="lazy"></div>
+        <div class="fcard__body">
+          <h3 class="fcard__title">Convert more high-intent traders</h3>
+          <p class="fcard__text">Keep users inside the funding journey instead of sending them to external bridges and swaps.</p>
+        </div>
+      </article>
+
+      <article class="fcard">
+        <div class="fcard__art"><img src="assets/illo-capital.png" alt="" loading="lazy"></div>
+        <div class="fcard__body">
+          <h3 class="fcard__title">Put more existing capital to work</h3>
+          <p class="fcard__text">Allow eligible balances across supported chains and assets to contribute to the deposit.</p>
+        </div>
+      </article>
+
+      <article class="fcard">
+        <div class="fcard__art"><img src="assets/illo-time.png" alt="" loading="lazy"></div>
+        <div class="fcard__body">
+          <h3 class="fcard__title">Reduce time to first trade</h3>
+          <p class="fcard__text">Move users from discovering a market to participating through one embedded funding flow.</p>
+        </div>
+      </article>
+
+      <article class="fcard">
+        <div class="fcard__art"><img src="assets/illo-support.png" alt="" loading="lazy"></div>
+        <div class="fcard__body">
+          <h3 class="fcard__title">Reduce deposit-related support</h3>
+          <p class="fcard__text">Remove common questions around networks, gas, required assets, deposit amounts and funding methods.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== One Flow to a Trading Balance ============== -->
+<section class="flow">
+  <div class="container">
+    <h2 class="h2 section__title">One Flow to a Trading Balance</h2>
+    <p class="flow__lede">Traders see eligible balances across supported chains in one view. They enter what they want to spend or what the app needs to receive, while the flow handles routing, gas and deposit completion.</p>
+
+    <div class="tabs" role="tablist" aria-label="Deposit flow steps">
+      <button class="tab" role="tab" id="tab-funding" data-seg="funding" data-label="Funding Source" aria-controls="clip-funding" aria-selected="true">Funding Source</button>
+      <button class="tab" role="tab" id="tab-balance" data-seg="balance" data-label="Unified Balance" aria-controls="clip-balance" aria-selected="false">Unified Balance</button>
+      <button class="tab" role="tab" id="tab-steps"   data-seg="steps" data-label="Intent Steps"   aria-controls="clip-steps"   aria-selected="false">Intent Steps</button>
+      <button class="tab" role="tab" id="tab-funded"  data-seg="funded" data-label="Funded"  aria-controls="clip-funded"  aria-selected="false">Funded</button>
+    </div>
+  </div>
+
+  <!-- One continuous deposit run, cut into the four parts the tabs describe. -->
+  <div class="flow__panel">
+    <video class="flow__video is-on" id="clip-funding" data-seg="funding"
+           role="tabpanel" aria-labelledby="tab-funding"
+           aria-label="Choosing a funding method, entering 499.50 USDC, and the flow resolving a route"
+           data-src="assets/flow/funding.mp4" data-src-sm="assets/flow/funding-sm.mp4" poster="assets/flow/funding.jpg"
+           muted playsinline preload="auto"></video>
+
+    <video class="flow__video" id="clip-balance" data-seg="balance"
+           role="tabpanel" aria-labelledby="tab-balance" aria-hidden="true"
+           aria-label="Editing the funding sources and picking tokens across chains"
+           data-src="assets/flow/balance.mp4" data-src-sm="assets/flow/balance-sm.mp4" poster="assets/flow/balance.jpg"
+           muted playsinline preload="none"></video>
+
+    <video class="flow__video" id="clip-steps" data-seg="steps"
+           role="tabpanel" aria-labelledby="tab-steps" aria-hidden="true"
+           aria-label="The in-flight intent steps completing one by one"
+           data-src="assets/flow/steps.mp4" data-src-sm="assets/flow/steps-sm.mp4" poster="assets/flow/steps.jpg"
+           muted playsinline preload="none"></video>
+
+    <video class="flow__video" id="clip-funded" data-seg="funded"
+           role="tabpanel" aria-labelledby="tab-funded" aria-hidden="true"
+           aria-label="Deposit complete — 499.50 USDC received on Arbitrum"
+           data-src="assets/flow/funded.mp4" data-src-sm="assets/flow/funded-sm.mp4" poster="assets/flow/funded.jpg"
+           muted playsinline preload="none"></video>
+  </div>
+</section>
+
+<!-- ================== Built for Trading Metrics ================== -->
+<section class="metrics">
+  <div class="container">
+    <h2 class="h2 section__title">Built for Trading Metrics</h2>
+
+    <div class="metrics__grid">
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-wallet.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Unified Balance Spending</h3>
+        <p class="mcard__text">More eligible user capital can contribute to the deposit.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-exact-in.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Exact-in</h3>
+        <p class="mcard__text">The trader enters what they want to spend and the flow calculates the destination amount.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-exact-out.svg" data-flip alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Exact-out</h3>
+        <p class="mcard__text">The trader enters the exact amount the app needs to receive. The flow finds the best route across eligible balances and calculates the required input.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-gas.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Gas Handling</h3>
+        <p class="mcard__text">Gas required to successfully complete the transaction is handled in the flow.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-onramp.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">On-ramp</h3>
+        <p class="mcard__text">Let users fund through supported fiat payment methods inside the app experience.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-offramp.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Off-ramp</h3>
+        <p class="mcard__text">Give users a supported path from crypto balances back to fiat.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-qr.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">QR Code-based Deposits</h3>
+        <p class="mcard__text">Let users scan a QR code or send to a deposit address from an external wallet or exchange.</p>
+      </article>
+      <article class="mcard">
+        <div class="mcard__icon"><img src="assets/ic-embedded.svg" alt="" loading="lazy"></div>
+        <h3 class="mcard__title">Embedded UI</h3>
+        <p class="mcard__text">The deposit remains inside the trading app experience.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============== Configure Your Deposit Flow + CTA ============== -->
+<section class="configure">
+  <div class="configure__head">
+    <div class="configure__copy">
+      <h2 class="h2 h2--light">Configure Your Deposit Flow</h2>
+      <p class="configure__lede">Choose the destination chain and asset, define source coverage, match the interface to your design system and add the widget to your frontend.</p>
+    </div>
+    <div class="configure__actions">
+      <a class="btn btn--light" href="#">Try Interactive Demo</a>
+      <a class="btn btn--ghost-l" href="https://docs.availproject.org/">Docs</a>
+    </div>
+  </div>
+
+  <div class="configure__panel">
+    <!-- the Widget Configurator prototype itself, on the artboard's own gradient -->
+    <div class="configurator" id="configurator">
+      <iframe class="configurator__frame" id="configuratorFrame"
+              title="Widget Configurator walkthrough — presets, chain and tokens, destination, amount rules, theming and the embed code"
+              data-src="flow/configurator.html?hold=1"
+              loading="lazy" tabindex="-1" scrolling="no"></iframe>
+    </div>
+  </div>
+
+  <div class="cta">
+    <img class="cta__bg" src="assets/cta-gradient.png" alt="" loading="lazy">
+    <img class="cta__mask" src="assets/cta-union.svg" alt="">
+    <div class="cta__inner">
+      <div>
+        <h2 class="cta__title">Integrate in minutes.<br>Go live in hours</h2>
+        <p class="cta__text">Configure the deposit experience around your destination chain, collateral asset and user funding preferences.</p>
+      </div>
+      <div class="cta__actions">
+        <a class="btn btn--light" href="#">Get Started</a>
+        <a class="btn btn--ghost-l" href="#">Talk to Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= FAQs ========================= -->
+<section class="faq">
+  <div class="container">
+    <h2 class="h2 section__title section__title--left">Trading App Deposit FAQs</h2>
+
+    <div class="faq__list" id="faqList">
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">How can a trading app accept deposits from multiple chains?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>Traders see eligible balances across supported chains in one view. They enter what they want to spend or what the app needs to receive, while the flow handles routing, gas and deposit completion into your single destination chain and collateral asset.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">What is the difference between exact-in and exact-out?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>With exact-in, the trader enters what they want to spend and the flow calculates the destination amount. With exact-out, the trader enters the exact amount the app needs to receive; the flow finds the best route across eligible balances and calculates the required input.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Can users fund through an on-ramp or exit through an off-ramp?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>Yes. On-ramp lets users fund through supported fiat payment methods inside the app experience, and off-ramp gives users a supported path from crypto balances back to fiat.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Can traders deposit using a QR code?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>Yes. Traders can scan a QR code or send to a deposit address from an external wallet or exchange.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Do traders need to bridge manually?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>No. Users stay inside the funding journey instead of being sent to external bridges and swaps — every handoff you remove is one fewer chance for the deposit to be delayed, reduced or abandoned.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Do users need gas on every chain?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>No. Gas required to successfully complete the transaction is handled in the flow.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Which chains and assets are supported?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>Deposits route from Ethereum, Optimism, Polygon, Arbitrum, Avalanche, Base, Scroll and 8 other chains. You choose the destination chain and accepted deposit tokens when you configure the widget.</p></div></div>
+      </div>
+      <div class="faq__item" data-open="false">
+        <button class="faq__q" aria-expanded="false">Can the widget match the trading app’s UI?<span class="faq__icon" aria-hidden="true">+</span></button>
+        <div class="faq__a"><div><p>Yes. Match the interface to your design system and add the widget to your frontend — the deposit remains inside the trading app experience.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__pitch">
+      <h2 class="footer__title">Have questions?</h2>
+      <p class="footer__text">Let's talk about how Avail can help your app grow beyond one chain.</p>
+      <a class="btn footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call">Schedule A Demo</a>
+      <p class="footer__copy">Copyright &copy; Avail Project. All rights reserved.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      <div class="footer__col footer__col--pages">
+        <h3>Pages</h3>
+        <ul>
+          <li><a href="https://www.availproject.org/">Home</a></li>
+          <li><a href="https://www.availproject.org/about.html">About Us</a></li>
+          <li><a href="https://www.availproject.org/nexus.html">Nexus</a></li>
+          <li><a href="https://www.availproject.org/da.html">DA</a></li>
+          <li><a href="https://www.availproject.org/deposits.html">Deposits</a></li>
+          <li><a href="https://www.availproject.org/atomic.html">Atomic</a></li>
+          <li><a href="https://www.availproject.org/token.html">Token</a></li>
+          <li><a href="https://blog.availproject.org/">Blog</a></li>
+          <li><a href="https://www.availproject.org/ecosystem.html">Ecosystem</a></li>
+          <li><a href="https://www.availproject.org/events.html">Events</a></li>
+          <li><a href="https://www.availproject.org/terms.html">T&amp;C</a></li>
+          <li><a href="https://www.availproject.org/whitepaper.html">Whitepaper</a></li>
+          <li><a href="https://avail.keka.com/careers">Careers</a></li>
+          <li><a href="https://www.availproject.org/brand.html">Brand Assets</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3>Solutions</h3>
+        <ul>
+          <li><a href="https://www.availproject.org/prediction-markets.html">Prediction Markets</a></li>
+          <li><a href="https://www.availproject.org/trading.html">Trading Platforms</a></li>
+          <li><a href="https://www.availproject.org/nexus.html">Multi-Chain Solutions</a></li>
+          <li><a href="https://www.availproject.org/da.html">Data Availability</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="https://www.availproject.org/contact.html">Contact Us</a></li>
+          <li><a href="https://docs.availproject.org/">Docs</a></li>
+          <li><a href="https://discord.com/invite/AvailProject">Discord</a></li>
+          <li><a href="https://github.com/availproject">GitHub</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3>Socials</h3>
+        <ul>
+          <li><a href="https://x.com/AvailProject">X (Twitter)</a></li>
+          <li><a href="https://www.linkedin.com/company/availproject/">LinkedIn</a></li>
+          <li><a href="https://t.me/AvailCommunity">Telegram</a></li>
+          <li><a href="https://www.youtube.com/@AvailProject">YouTube</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3>Labs</h3>
+        <ul>
+          <li><a href="https://fastbridge.availproject.org/">FastBridge</a></li>
+          <li><a href="https://www.shieldtx.xyz/">ShieldTX</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+
+  <div class="footer__mark">
+    <img src="assets/footer-wordmark.png" alt="" loading="lazy">
+  </div>
+</footer>
+
+</div><!-- /.frame -->
+
+<script>
+// Mobile nav
+(function () {
+  var t = document.getElementById('navToggle');
+  var n = document.getElementById('primaryNav');
+  t.addEventListener('click', function () {
+    var open = n.classList.toggle('is-open');
+    t.setAttribute('aria-expanded', String(open));
+  });
+})();
+
+// Products / Solutions menus
+(function () {
+  var items = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
+  var hoverable = window.matchMedia && matchMedia('(hover: hover) and (min-width: 1001px)');
+
+  function open(item, on) {
+    item.dataset.open = String(on);
+    item.querySelector('.nav__toggle').setAttribute('aria-expanded', String(on));
+  }
+  function closeAll(except) {
+    items.forEach(function (i) { if (i !== except) open(i, false); });
+  }
+
+  items.forEach(function (item) {
+    var btn = item.querySelector('.nav__toggle');
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var on = item.dataset.open !== 'true';
+      closeAll(item); open(item, on);
+    });
+    item.addEventListener('mouseenter', function () {
+      if (hoverable && hoverable.matches) { closeAll(item); open(item, true); }
+    });
+    item.addEventListener('mouseleave', function () {
+      if (hoverable && hoverable.matches) open(item, false);
+    });
+    item.addEventListener('focusout', function (e) {
+      if (!item.contains(e.relatedTarget)) open(item, false);
+    });
+  });
+
+  document.addEventListener('click', function () { closeAll(null); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeAll(null);
+  });
+})();
+
+// Flow tabs — the four clips are one continuous run, so each hands off to the
+// next before it finishes. The outgoing and incoming clips overlap for the
+// length of the fade, which turns the join into a cross-dissolve rather than
+// a cut, and a single pill slides between tabs to match.
+(function () {
+  var tabsEl = document.querySelector('.tabs');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var clips = Array.prototype.slice.call(document.querySelectorAll('.flow__video'));
+  var order = ['funding', 'balance', 'steps', 'funded'];
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // phones get the lighter 1280px rendition — the panel is small there
+  var small = window.matchMedia && matchMedia('(max-width: 700px)').matches;
+
+  var FADE = 550;      // must match the .flow__video transition
+  var LEAD = 0.55;     // start the next clip this early so the two overlap
+  var current = order[0];
+
+  function pick(v) { return (small && v.dataset.srcSm) || v.dataset.src; }
+  function clipFor(seg) {
+    for (var i = 0; i < clips.length; i++) if (clips[i].dataset.seg === seg) return clips[i];
+  }
+  function tabFor(seg) {
+    for (var i = 0; i < tabs.length; i++) if (tabs[i].dataset.seg === seg) return tabs[i];
+  }
+  function load(v) { if (v && !v.getAttribute('src')) v.setAttribute('src', pick(v)); }
+  function next(seg) { return order[(order.indexOf(seg) + 1) % order.length]; }
+
+  // ---- sliding pill ----
+  var pill = document.createElement('span');
+  pill.className = 'tabs__pill';
+  tabsEl.insertBefore(pill, tabsEl.firstChild);
+  tabsEl.classList.add('tabs--pill');
+
+  function movePill(animate) {
+    var t = tabFor(current);
+    if (!t) return;
+    pill.style.transition = animate ? '' : 'none';
+    pill.style.width = t.offsetWidth + 'px';
+    pill.style.transform = 'translateX(' + t.offsetLeft + 'px)';
+    if (!animate) { void pill.offsetWidth; pill.style.transition = ''; }
+  }
+  function keepVisible(t) {
+    if (tabsEl.scrollWidth <= tabsEl.clientWidth) return;
+    var l = t.offsetLeft, r = l + t.offsetWidth;
+    if (l < tabsEl.scrollLeft) tabsEl.scrollTo({ left: Math.max(0, l - 12), behavior: 'smooth' });
+    else if (r > tabsEl.scrollLeft + tabsEl.clientWidth)
+      tabsEl.scrollTo({ left: r - tabsEl.clientWidth + 12, behavior: 'smooth' });
+  }
+
+  // ---- switching ----
+  function show(seg) {
+    current = seg;
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.seg === seg)); });
+    movePill(true);                                    // move now...
+    requestAnimationFrame(function () { movePill(true); });  // ...and settle after any reflow
+    keepVisible(tabFor(seg));
+
+    clips.forEach(function (v) {
+      var on = v.dataset.seg === seg;
+      v.classList.toggle('is-on', on);
+      v.setAttribute('aria-hidden', String(!on));
+      if (!on) return;                       // the outgoing clip keeps playing under the fade
+      load(v);
+      v.__handedOff = false;
+      if (still) return;
+      try { v.currentTime = 0; v.play(); } catch (e) {}
+    });
+
+    // once the dissolve is over, park whatever is no longer on screen
+    clearTimeout(show.__t);
+    show.__t = setTimeout(function () {
+      clips.forEach(function (v) {
+        if (v.dataset.seg === current) return;
+        v.pause();
+        try { v.currentTime = 0; } catch (e) {}
+      });
+    }, FADE + 60);
+
+    load(clipFor(next(seg)));                // warm the next one while this plays
+  }
+
+  clips.forEach(function (v) {
+    // hand off slightly before the end so the clips overlap
+    v.addEventListener('timeupdate', function () {
+      if (still || v.dataset.seg !== current || v.__handedOff) return;
+      if (!isFinite(v.duration) || !v.duration) return;
+      if (v.duration - v.currentTime <= LEAD) { v.__handedOff = true; show(next(current)); }
+    });
+    // fallbacks: a clip that runs out or fails shouldn't strand the loop
+    v.addEventListener('ended', function () {
+      if (still || v.dataset.seg !== current || v.__handedOff) return;
+      v.__handedOff = true; show(next(current));
+    });
+    v.addEventListener('error', function () {
+      if (still || v.dataset.seg !== current) return;
+      show(next(current));
+    });
+  });
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(t.dataset.seg); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var n = tabs[(i + d + tabs.length) % tabs.length];
+      n.focus(); show(n.dataset.seg);
+    });
+  });
+
+  // ---- start ----
+  var first = clips[0];
+  first.classList.add('is-on');
+  load(first);
+  load(clipFor(next(order[0])));
+  movePill(false);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { movePill(false); });
+  if (window.ResizeObserver) new ResizeObserver(function () { movePill(false); }).observe(tabsEl);
+  if (!still) { try { first.play(); } catch (e) {} }
+
+  // don't run the loop while the section is off screen
+  if (!still && window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = clipFor(current);
+        if (!v) return;
+        if (e.isIntersecting) { try { v.play(); } catch (err) {} }
+        else v.pause();
+      });
+    }, { threshold: 0.2 }).observe(document.querySelector('.flow__panel'));
+  }
+})();
+
+// Widget Configurator — the prototype runs live in an iframe, scaled to the
+// panel. It only loads and only runs while the section is on screen.
+(function () {
+  var box = document.getElementById('configurator');
+  var frame = document.getElementById('configuratorFrame');
+  if (!box || !frame) return;
+  var BASE_W = 1211, BASE_H = 581;
+  var narrow = window.matchMedia && matchMedia('(max-width: 700px)');
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var started = false;
+
+  function fit() {
+    var byW = box.clientWidth / BASE_W;
+    // on a phone the proportional scale is unreadable, so fill the taller box
+    // and let it crop from the right — the config column stays legible
+    var k = (narrow && narrow.matches) ? Math.max(byW, box.clientHeight / BASE_H) : byW;
+    frame.style.transform = 'scale(' + k + ')';
+  }
+  fit();
+  if (window.ResizeObserver) new ResizeObserver(fit).observe(box);
+  else window.addEventListener('resize', fit);
+
+  function inner() {
+    try { return frame.contentWindow; } catch (e) { return null; }
+  }
+
+  function enter() {
+    if (!frame.getAttribute('src')) {
+      frame.setAttribute('src', frame.dataset.src);
+      frame.addEventListener('load', function () { fit(); if (!still) start(); });
+      return;
+    }
+    if (!still) start();
+  }
+  function start() {
+    var w = inner();
+    if (!w) return;
+    if (!started && typeof w.__startSegment === 'function') { started = true; w.__startSegment(); }
+    else if (typeof w.play === 'function') w.play();
+  }
+  function leave() {
+    var w = inner();
+    if (w && typeof w.pause === 'function') w.pause();
+  }
+
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { e.isIntersecting ? enter() : leave(); });
+    }, { threshold: 0.15, rootMargin: '200px 0px' }).observe(box);
+  } else {
+    enter();
+  }
+})();
+
+// FAQ accordion
+(function () {
+  document.querySelectorAll('.faq__item').forEach(function (item) {
+    var btn = item.querySelector('.faq__q');
+    btn.addEventListener('click', function () {
+      var open = item.dataset.open === 'true';
+      item.dataset.open = String(!open);
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
