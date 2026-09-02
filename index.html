@@ -6,9 +6,12 @@
 <title>Avail Trading | Cross-Chain Deposit Infrastructure</title>
 <meta name="description" content="Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.">
 <link rel="icon" href="assets/avail-mark.svg">
+<link rel="preload" as="image" href="assets/hero-visual.webp"
+      imagesrcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
+      imagesizes="(max-width: 1000px) 100vw, 52vw" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,38 +25,58 @@
       <img class="brand__word" src="assets/avail-wordmark.svg" alt="Avail" width="57" height="21">
     </a>
 
-    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="primaryNav" aria-label="Menu">
-      <span></span>
+    <button class="nav-menu" id="navMenu" type="button"
+            aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+      <span class="nav-menu__icon" aria-hidden="true"></span>
+      <span class="nav-menu__label">Menu</span>
     </button>
 
-    <nav class="nav" id="primaryNav">
-      <div class="nav__links">
-        <div class="nav__item">
-          <button class="nav__link nav__toggle" aria-expanded="false" aria-controls="menu-products">Products</button>
-          <div class="nav__menu" id="menu-products">
-            <a href="https://www.availproject.org/deposits.html">Deposits</a>
-            <a href="https://www.availproject.org/nexus.html">Nexus</a>
-            <a href="https://www.availproject.org/da.html">DA</a>
-            <a href="https://www.availproject.org/atomic.html">Atomic</a>
-            <a href="https://fastbridge.availproject.org/">FastBridge</a>
-            <a href="https://www.shieldtx.xyz/">ShieldTX</a>
+    <div class="nav-pill">
+      <nav class="nav" id="primaryNav" aria-label="Primary">
+        <div class="nav__links">
+          <div class="nav__item">
+            <button class="nav__trigger" type="button" id="trigger-products"
+                    aria-haspopup="true" aria-expanded="false" aria-controls="menu-products">Products</button>
+            <div class="nav__menu nav__menu--products" id="menu-products" role="menu" aria-labelledby="trigger-products">
+              <div class="nav__section">
+                <p class="nav__heading">For Builders</p>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/deposits">Deposits</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/nexus">Nexus</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/da">DA</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/atomic">Atomic</a>
+              </div>
+              <div class="nav__section">
+                <p class="nav__heading">For Users</p>
+                <a class="nav__mlink" role="menuitem" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="nav__item">
-          <button class="nav__link nav__toggle" aria-expanded="false" aria-controls="menu-solutions">Solutions</button>
-          <div class="nav__menu" id="menu-solutions">
-            <a href="https://www.availproject.org/prediction-markets.html">Prediction Markets</a>
-            <a href="https://www.availproject.org/trading.html">Trading Platforms</a>
-            <a href="https://www.availproject.org/nexus.html">Multi-Chain Solutions</a>
-            <a href="https://www.availproject.org/da.html">Data Availability</a>
+
+          <div class="nav__item">
+            <button class="nav__trigger" type="button" id="trigger-solutions"
+                    aria-haspopup="true" aria-expanded="false" aria-controls="menu-solutions">Solutions</button>
+            <div class="nav__menu" id="menu-solutions" role="menu" aria-labelledby="trigger-solutions">
+              <div class="nav__section">
+                <p class="nav__heading">App Developers</p>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/trading">Trading Platforms</a>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
+              </div>
+              <div class="nav__section">
+                <p class="nav__heading">Blockchain Developers</p>
+                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/da">Data Availability</a>
+              </div>
+            </div>
           </div>
+
+          <a class="nav__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
+          <a class="nav__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+          <a class="nav__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
         </div>
-        <a class="nav__link" href="https://www.availproject.org/ecosystem.html">Ecosystem</a>
-        <a class="nav__link" href="https://docs.availproject.org/">Docs</a>
-        <a class="nav__link" href="https://blog.availproject.org/">Blog</a>
-      </div>
-      <a class="nav__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call">Let's Talk</a>
-    </nav>
+      </nav>
+      <a class="nav__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+    </div>
   </div>
 
   <div class="hero__inner">
@@ -61,13 +84,16 @@
       <h1 class="hero__title">Multichain Deposits</h1>
       <p class="hero__lede">Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.</p>
       <div class="hero__actions">
-        <a class="btn btn--dark" href="https://docs.availproject.org/">Docs</a>
-        <a class="btn btn--outline" href="#">Interactive demo</a>
+        <a class="btn btn--dark" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+        <a class="btn btn--outline" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
       </div>
     </div>
 
     <div class="hero__visual">
-      <img class="hero__art" src="assets/hero-visual.png" width="2055" height="1779"
+      <img class="hero__art" src="assets/hero-visual.webp" width="2055" height="1779"
+           srcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
+           sizes="(max-width: 1000px) 100vw, 52vw"
+           fetchpriority="high" decoding="async"
            alt="A trading app with the Deposit USDC modal open, offering wallet, cash, crypto transfer and Hyperliquid funding methods">
       <div class="hero__rowhint" aria-hidden="true"></div>
       <div class="hero__radio" aria-hidden="true"></div>
@@ -145,11 +171,11 @@
       </div>
     </div>
     <div class="diagram">
-      <img class="diagram__base" src="assets/diagram-card.png" alt="Capital scattered across chains — Ethereum, Base, Arbitrum, Avalanche and 8 other chains routing through Avail Deposits into a trading app on one destination chain">
-      <img class="diagram__pin" data-row="1" src="assets/dg-icon-1.png" alt="">
-      <img class="diagram__pin" data-row="2" src="assets/dg-icon-2.png" alt="">
-      <img class="diagram__pin" data-row="3" src="assets/dg-icon-3.png" alt="">
-      <img class="diagram__pin" data-row="4" src="assets/dg-icon-4.png" alt="">
+      <img class="diagram__base" src="assets/diagram-card.webp" loading="lazy" decoding="async" alt="Capital scattered across chains — Ethereum, Base, Arbitrum, Avalanche and 8 other chains routing through Avail Deposits into a trading app on one destination chain">
+      <img class="diagram__pin" data-row="1" src="assets/dg-icon-1.webp" loading="lazy" decoding="async" alt="">
+      <img class="diagram__pin" data-row="2" src="assets/dg-icon-2.webp" loading="lazy" decoding="async" alt="">
+      <img class="diagram__pin" data-row="3" src="assets/dg-icon-3.webp" loading="lazy" decoding="async" alt="">
+      <img class="diagram__pin" data-row="4" src="assets/dg-icon-4.webp" loading="lazy" decoding="async" alt="">
     </div>
   </div>
 </section>
@@ -161,7 +187,7 @@
 
     <div class="feature-grid">
       <article class="fcard">
-        <div class="fcard__art"><img src="assets/illo-convert.png" alt="" loading="lazy"></div>
+        <div class="fcard__art"><img src="assets/illo-convert.webp" alt="" loading="lazy"></div>
         <div class="fcard__body">
           <h3 class="fcard__title">Convert more high-intent traders</h3>
           <p class="fcard__text">Keep users inside the funding journey instead of sending them to external bridges and swaps.</p>
@@ -169,7 +195,7 @@
       </article>
 
       <article class="fcard">
-        <div class="fcard__art"><img src="assets/illo-capital.png" alt="" loading="lazy"></div>
+        <div class="fcard__art"><img src="assets/illo-capital.webp" alt="" loading="lazy"></div>
         <div class="fcard__body">
           <h3 class="fcard__title">Put more existing capital to work</h3>
           <p class="fcard__text">Allow eligible balances across supported chains and assets to contribute to the deposit.</p>
@@ -177,7 +203,7 @@
       </article>
 
       <article class="fcard">
-        <div class="fcard__art"><img src="assets/illo-time.png" alt="" loading="lazy"></div>
+        <div class="fcard__art"><img src="assets/illo-time.webp" alt="" loading="lazy"></div>
         <div class="fcard__body">
           <h3 class="fcard__title">Reduce time to first trade</h3>
           <p class="fcard__text">Move users from discovering a market to participating through one embedded funding flow.</p>
@@ -185,7 +211,7 @@
       </article>
 
       <article class="fcard">
-        <div class="fcard__art"><img src="assets/illo-support.png" alt="" loading="lazy"></div>
+        <div class="fcard__art"><img src="assets/illo-support.webp" alt="" loading="lazy"></div>
         <div class="fcard__body">
           <h3 class="fcard__title">Reduce deposit-related support</h3>
           <p class="fcard__text">Remove common questions around networks, gas, required assets, deposit amounts and funding methods.</p>
@@ -214,25 +240,25 @@
     <video class="flow__video is-on" id="clip-funding" data-seg="funding"
            role="tabpanel" aria-labelledby="tab-funding"
            aria-label="Choosing a funding method, entering 499.50 USDC, and the flow resolving a route"
-           data-src="assets/flow/funding.mp4" data-src-sm="assets/flow/funding-sm.mp4" poster="assets/flow/funding.jpg"
-           muted playsinline preload="auto"></video>
+           data-src="assets/flow/funding.mp4" data-src-sm="assets/flow/funding-sm.mp4" data-poster="assets/flow/funding.webp"
+           muted playsinline preload="none"></video>
 
     <video class="flow__video" id="clip-balance" data-seg="balance"
            role="tabpanel" aria-labelledby="tab-balance" aria-hidden="true"
            aria-label="Editing the funding sources and picking tokens across chains"
-           data-src="assets/flow/balance.mp4" data-src-sm="assets/flow/balance-sm.mp4" poster="assets/flow/balance.jpg"
+           data-src="assets/flow/balance.mp4" data-src-sm="assets/flow/balance-sm.mp4" data-poster="assets/flow/balance.webp"
            muted playsinline preload="none"></video>
 
     <video class="flow__video" id="clip-steps" data-seg="steps"
            role="tabpanel" aria-labelledby="tab-steps" aria-hidden="true"
            aria-label="The in-flight intent steps completing one by one"
-           data-src="assets/flow/steps.mp4" data-src-sm="assets/flow/steps-sm.mp4" poster="assets/flow/steps.jpg"
+           data-src="assets/flow/steps.mp4" data-src-sm="assets/flow/steps-sm.mp4" data-poster="assets/flow/steps.webp"
            muted playsinline preload="none"></video>
 
     <video class="flow__video" id="clip-funded" data-seg="funded"
            role="tabpanel" aria-labelledby="tab-funded" aria-hidden="true"
            aria-label="Deposit complete — 499.50 USDC received on Arbitrum"
-           data-src="assets/flow/funded.mp4" data-src-sm="assets/flow/funded-sm.mp4" poster="assets/flow/funded.jpg"
+           data-src="assets/flow/funded.mp4" data-src-sm="assets/flow/funded-sm.mp4" data-poster="assets/flow/funded.webp"
            muted playsinline preload="none"></video>
   </div>
 </section>
@@ -295,8 +321,8 @@
       <p class="configure__lede">Choose the destination chain and asset, define source coverage, match the interface to your design system and add the widget to your frontend.</p>
     </div>
     <div class="configure__actions">
-      <a class="btn btn--light" href="#">Try Interactive Demo</a>
-      <a class="btn btn--ghost-l" href="https://docs.availproject.org/">Docs</a>
+      <a class="btn btn--light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Try Interactive Demo</a>
+      <a class="btn btn--ghost-l" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
     </div>
   </div>
 
@@ -311,16 +337,16 @@
   </div>
 
   <div class="cta">
-    <img class="cta__bg" src="assets/cta-gradient.png" alt="" loading="lazy">
-    <img class="cta__mask" src="assets/cta-union.svg" alt="">
+    <img class="cta__bg" src="assets/cta-gradient.webp" alt="" loading="lazy">
+    <img class="cta__mask" src="assets/cta-union.svg" alt="" loading="lazy" decoding="async">
     <div class="cta__inner">
       <div>
         <h2 class="cta__title">Integrate in minutes.<br>Go live in hours</h2>
         <p class="cta__text">Configure the deposit experience around your destination chain, collateral asset and user funding preferences.</p>
       </div>
       <div class="cta__actions">
-        <a class="btn btn--light" href="#">Get Started</a>
-        <a class="btn btn--ghost-l" href="#">Talk to Sales</a>
+        <a class="btn btn--light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Get Started</a>
+        <a class="btn btn--ghost-l" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Talk to Sales</a>
       </div>
     </div>
   </div>
@@ -334,35 +360,35 @@
     <div class="faq__list" id="faqList">
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">How can a trading app accept deposits from multiple chains?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>Traders see eligible balances across supported chains in one view. They enter what they want to spend or what the app needs to receive, while the flow handles routing, gas and deposit completion into your single destination chain and collateral asset.</p></div></div>
+        <div class="faq__a"><div><p>Add an embedded cross-chain deposit flow that accepts eligible assets from supported source chains and delivers the required collateral into the destination app. Routing, bridging and swaps happen inside the funding journey.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">What is the difference between exact-in and exact-out?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>With exact-in, the trader enters what they want to spend and the flow calculates the destination amount. With exact-out, the trader enters the exact amount the app needs to receive; the flow finds the best route across eligible balances and calculates the required input.</p></div></div>
+        <div class="faq__a"><div><p>Exact-in starts with the amount the trader wants to spend and calculates the destination output. Exact-out starts with the exact amount the app needs to receive, then finds the best route across eligible balances and calculates the required input.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Can users fund through an on-ramp or exit through an off-ramp?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>Yes. On-ramp lets users fund through supported fiat payment methods inside the app experience, and off-ramp gives users a supported path from crypto balances back to fiat.</p></div></div>
+        <div class="faq__a"><div><p>The experience can surface supported fiat on-ramp and off-ramp routes alongside crypto deposits, subject to provider, asset and regional coverage.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Can traders deposit using a QR code?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>Yes. Traders can scan a QR code or send to a deposit address from an external wallet or exchange.</p></div></div>
+        <div class="faq__a"><div><p>QR code-based deposits let a trader send funds from a supported external wallet or exchange to a deposit address, after which the flow routes the funds into the required destination asset.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Do traders need to bridge manually?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>No. Users stay inside the funding journey instead of being sent to external bridges and swaps — every handoff you remove is one fewer chance for the deposit to be delayed, reduced or abandoned.</p></div></div>
+        <div class="faq__a"><div><p>No. The user stays inside the app while the required cross-chain routing is handled within the deposit flow.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Do users need gas on every chain?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>No. Gas required to successfully complete the transaction is handled in the flow.</p></div></div>
+        <div class="faq__a"><div><p>Gas required to successfully complete the transaction is handled in the flow, so users do not need to separately acquire the required native gas tokens for each step.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Which chains and assets are supported?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>Deposits route from Ethereum, Optimism, Polygon, Arbitrum, Avalanche, Base, Scroll and 8 other chains. You choose the destination chain and accepted deposit tokens when you configure the widget.</p></div></div>
+        <div class="faq__a"><div><p>Coverage changes as the network expands. Link users to the live supported chains and tokens documentation for the current list.</p></div></div>
       </div>
       <div class="faq__item" data-open="false">
         <button class="faq__q" aria-expanded="false">Can the widget match the trading app’s UI?<span class="faq__icon" aria-hidden="true">+</span></button>
-        <div class="faq__a"><div><p>Yes. Match the interface to your design system and add the widget to your frontend — the deposit remains inside the trading app experience.</p></div></div>
+        <div class="faq__a"><div><p>Yes. Teams can configure supported chains and tokens and adapt the widget interface to fit the application experience.</p></div></div>
       </div>
     </div>
   </div>
@@ -376,7 +402,7 @@
     <div class="footer__pitch">
       <h2 class="footer__title">Have questions?</h2>
       <p class="footer__text">Let's talk about how Avail can help your app grow beyond one chain.</p>
-      <a class="btn footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call">Schedule A Demo</a>
+      <a class="btn footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule A Demo</a>
       <p class="footer__copy">Copyright &copy; Avail Project. All rights reserved.</p>
     </div>
 
@@ -385,114 +411,172 @@
         <h3>Pages</h3>
         <ul>
           <li><a href="https://www.availproject.org/">Home</a></li>
-          <li><a href="https://www.availproject.org/about.html">About Us</a></li>
-          <li><a href="https://www.availproject.org/nexus.html">Nexus</a></li>
-          <li><a href="https://www.availproject.org/da.html">DA</a></li>
-          <li><a href="https://www.availproject.org/deposits.html">Deposits</a></li>
-          <li><a href="https://www.availproject.org/atomic.html">Atomic</a></li>
-          <li><a href="https://www.availproject.org/token.html">Token</a></li>
-          <li><a href="https://blog.availproject.org/">Blog</a></li>
-          <li><a href="https://www.availproject.org/ecosystem.html">Ecosystem</a></li>
-          <li><a href="https://www.availproject.org/events.html">Events</a></li>
-          <li><a href="https://www.availproject.org/terms.html">T&amp;C</a></li>
-          <li><a href="https://www.availproject.org/whitepaper.html">Whitepaper</a></li>
-          <li><a href="https://avail.keka.com/careers">Careers</a></li>
-          <li><a href="https://www.availproject.org/brand.html">Brand Assets</a></li>
+          <li><a href="https://www.availproject.org/about">About Us</a></li>
+          <li><a href="https://www.availproject.org/nexus">Nexus</a></li>
+          <li><a href="https://www.availproject.org/da">DA</a></li>
+          <li><a href="https://www.availproject.org/deposits">Deposits</a></li>
+          <li><a href="https://www.availproject.org/atomic">Atomic</a></li>
+          <li><a href="https://www.availproject.org/token">Token</a></li>
+          <li><a href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a></li>
+          <li><a href="https://www.availproject.org/ecosystem">Ecosystem</a></li>
+          <li><a href="https://www.availproject.org/events">Events</a></li>
+          <li><a href="https://www.availproject.org/terms">T&amp;C</a></li>
+          <li><a href="https://www.availproject.org/whitepaper">Whitepaper</a></li>
+          <li><a href="https://avail.keka.com/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
+          <li><a href="https://www.availproject.org/brand">Brand Assets</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h3>Solutions</h3>
         <ul>
-          <li><a href="https://www.availproject.org/prediction-markets.html">Prediction Markets</a></li>
-          <li><a href="https://www.availproject.org/trading.html">Trading Platforms</a></li>
-          <li><a href="https://www.availproject.org/nexus.html">Multi-Chain Solutions</a></li>
-          <li><a href="https://www.availproject.org/da.html">Data Availability</a></li>
+          <li><a href="https://www.availproject.org/prediction-markets">Prediction Markets</a></li>
+          <li><a href="https://www.availproject.org/trading">Trading Platforms</a></li>
+          <li><a href="https://www.availproject.org/nexus">Multi-Chain Solutions</a></li>
+          <li><a href="https://www.availproject.org/da">Data Availability</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h3>Support</h3>
         <ul>
-          <li><a href="https://www.availproject.org/contact.html">Contact Us</a></li>
-          <li><a href="https://docs.availproject.org/">Docs</a></li>
-          <li><a href="https://discord.com/invite/AvailProject">Discord</a></li>
-          <li><a href="https://github.com/availproject">GitHub</a></li>
+          <li><a href="https://www.availproject.org/contact">Contact Us</a></li>
+          <li><a href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a></li>
+          <li><a href="https://discord.com/invite/AvailProject" target="_blank" rel="noopener noreferrer">Discord</a></li>
+          <li><a href="https://github.com/availproject" target="_blank" rel="noopener noreferrer">GitHub</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h3>Socials</h3>
         <ul>
-          <li><a href="https://x.com/AvailProject">X (Twitter)</a></li>
-          <li><a href="https://www.linkedin.com/company/availproject/">LinkedIn</a></li>
-          <li><a href="https://t.me/AvailCommunity">Telegram</a></li>
-          <li><a href="https://www.youtube.com/@AvailProject">YouTube</a></li>
+          <li><a href="https://x.com/AvailProject" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+          <li><a href="https://www.linkedin.com/company/availproject/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://t.me/AvailCommunity" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+          <li><a href="https://www.youtube.com/@AvailProject" target="_blank" rel="noopener noreferrer">YouTube</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h3>Labs</h3>
         <ul>
-          <li><a href="https://fastbridge.availproject.org/">FastBridge</a></li>
-          <li><a href="https://www.shieldtx.xyz/">ShieldTX</a></li>
+          <li><a href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a></li>
+          <li><a href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a></li>
         </ul>
       </div>
     </nav>
   </div>
 
   <div class="footer__mark">
-    <img src="assets/footer-wordmark.png" alt="" loading="lazy">
+    <img src="assets/footer-wordmark.webp" alt="" loading="lazy">
   </div>
 </footer>
 
 </div><!-- /.frame -->
 
+<div class="mobile-menu-overlay" id="mobileMenuOverlay" hidden></div>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <nav class="mobile-menu__nav" aria-label="Mobile">
+    <details class="mobile-menu__details">
+      <summary class="mobile-menu__link">Products</summary>
+      <div class="mobile-menu__sub">
+        <p class="mobile-menu__heading">For Builders</p>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/deposits">Deposits</a>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Nexus</a>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/da">DA</a>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/atomic">Atomic</a>
+        <p class="mobile-menu__heading">For Users</p>
+        <a class="mobile-menu__sublink" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
+        <a class="mobile-menu__sublink" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
+      </div>
+    </details>
+    <details class="mobile-menu__details">
+      <summary class="mobile-menu__link">Solutions</summary>
+      <div class="mobile-menu__sub">
+        <p class="mobile-menu__heading">App Developers</p>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/trading">Trading Platforms</a>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
+        <p class="mobile-menu__heading">Blockchain Developers</p>
+        <a class="mobile-menu__sublink" href="https://www.availproject.org/da">Data Availability</a>
+      </div>
+    </details>
+    <a class="mobile-menu__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
+    <a class="mobile-menu__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+    <a class="mobile-menu__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
+    <a class="btn mobile-menu__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+  </nav>
+</div>
+
 <script>
-// Mobile nav
+// Mobile nav — the Menu button opens the slide-in panel, the way the live
+// nav does: label flips to Close, an overlay dims the page, body scroll locks,
+// and the panel is pinned to the bottom edge of the header.
 (function () {
-  var t = document.getElementById('navToggle');
-  var n = document.getElementById('primaryNav');
-  t.addEventListener('click', function () {
-    var open = n.classList.toggle('is-open');
-    t.setAttribute('aria-expanded', String(open));
+  var toggle  = document.getElementById('navMenu');
+  var menu    = document.getElementById('mobileMenu');
+  var overlay = document.getElementById('mobileMenuOverlay');
+  var label   = toggle && toggle.querySelector('.nav-menu__label');
+  if (!toggle || !menu) return;
+
+  function position() {
+    var header = document.querySelector('.header');
+    if (!header) return;
+    menu.style.setProperty('--mobile-menu-top',
+      (header.getBoundingClientRect().bottom + window.scrollY) + 'px');
+  }
+
+  function setOpen(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (label) label.textContent = open ? 'Close' : 'Menu';
+    if (open) position();                 // measure before the panel is shown
+    menu.hidden = !open;
+    if (overlay) overlay.hidden = !open;
+    document.body.classList.toggle('menu-open', open);
+  }
+
+  var close = document.createElement('button');
+  close.className = 'mobile-menu__close';
+  close.type = 'button';
+  close.setAttribute('aria-label', 'Close menu');
+  close.addEventListener('click', function () { setOpen(false); });
+  var nav = menu.querySelector('.mobile-menu__nav');
+  (nav || menu).insertBefore(close, (nav || menu).firstChild);
+
+  toggle.addEventListener('click', function () {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  if (overlay) overlay.addEventListener('click', function () { setOpen(false); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !menu.hidden) { setOpen(false); toggle.focus(); }
+  });
+
+  var t;
+  window.addEventListener('resize', function () {
+    clearTimeout(t);
+    t = setTimeout(function () {
+      if (window.innerWidth > 1000 && !menu.hidden) setOpen(false);
+      else if (!menu.hidden) position();
+    }, 150);
   });
 })();
 
-// Products / Solutions menus
+// Desktop dropdowns open on hover and focus in CSS. The only thing left for
+// script is keeping aria-expanded honest about what is actually on screen.
 (function () {
-  var items = Array.prototype.slice.call(document.querySelectorAll('.nav__item'));
-  var hoverable = window.matchMedia && matchMedia('(hover: hover) and (min-width: 1001px)');
-
-  function open(item, on) {
-    item.dataset.open = String(on);
-    item.querySelector('.nav__toggle').setAttribute('aria-expanded', String(on));
-  }
-  function closeAll(except) {
-    items.forEach(function (i) { if (i !== except) open(i, false); });
-  }
-
-  items.forEach(function (item) {
-    var btn = item.querySelector('.nav__toggle');
-    btn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var on = item.dataset.open !== 'true';
-      closeAll(item); open(item, on);
-    });
-    item.addEventListener('mouseenter', function () {
-      if (hoverable && hoverable.matches) { closeAll(item); open(item, true); }
-    });
-    item.addEventListener('mouseleave', function () {
-      if (hoverable && hoverable.matches) open(item, false);
-    });
+  Array.prototype.forEach.call(document.querySelectorAll('.nav__item'), function (item) {
+    var trigger = item.querySelector('.nav__trigger');
+    if (!trigger) return;
+    function sync(open) { trigger.setAttribute('aria-expanded', String(open)); }
+    item.addEventListener('pointerenter', function () { sync(true); });
+    item.addEventListener('pointerleave', function () { sync(false); });
+    item.addEventListener('focusin',  function () { sync(true); });
     item.addEventListener('focusout', function (e) {
-      if (!item.contains(e.relatedTarget)) open(item, false);
+      if (!item.contains(e.relatedTarget)) sync(false);
     });
-  });
-
-  document.addEventListener('click', function () { closeAll(null); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeAll(null);
+    // a trigger press is a no-op for the menu, so don't let it submit or scroll
+    trigger.addEventListener('click', function (e) { e.preventDefault(); });
   });
 })();
 
@@ -506,8 +590,10 @@
   var clips = Array.prototype.slice.call(document.querySelectorAll('.flow__video'));
   var order = ['funding', 'balance', 'steps', 'funded'];
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // phones get the lighter 1280px rendition — the panel is small there
-  var small = window.matchMedia && matchMedia('(max-width: 700px)').matches;
+  // The 1642px clips exist so the 821px panel lands at exactly 2x on retina.
+  // Phones, and any display below 1.5 DPR, are served the lighter 1280px cut.
+  var small = (window.matchMedia && matchMedia('(max-width: 700px)').matches)
+           || (window.devicePixelRatio || 1) < 1.5;
 
   var FADE = 550;      // must match the .flow__video transition
   var LEAD = 0.55;     // start the next clip this early so the two overlap
@@ -520,7 +606,13 @@
   function tabFor(seg) {
     for (var i = 0; i < tabs.length; i++) if (tabs[i].dataset.seg === seg) return tabs[i];
   }
-  function load(v) { if (v && !v.getAttribute('src')) v.setAttribute('src', pick(v)); }
+  // the markup ships preload="none" so parsing costs nothing; a clip only
+  // opts into a real prefetch at the moment we decide to load it
+  function load(v) {
+    if (!v || v.getAttribute('src')) return;
+    v.preload = 'auto';
+    v.setAttribute('src', pick(v));
+  }
   function next(seg) { return order[(order.indexOf(seg) + 1) % order.length]; }
 
   // ---- sliding pill ----
@@ -607,25 +699,50 @@
   });
 
   // ---- start ----
+  // Nothing here is fetched at parse time. The panel sits well below the fold,
+  // so the posters and the first clips only start downloading once the section
+  // is close enough to be worth it.
   var first = clips[0];
   first.classList.add('is-on');
-  load(first);
-  load(clipFor(next(order[0])));
   movePill(false);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { movePill(false); });
   if (window.ResizeObserver) new ResizeObserver(function () { movePill(false); }).observe(tabsEl);
-  if (!still) { try { first.play(); } catch (e) {} }
 
-  // don't run the loop while the section is off screen
-  if (!still && window.IntersectionObserver) {
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var v = clipFor(current);
-        if (!v) return;
-        if (e.isIntersecting) { try { v.play(); } catch (err) {} }
-        else v.pause();
-      });
-    }, { threshold: 0.2 }).observe(document.querySelector('.flow__panel'));
+  var armed = false;
+  function arm() {
+    if (armed) return;
+    armed = true;
+    clips.forEach(function (v) { if (v.dataset.poster) v.poster = v.dataset.poster; });
+    load(clipFor(current));
+    load(clipFor(next(current)));
+  }
+
+  // a tab press before the section is armed still has to work
+  tabs.forEach(function (t) { t.addEventListener('click', arm); });
+
+  var panel = document.querySelector('.flow__panel');
+  if (window.IntersectionObserver) {
+    // start the download a screenful early, so the first clip is ready by the
+    // time the panel actually arrives
+    new IntersectionObserver(function (entries, obs) {
+      if (!entries.some(function (e) { return e.isIntersecting; })) return;
+      arm(); obs.disconnect();
+    }, { rootMargin: '400px 0px' }).observe(panel);
+
+    // ...but only run the loop while the panel is genuinely on screen
+    if (!still) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var v = clipFor(current);
+          if (!v) return;
+          if (e.isIntersecting) { try { v.play(); } catch (err) {} }
+          else v.pause();
+        });
+      }, { threshold: 0.2 }).observe(panel);
+    }
+  } else {
+    arm();
+    if (!still) { try { first.play(); } catch (e) {} }
   }
 })();
 
@@ -683,14 +800,21 @@
   }
 })();
 
-// FAQ accordion
+// FAQ accordion — one answer open at a time, as on availproject.org: opening
+// a question closes whichever was open, and clicking the open one closes it.
 (function () {
-  document.querySelectorAll('.faq__item').forEach(function (item) {
-    var btn = item.querySelector('.faq__q');
-    btn.addEventListener('click', function () {
-      var open = item.dataset.open === 'true';
-      item.dataset.open = String(!open);
-      btn.setAttribute('aria-expanded', String(!open));
+  var items = Array.prototype.slice.call(document.querySelectorAll('.faq__item'));
+
+  function set(item, open) {
+    item.dataset.open = String(open);
+    item.querySelector('.faq__q').setAttribute('aria-expanded', String(open));
+  }
+
+  items.forEach(function (item) {
+    item.querySelector('.faq__q').addEventListener('click', function () {
+      var wasOpen = item.dataset.open === 'true';
+      items.forEach(function (i) { set(i, false); });
+      if (!wasOpen) set(item, true);
     });
   });
 })();
