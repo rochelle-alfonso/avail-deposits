@@ -95,7 +95,7 @@ from that single take, so each ends where the next begins.
 |---|---|---|---|
 | Funding Source | `funding` | funding method → deposit (empty) → typing / routing → resolved | 11.1s |
 | Unified Balance | `balance` | resolved → **Edit** tapped → choose tokens → resolved | 8.8s |
-| Intent Steps | `steps` | in-flight, the five intent steps completing | 7.3s |
+| Intent Steps | `steps` | in-flight, the three intent steps completing | 4.6s |
 | Funded | `funded` | deposit complete, count-up + confetti | 5.9s |
 
 **Plate and strokes.** The surround around the UI (`.device`) is drawn at 65%

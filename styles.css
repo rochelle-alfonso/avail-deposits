@@ -385,8 +385,8 @@ body.menu-open { overflow: hidden; }
   line-height: 1.2; letter-spacing: -1.68px;
   text-transform: capitalize; color: var(--ink);
 }
-/* Figma sets the headline nowrap; it and its column scale together */
-@media (min-width: 1001px) { .hero__title { white-space: nowrap; } }
+/* The headline wraps to two lines by design; the old one-line rule was for
+   the shorter "Multichain Deposits" and would now overflow the column. */
 
 .hero__lede {
   margin-top: 24px;
@@ -591,8 +591,12 @@ body.menu-open { overflow: hidden; }
 }
 .stat > * { position: relative; }
 .stat__value { font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 3.542vw, 55px); line-height: 1; }
+/* Every card reserves two lines of label. The card centres its contents, so
+   without this the one taller label pushes its number up out of line with the
+   rest of the row. */
 .stat__label {
   font-family: var(--font-ui); font-size: 16px; line-height: 24px;
+  min-height: 48px;
   color: var(--dark-card-text); text-transform: capitalize;
 }
 
@@ -718,12 +722,17 @@ body.menu-open { overflow: hidden; }
    SECTION: Built for Trading Metrics
    ============================================================ */
 .metrics { background: var(--surface); padding: 100px 0; }
+/* Flex rather than grid: with seven cards the last row is short, and
+   justify-content centres the remainder instead of leaving it left-aligned
+   against an empty fourth column. Card width is still a strict quarter. */
 .metrics__grid {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex; flex-wrap: wrap; justify-content: center;
   gap: 13px 14px;
   max-width: calc(var(--page) * 0.88192); margin: 50px auto 0;   /* 1195px */
 }
 .mcard {
+  flex: 0 0 calc((100% - 3 * 14px) / 4);   /* four across, three column gaps */
+  min-width: 0;
   background: #fff; border: 1px solid var(--border); border-radius: var(--r-md);
   box-shadow: 0 0 6.7px rgba(46, 46, 46, .07);
   padding: 19px 20px 24px;
@@ -880,7 +889,7 @@ body.menu-open { overflow: hidden; }
   .hero__inner { gap: 32px; }
   .stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .ready { gap: 32px; }
-  .metrics__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mcard { flex-basis: calc((100% - 14px) / 2); }
   .footer__top { gap: 56px; }
   .footer__nav { gap: 40px; }
 }
@@ -1010,7 +1019,7 @@ body.menu-open { overflow: hidden; }
   .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: none; }
   .stat { padding: 24px 14px; min-height: 132px; gap: 8px; }
   .stat__value { font-size: 32px; }
-  .stat__label { font-size: 14px; line-height: 20px; }
+  .stat__label { font-size: 14px; line-height: 20px; min-height: 40px; }
 
   .fcard__body { padding: 20px 20px 24px; }
   .fcard__title { letter-spacing: -.4px; }
@@ -1056,8 +1065,8 @@ body.menu-open { overflow: hidden; }
      1211/581 makes those two equal and the scale lands on a plain proportional
      fit. Trade: the UI renders at ~0.27 rather than the 0.83 a 400px slice gave. */
   .configurator { aspect-ratio: 1211 / 581; }
-  .metrics__grid { grid-template-columns: minmax(0, 1fr); max-width: 420px; }
-  .mcard { min-height: 0; }
+  .metrics__grid { max-width: 420px; }
+  .mcard { flex-basis: 100%; min-height: 0; }
 
   .configure__actions { width: 100%; }
   .cta { aspect-ratio: auto; min-height: 0; padding: 40px 0; }

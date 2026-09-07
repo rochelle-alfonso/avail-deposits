@@ -67,7 +67,7 @@ body{
 #s-typing{min-height:462px}
 #s-resolved{min-height:0}
 #s-picker{min-height:812px}
-#s-flow{min-height:692px}
+#s-flow{min-height:576px}
 #s-success{min-height:0}
 /* real dotted texture exported from the Paper artboards (inlined base64) */
 .device::before{
@@ -647,24 +647,16 @@ body{
         <div class="steps" id="steps">
           <div class="step pending" data-step="0">
             <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Verifying source signature</div><div class="s-sub">Waiting</div></div>
+            <div class="body"><div class="s-title">Approve Swaps (1 of 2)</div><div class="s-sub">Waiting</div></div>
             <div class="chev">@chevUp@</div>
           </div>
           <div class="step pending" data-step="1">
             <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Deposit transaction</div><div class="s-sub">Waiting</div></div>
+            <div class="body"><div class="s-title">Swap tokens</div><div class="s-sub">Waiting</div></div>
           </div>
           <div class="step pending" data-step="2">
             <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Intent Verified</div><div class="s-sub">Waiting</div></div>
-          </div>
-          <div class="step pending" data-step="3">
-            <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Liquidity intent confirmed</div><div class="s-sub">Waiting</div></div>
-          </div>
-          <div class="step pending" data-step="4">
-            <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Cross-chain proof</div><div class="s-sub">Waiting</div></div>
+            <div class="body"><div class="s-title">Receive USDT on Ethereum</div><div class="s-sub">Waiting</div></div>
           </div>
         </div>
       </div>
@@ -843,11 +835,9 @@ function stopHeat(){ /* video loops on its own; nothing to tear down */ }
 /* ---------- in-flight step progression ---------- */
 /* each step's copy for its loading and completed states */
 const STEPS=[
-  {load:'Approve on wallet',  done:'Signature confirmed'},
-  {load:'Broadcasting…',      done:'Deposit confirmed'},
-  {load:'Submitting intent…', done:'USDC on Optimism · 2 sec ago'},
-  {load:'Locking route…',     done:'Route locked · 1 sec ago'},
-  {load:'Generating proof…',  done:'Proof verified'},
+  {load:'Approve USDC in wallet', done:'Approval confirmed'},
+  {load:'Swapping…',              done:'Swap confirmed'},
+  {load:'Finalising…',            done:'USDT received'},
 ];
 let flowTimers=[];
 function stepEl(i){return document.querySelector('#steps .step[data-step="'+i+'"]');}
@@ -1219,7 +1209,7 @@ if(/[?&]auto/.test(location.search)) play();
      The device already animates its height, so this reads as a gentle zoom
      rather than a jump. */
   const BASE = 393 / 450;      // the card size in the Figma panel
-  const PAD  = 22;             // breathing room inside the gradient box
+  const PAD  = 8;              // breathing room inside the gradient box
   const fit  = h => Math.min(BASE, (SH - PAD*2) / (h || 1));
 
   let curScale = BASE;
@@ -1297,7 +1287,7 @@ if(/[?&]auto/.test(location.search)) play();
   async function segSteps(t){
     setBaseChain(true); hideCursor();
     navTo('s-flow');            // enter() kicks off playFlow + the heatmap loop
-    await sleep(7000);
+    await sleep(4300);          // three steps: 350 + 3*(820+140) + a beat to settle
   }
 
   async function segFunded(t){
