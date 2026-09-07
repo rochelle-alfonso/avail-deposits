@@ -6,6 +6,7 @@
 <title>Avail Trading | Cross-Chain Deposit Infrastructure</title>
 <meta name="description" content="Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.">
 <link rel="icon" href="assets/avail-mark.svg">
+<link rel="preload" as="image" href="assets/hero-bg.webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/hero-visual.webp"
       imagesrcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
       imagesizes="(max-width: 1000px) 100vw, 52vw" fetchpriority="high">
@@ -758,6 +759,7 @@
   }
 
   function enter() {
+    box.classList.add('is-live');          // pulls in the plate artwork
     if (!frame.getAttribute('src')) {
       frame.setAttribute('src', frame.dataset.src);
       frame.addEventListener('load', function () { fit(); if (!still) start(); });

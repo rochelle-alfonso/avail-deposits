@@ -780,6 +780,13 @@ body.menu-open { overflow: hidden; }
   aspect-ratio: 1211 / 581;   /* the artboard panel, unchanged */
   overflow: hidden;
   border-radius: var(--r-sm);
+  /* The plate colour alone until the section is near. As a CSS background the
+     253KB artwork loaded the moment the element rendered — ~5000px below the
+     fold, and competing with the hero for bandwidth. The observer that starts
+     the iframe adds .is-live, which brings it in. */
+  background: #c9d3f7;
+}
+.configurator.is-live {
   background: #c9d3f7 url('flow/config-bg.webp') center / cover no-repeat;
 }
 .configurator__frame {
