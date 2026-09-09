@@ -135,15 +135,23 @@ async def main():
         })
         await asyncio.sleep(.4)
 
-        # the poster is the parked opening frame, grabbed as a real png rather
-        # than pulled out of the jpeg stream
+        # The poster is the parked opening frame as a real png. The screen is
+        # parked mid-entrance, so drop the from-state for the shot and put it
+        # back - otherwise the poster is an empty plate.
+        await evaluate("document.getElementById('vstage')"
+                       ".classList.remove('intro')")
         poster = (await send('Page.captureScreenshot',
                              {'format': 'png'}))['data']
-        await evaluate('window.__startSegment()')
+        await evaluate('window.__armIntro && window.__armIntro()')
+        await asyncio.sleep(.15)
+        # Stamp the trim point BEFORE starting, not after: evaluate() awaits a
+        # CDP round trip, so by the time it returns the opening animation is
+        # already underway and trimming to that instant eats the entrance.
         start_ts = frames[-1][0] if frames else 0
+        await evaluate('window.__startSegment()')
 
         t0 = time.time()
-        while time.time() - t0 < 30:
+        while time.time() - t0 < 120:   # `full` runs ~31s
             if await evaluate('window.__cycle || 0'):
                 break
             await asyncio.sleep(.05)

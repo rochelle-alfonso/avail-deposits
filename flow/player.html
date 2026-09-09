@@ -372,9 +372,14 @@ body{
   background:#c9d3f7;
 }
 #vbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* --introY carries the opening entrance: the whole card (plate and all) starts
+   below the panel and rides up into frame. It has to live on the stage, not on
+   .screen - sliding the screen inside a stationary plate just leaves an empty
+   plate sitting there for the first few frames. */
+#vstage.intro .stage{--introY:600px}
 #vstage .stage{
   position:absolute; left:50%; top:50%;
-  transform:translate(-50%,-50%) scale(var(--devScale));
+  transform:translate(-50%,calc(-50% + var(--introY,0px))) scale(var(--devScale));
   transform-origin:center center;
   transition:transform .44s var(--ease);
   gap:0;
@@ -1211,6 +1216,7 @@ if(/[?&]auto/.test(location.search)) play();
     balance: ['s-resolved','s-picker'],
     steps:   ['s-flow'],
     funded:  ['s-success'],
+    full:    ['s-fund','s-empty','s-typing','s-resolved','s-picker','s-flow','s-success'],
   };
   const ALL = ['s-fund','s-empty','s-typing','s-resolved','s-picker','s-flow','s-success'];
 
@@ -1263,11 +1269,24 @@ if(/[?&]auto/.test(location.search)) play();
     return new Promise(res => {
       const c = cursorEl();
       if(!c || !el){ res(); return; }
+      /* Walk the offset chain instead of measuring rects. The cursor lives
+         inside #device, which sits in a stage that is translated and scaled,
+         and whose own height animates on every screen change - so a rect-based
+         position has to divide a rendered delta back out by a scale that is
+         itself mid-transition, and #device measures 0px tall anyway because
+         its child screens are absolutely positioned. Layout offsets share the
+         cursor's coordinate space exactly, with no scale in the maths. */
       const dev0 = deviceEl();
-      const k = dev0.getBoundingClientRect().width / (dev0.offsetWidth || 450);
-      const dev = deviceEl().getBoundingClientRect(), b = el.getBoundingClientRect();
-      const x = (b.left - dev.left) / k + (atRadio ? 24 : (b.width / k) / 2);
-      const y = (b.top  - dev.top ) / k + (b.height / k) / 2;
+      let x = 0, y = 0;
+      for(let n = el; n && n !== dev0; n = n.offsetParent){
+        x += n.offsetLeft; y += n.offsetTop;
+        const par = n.parentElement;
+        for(let sc = par; sc && sc !== n.offsetParent; sc = sc.parentElement){
+          x -= sc.scrollLeft || 0; y -= sc.scrollTop || 0;
+        }
+      }
+      x += atRadio ? 24 : el.offsetWidth / 2;
+      y += el.offsetHeight / 2;
       c.style.opacity = '1';
       c.style.transition = `opacity .3s ease, transform ${dur}ms cubic-bezier(.5,1.35,.5,1)`;
       c.style.transform = `translate(${x-4}px, ${y-3}px)`;
@@ -1289,7 +1308,7 @@ if(/[?&]auto/.test(location.search)) play();
 
   async function segFunding(t){
     navTo('s-fund'); selectFundRow(null); setBaseChain(false);
-    snapCursor(300, 430); await sleep(900); if(!alive(t)) return;
+    snapCursor(300, 430); await sleep(520); if(!alive(t)) return;
     await tap(q('#s-fund .fund-row'), {atRadio:true}); if(!alive(t)) return;
     selectFundRow(q('#s-fund .fund-row')); await sleep(700); if(!alive(t)) return;
     await tap(q('#fund-continue')); if(!alive(t)) return;
@@ -1299,15 +1318,21 @@ if(/[?&]auto/.test(location.search)) play();
     navTo('s-resolved'); await sleep(2100);
   }
 
+  /* Beats trimmed: the picker used to sit for 1.1s on entry and another 0.9s
+     after the checkbox, and since the only motion in between is a short cursor
+     hop the whole screen read as frozen for ~2s. What is left is mostly cursor
+     travel, so the screen stays alive. */
   async function segBalance(t){
     navTo('s-resolved'); setBaseChain(false);
-    snapCursor(300, 430); await sleep(1000); if(!alive(t)) return;
+    snapCursor(300, 430); await sleep(500); if(!alive(t)) return;
     await tap(q('#go-picker')); if(!alive(t)) return;
-    navTo('s-picker'); await sleep(1100); if(!alive(t)) return;
+    navTo('s-picker'); await sleep(400); if(!alive(t)) return;   // let the rescale settle
     const cb = q('#picker-base-row .cb');
-    if(cb){ await tap(cb); if(!alive(t)) return; setBaseChain(true); await sleep(900); }
+    // faster cursor here than elsewhere: the picker is a tall, busy, static
+    // screen, and a 950ms glide across it does not read as motion at all
+    if(cb){ await tap(cb, {dur: 600}); if(!alive(t)) return; setBaseChain(true); await sleep(300); }
     if(!alive(t)) return;
-    await tap(q('#picker-done')); if(!alive(t)) return;
+    await tap(q('#picker-done'), {dur: 600}); if(!alive(t)) return;
     navTo('s-resolved'); hideCursor(); await sleep(1900);
   }
 
@@ -1323,11 +1348,46 @@ if(/[?&]auto/.test(location.search)) play();
     await sleep(5200);
   }
 
-  const SCRIPTS = { funding: segFunding, balance: segBalance, steps: segSteps, funded: segFunded };
+  /* The four tab clips are cuts of one continuous happy path - `full` is that
+     path, uncut. Each segment sets up its own opening screen, so they chain
+     without any seam handling. */
+  async function segFull(t){
+    await segFunding(t); if(!alive(t)) return;
+    await segBalance(t); if(!alive(t)) return;
+    await segSteps(t);   if(!alive(t)) return;
+    await segFunded(t);
+  }
+
+  const SCRIPTS = { funding: segFunding, balance: segBalance, steps: segSteps,
+                    funded: segFunded, full: segFull };
+
+  /* The opening screen is parked in its from-state at load, so frame 0 of a
+     recording is already the screen sitting below frame - arming it at start
+     time instead would put a settled screen in the first few frames and then
+     snap it away. playIntro() only releases it. */
+  function armIntro(){
+    const vs = document.getElementById('vstage');
+    if(vs) vs.classList.add('intro');
+  }
+  window.__armIntro = armIntro;
+
+  function playIntro(){
+    const vs = document.getElementById('vstage');
+    if(!vs || !vs.classList.contains('intro')) return Promise.resolve();
+    const st = vs.querySelector('.stage');
+    return new Promise(res => {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        st.style.transition = 'transform .8s var(--ease-spring)';
+        vs.classList.remove('intro');
+        demoTimers.push(setTimeout(() => { st.style.transition = ''; res(); }, 860));
+      }));
+    });
+  }
 
   async function loop(){
     const t = ++run;
     while(alive(t)){
+      await playIntro(); if(!alive(t)) break;
       await (SCRIPTS[SEG] || segFunding)(t);
       if(!alive(t)) break;
       window.__cycle = (window.__cycle || 0) + 1;   // recorder watches this
@@ -1338,12 +1398,14 @@ if(/[?&]auto/.test(location.search)) play();
   // Park on the segment's opening screen at load so frame 0 is already correct.
   // Re-entering the same screen on start replays its entrance behaviour
   // (step progression, count-up, confetti) from the top.
-  const FIRST = { funding:'s-fund', balance:'s-resolved', steps:'s-flow', funded:'s-success' };
+  const FIRST = { funding:'s-fund', balance:'s-resolved', steps:'s-flow',
+                  funded:'s-success', full:'s-fund' };
   hideCursor();
-  if(SEG === 'funding'){ selectFundRow(null); setBaseChain(false); }
+  if(SEG === 'funding' || SEG === 'full'){ selectFundRow(null); setBaseChain(false); }
   if(SEG === 'balance'){ setBaseChain(false); }
   if(SEG === 'steps' || SEG === 'funded'){ setBaseChain(true); }
   navTo(FIRST[SEG] || 's-fund');
+  if(P.has('hold')) requestAnimationFrame(armIntro);   // recording: open on the rise
 
   // hold the first frame until the recorder (or the page) says go
   window.__startSegment = () => { window.__cycle = 0; loop(); };
