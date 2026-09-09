@@ -30,8 +30,10 @@ static host as-is.
   Composite artwork (hero collage, chain diagram, widget configurator, CTA
   gradient) is positioned with percentage coordinates taken from the Figma
   frame, so it scales without redrawing.
-* Type: **Delight** (display) self-hosted from the licensed OTFs; **Geist** and
-  **Inter** from Google Fonts — matching the three families in the file.
+* Type: two families only — **Delight** (headings) self-hosted from the
+  licensed OTFs, and **Geist** (everything else) from Google Fonts. The Figma
+  file also used Inter for body copy; that was dropped so the page runs the same
+  two families as availproject.org.
 * Layout constants come from Figma: 1355px content width inside the 1375px
   frame, 72px header/hero gutter, 80px section gutter, and the
   1080 / 1195 / 1211 inner grid widths.
@@ -96,9 +98,9 @@ Everything else (`.trust`, `.flow`, `.fcard`, `.mcard`, `.configure`, `.cta`,
 * The `.frame` wrapper reproduces the 10px band with padding rather than the
   parent's `.page-shell` borders + `.section-gap` divs. Same result; renaming it
   to `.page-shell` would inherit that rule's `max-width: 1440px`.
-* Inter stays on body copy (`.deposit-stats__lede`, `.deposit-ready__body`,
-  `.fcard__text`, `.faq__q`) — it is one of the three families in the Figma
-  file. All *chrome* is Geist, matching the live site.
+* Type is Delight for headings and Geist for everything else, matching the
+  parent. Inter is gone: the Figma file specified it for body copy, but running
+  a third family here and not on the rest of the site was not worth it.
 
 ## Breakpoints
 

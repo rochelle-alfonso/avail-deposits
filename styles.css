@@ -43,7 +43,6 @@
 
   --display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;
   --sans:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-ui:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --r-sm: 4px;
   --r-md: 8px;
@@ -586,7 +585,7 @@ body.menu-open { overflow: hidden; }
 .h2--light { color: #fff; }
 .deposit-stats__lede {
   margin-top: 24px;
-  font-family: var(--font-ui); font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6;
+  font-family: var(--sans); font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6;
   color: var(--dark-text);
 }
 .deposit-stats__grid {
@@ -614,7 +613,7 @@ body.menu-open { overflow: hidden; }
    without this the one taller label pushes its number up out of line with the
    rest of the row. */
 .deposit-stat__label {
-  font-family: var(--font-ui); font-size: 16px; line-height: 24px;
+  font-family: var(--sans); font-size: 16px; line-height: 24px;
   min-height: 48px;
   color: var(--dark-card-text); text-transform: capitalize;
 }
@@ -675,7 +674,7 @@ body.menu-open { overflow: hidden; }
   font-weight: 500; font-size: clamp(20px, 1.8vw, 24.1px); line-height: 32px;
   letter-spacing: -.78px; color: var(--ink-card);
 }
-.fcard__text { margin-top: 14px; font-family: var(--font-ui); font-size: 16px; line-height: 24px; color: var(--card-body); }
+.fcard__text { margin-top: 14px; font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--card-body); }
 
 /* ============================================================
    SECTION: One Flow to a Trading Balance
@@ -857,7 +856,7 @@ body.menu-open { overflow: hidden; }
   width: 100%;
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding: 22px 0; text-align: left;
-  font-family: var(--font-ui); font-weight: 500; font-size: 18px; letter-spacing: -.36px; color: var(--black);
+  font-family: var(--sans); font-weight: 500; font-size: 18px; letter-spacing: -.36px; color: var(--black);
 }
 .faq__icon {
   flex: 0 0 auto;
