@@ -147,7 +147,7 @@ from that single take, so each ends where the next begins.
 | Funding Source | `funding` | funding method → deposit (empty) → typing / routing → resolved | 11.1s |
 | Unified Balance | `balance` | resolved → **Edit** tapped → choose tokens → resolved | 8.8s |
 | Intent Steps | `steps` | in-flight, the four intent steps completing | 5.6s |
-| Funded | `funded` | deposit complete, count-up + confetti | 5.9s |
+| Funded | `funded` | deposit complete, count-up + confetti | 5.2s |
 
 **Plate and strokes.** The surround around the UI (`.device`) is drawn at 65%
 opacity (`?plate=`) so the gradient reads through it instead of the card sitting
@@ -191,7 +191,14 @@ python3 flow/record.py steps         # funding | balance | steps | funded
 ```
 
 It needs `websockets` and `pillow` (Pillow only because this Homebrew ffmpeg has
-no libwebp encoder for the poster). It writes `<seg>.mp4`, `<seg>-sm.mp4` and
+no libwebp encoder for the poster).
+
+Frames come off the screencast as **jpeg**, not png. Per-frame png encoding is
+the bottleneck on the heavier segments — the confetti in `funded` drags png
+capture down to ~17fps, where jpeg holds 30+ and ffmpeg is no longer duplicating
+frames to reach the output rate. h264 at crf 29 sits well below jpeg 95, so the
+extra generation costs nothing visible. The poster is taken separately as a real
+png via `Page.captureScreenshot` before the run starts. It writes `<seg>.mp4`, `<seg>-sm.mp4` and
 `<seg>.webp` into `assets/flow/`, and kills the debug port itself — but if a
 Chrome is already holding 9222, kill it first: attaching to a stale one silently
 gives you the old window's DPR.

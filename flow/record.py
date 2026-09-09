@@ -61,6 +61,7 @@ async def main():
         '--window-position=0,0',
         '--no-first-run', '--no-default-browser-check',
         '--disable-features=Translate,MediaRouter',
+        '--enable-gpu', '--use-angle=metal',
         '--autoplay-policy=no-user-gesture-required',
         '--hide-scrollbars',
         URL,
@@ -129,10 +130,15 @@ async def main():
             return r.get('result', {}).get('value')
 
         await send('Page.startScreencast', {
-            'format': 'png', 'everyNthFrame': 1,
+            'format': 'jpeg', 'quality': 95, 'everyNthFrame': 1,
             'maxWidth': PANEL_W * ZOOM, 'maxHeight': PANEL_H * ZOOM,
         })
         await asyncio.sleep(.4)
+
+        # the poster is the parked opening frame, grabbed as a real png rather
+        # than pulled out of the jpeg stream
+        poster = (await send('Page.captureScreenshot',
+                             {'format': 'png'}))['data']
         await evaluate('window.__startSegment()')
         start_ts = frames[-1][0] if frames else 0
 
@@ -160,14 +166,16 @@ async def main():
     frames = [f for f in frames if f[0] >= start_ts] or frames
     base = frames[0][0]
     for i, (_, data) in enumerate(frames):
-        with open(os.path.join(frames_dir, f'f{i:05d}.png'), 'wb') as fh:
+        with open(os.path.join(frames_dir, f'f{i:05d}.jpg'), 'wb') as fh:
             fh.write(base64.b64decode(data))
+    with open(os.path.join(frames_dir, 'poster.png'), 'wb') as fh:
+        fh.write(base64.b64decode(poster))
     span = frames[-1][0] - base
     listing = []
     for i, (ts, _) in enumerate(frames):
         nxt = frames[i + 1][0] if i + 1 < len(frames) else ts + 1 / FPS
-        listing.append(f"file 'f{i:05d}.png'\nduration {max(nxt - ts, 1/120):.4f}")
-    listing.append(f"file 'f{len(frames)-1:05d}.png'")
+        listing.append(f"file 'f{i:05d}.jpg'\nduration {max(nxt - ts, 1/120):.4f}")
+    listing.append(f"file 'f{len(frames)-1:05d}.jpg'")
     with open(os.path.join(frames_dir, 'list.txt'), 'w') as fh:
         fh.write('\n'.join(listing) + '\n')
 
@@ -195,11 +203,11 @@ async def main():
     encode(os.path.join(OUT, f'{SEG}.mp4'))
     encode(os.path.join(OUT, f'{SEG}-sm.mp4'), 1280)
 
-    # poster: frame 0, so the still under prefers-reduced-motion is the state
-    # the clip opens on rather than its end. Homebrew ffmpeg here has no
-    # libwebp, so Pillow writes it.
+    # poster: the opening frame, so the still under prefers-reduced-motion is
+    # the state the clip starts on rather than its end. Homebrew ffmpeg here
+    # has no libwebp, so Pillow writes it.
     from PIL import Image
-    Image.open(os.path.join(frames_dir, 'f00000.png')).convert('RGB').save(
+    Image.open(os.path.join(frames_dir, 'poster.png')).convert('RGB').save(
         os.path.join(OUT, f'{SEG}.webp'), 'WEBP', quality=82, method=6)
     print('wrote', f'assets/flow/{SEG}.webp')
     shutil.rmtree(frames_dir, ignore_errors=True)
