@@ -230,8 +230,9 @@ body{
 .flow-hero .chainon{font-size:13px;color:var(--muted)}
 
 /* steps */
-.steps{padding:16px;display:flex;flex-direction:column;gap:18px}
-.step{display:flex;align-items:flex-start;gap:12px}
+.steps{display:flex;flex-direction:column}
+.step{display:flex;align-items:flex-start;gap:12px;padding:16px;border-top:1px solid var(--border)}
+.step:first-child{border-top:0}
 .step .st{flex-shrink:0;width:22px;height:22px;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .dot-empty{width:18px;height:18px;border-radius:999px;border:2px solid #d9d9d8}
 .check{width:22px;height:22px;border-radius:999px;background:var(--blue);display:flex;align-items:center;justify-content:center;transform:scale(0);animation:pop .38s var(--ease-spring) forwards}
@@ -241,6 +242,8 @@ body{
 .step .s-sub{font-size:14px;color:var(--muted);line-height:18px}
 .step.done .s-title{color:var(--ink)}
 .step.pending .s-title{color:var(--muted)}
+.step.active .s-title{color:var(--ink);font-weight:600}
+.step.active .s-sub{color:var(--blue)}
 .step .chev{margin-left:auto;color:var(--muted)}
 
 /* success */
@@ -647,7 +650,7 @@ body{
         <div class="steps" id="steps">
           <div class="step pending" data-step="0">
             <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Approve Swaps (1 of 2)</div><div class="s-sub">Waiting</div></div>
+            <div class="body"><div class="s-title">Approve Swaps (1 of 1)</div><div class="s-sub">Waiting</div></div>
             <div class="chev">@chevUp@</div>
           </div>
           <div class="step pending" data-step="1">
@@ -656,7 +659,11 @@ body{
           </div>
           <div class="step pending" data-step="2">
             <div class="st"><span class="dot-empty"></span></div>
-            <div class="body"><div class="s-title">Receive USDT on Ethereum</div><div class="s-sub">Waiting</div></div>
+            <div class="body"><div class="s-title">Receive USDT on Arbitrum</div><div class="s-sub">Waiting</div></div>
+          </div>
+          <div class="step pending" data-step="3">
+            <div class="st"><span class="dot-empty"></span></div>
+            <div class="body"><div class="s-title">Approve Deposit of USDT to Aave</div><div class="s-sub">Waiting</div></div>
           </div>
         </div>
       </div>
@@ -834,29 +841,37 @@ function stopHeat(){ /* video loops on its own; nothing to tear down */ }
 
 /* ---------- in-flight step progression ---------- */
 /* each step's copy for its loading and completed states */
+/* Each step carries its own wording per state: the title reads as an
+   instruction while it is waiting or running and flips to past tense once it
+   lands, and a finished step drops its sub-line entirely. */
 const STEPS=[
-  {load:'Approve USDC in wallet', done:'Approval confirmed'},
-  {load:'Swapping…',              done:'Swap confirmed'},
-  {load:'Finalising…',            done:'USDT received'},
+  {title:'Approve Swaps (1 of 1)',           doneTitle:'Approved Swaps (1 of 1)',        load:'Approve in wallet', done:''},
+  {title:'Swap tokens',                      doneTitle:'Swaps completed',                load:'Swapping…',         done:''},
+  {title:'Receive USDT on Arbitrum',         doneTitle:'Received USDT on Arbitrum',      load:'Finalising…',       done:''},
+  {title:'Approve Deposit of USDT to Aave',  doneTitle:'Deposited USDT to Aave',         load:'Approve in wallet', done:''},
 ];
 let flowTimers=[];
 function stepEl(i){return document.querySelector('#steps .step[data-step="'+i+'"]');}
 function setStep(i,state){
   const el=stepEl(i); if(!el)return;
-  const st=el.querySelector('.st'), sub=el.querySelector('.s-sub');
+  const st=el.querySelector('.st'), sub=el.querySelector('.s-sub'), title=el.querySelector('.s-title');
   if(state==='load'){
-    el.className='step';
+    el.className='step active';
     st.innerHTML='<span class="spin lg"></span>';
+    title.textContent=STEPS[i].title;
     sub.textContent=STEPS[i].load;
   } else if(state==='done'){
     el.className='step done';
     st.innerHTML='<span class="check">'+SVG.tick+'</span>';
+    title.textContent=STEPS[i].doneTitle;
     sub.textContent=STEPS[i].done;
   } else { // wait
     el.className='step pending';
     st.innerHTML='<span class="dot-empty"></span>';
+    title.textContent=STEPS[i].title;
     sub.textContent='Waiting';
   }
+  sub.hidden = !sub.textContent;
 }
 function resetFlow(){
   flowTimers.forEach(clearTimeout);flowTimers=[];
@@ -1287,7 +1302,7 @@ if(/[?&]auto/.test(location.search)) play();
   async function segSteps(t){
     setBaseChain(true); hideCursor();
     navTo('s-flow');            // enter() kicks off playFlow + the heatmap loop
-    await sleep(4300);          // three steps: 350 + 3*(820+140) + a beat to settle
+    await sleep(5300);          // four steps: 350 + 4*(820+140) + a beat to settle
   }
 
   async function segFunded(t){

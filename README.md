@@ -146,7 +146,7 @@ from that single take, so each ends where the next begins.
 |---|---|---|---|
 | Funding Source | `funding` | funding method → deposit (empty) → typing / routing → resolved | 11.1s |
 | Unified Balance | `balance` | resolved → **Edit** tapped → choose tokens → resolved | 8.8s |
-| Intent Steps | `steps` | in-flight, the three intent steps completing | 4.6s |
+| Intent Steps | `steps` | in-flight, the four intent steps completing | 5.6s |
 | Funded | `funded` | deposit complete, count-up + confetti | 5.9s |
 
 **Plate and strokes.** The surround around the UI (`.device`) is drawn at 65%
@@ -183,11 +183,24 @@ Three traps, if you touch the recorder:
 * CDP virtual time is not a way out: `setTimeout` follows it, but CSS
   transitions jump straight to their end state, so the cursor teleports.
 
-**To re-record** after editing the prototype: serve the folder and run the
-recorder for each of `funding` / `balance` / `steps` / `funded` against
-`player.html?seg=<name>&hold=1&sw=821&sh=537&zoom=2`. Kill any Chrome still
-holding the debug port first — attaching to a stale one silently gives you the
-old window's DPR.
+**To re-record** after editing the prototype, `flow/record.py` drives it:
+
+```sh
+python3 -m http.server 8899          # in one shell, from the repo root
+python3 flow/record.py steps         # funding | balance | steps | funded
+```
+
+It needs `websockets` and `pillow` (Pillow only because this Homebrew ffmpeg has
+no libwebp encoder for the poster). It writes `<seg>.mp4`, `<seg>-sm.mp4` and
+`<seg>.webp` into `assets/flow/`, and kills the debug port itself — but if a
+Chrome is already holding 9222, kill it first: attaching to a stale one silently
+gives you the old window's DPR.
+
+It runs **headless** by default, and must. A headful window is clamped to the
+desktop, so a 1642x1074 viewport does not fit a 1512x982 logical display; Chrome
+then scales the emulated viewport down and the screencast captures the scaled
+surface, leaving the plate at ~80% inside a correctly-sized frame. `HEADLESS=0`
+if you want to watch it run, but do not ship what that produces.
 
 ## The Widget Configurator panel
 
