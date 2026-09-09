@@ -15,15 +15,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-deposits">
 <div class="frame">
 
 <!-- ========================= HERO ========================= -->
-<header class="hero">
-  <div class="header">
-    <a class="brand" href="https://www.availproject.org/" aria-label="Avail home">
-      <img class="brand__mark" src="assets/avail-mark.svg" alt="" width="30" height="30">
-      <img class="brand__word" src="assets/avail-wordmark.svg" alt="Avail" width="57" height="21">
+<header class="deposit-hero">
+  <div class="nav-header">
+    <a class="nav-logo" href="https://www.availproject.org/" aria-label="Avail home">
+      <img class="nav-logo__mark" src="assets/avail-mark.svg" alt="" width="48" height="48">
+      <img class="nav-logo__wordmark" src="assets/avail-wordmark.svg" alt="Avail" width="91" height="34">
     </a>
 
     <button class="nav-menu" id="navMenu" type="button"
@@ -34,72 +34,72 @@
 
     <div class="nav-pill">
       <nav class="nav" id="primaryNav" aria-label="Primary">
-        <div class="nav__links">
-          <div class="nav__item">
-            <button class="nav__trigger" type="button" id="trigger-products"
+        <div class="nav-links">
+          <div class="nav-dropdown">
+            <button class="nav-links__trigger" type="button" id="trigger-products"
                     aria-haspopup="true" aria-expanded="false" aria-controls="menu-products">Products</button>
-            <div class="nav__menu nav__menu--products" id="menu-products" role="menu" aria-labelledby="trigger-products">
-              <div class="nav__section">
-                <p class="nav__heading">For Builders</p>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/deposits">Deposits</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/nexus">Nexus</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/da">DA</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/atomic">Atomic</a>
+            <div class="nav-dropdown__menu nav-dropdown__menu--products" id="menu-products" role="menu" aria-labelledby="trigger-products">
+              <div class="nav-dropdown__section">
+                <p class="nav-dropdown__heading">For Builders</p>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/deposits">Deposits</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/nexus">Nexus</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/da">DA</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/atomic">Atomic</a>
               </div>
-              <div class="nav__section">
-                <p class="nav__heading">For Users</p>
-                <a class="nav__mlink" role="menuitem" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
+              <div class="nav-dropdown__section">
+                <p class="nav-dropdown__heading">For Users</p>
+                <a class="nav-dropdown__link" role="menuitem" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
               </div>
             </div>
           </div>
 
-          <div class="nav__item">
-            <button class="nav__trigger" type="button" id="trigger-solutions"
+          <div class="nav-dropdown">
+            <button class="nav-links__trigger" type="button" id="trigger-solutions"
                     aria-haspopup="true" aria-expanded="false" aria-controls="menu-solutions">Solutions</button>
-            <div class="nav__menu" id="menu-solutions" role="menu" aria-labelledby="trigger-solutions">
-              <div class="nav__section">
-                <p class="nav__heading">App Developers</p>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/trading">Trading Platforms</a>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
+            <div class="nav-dropdown__menu" id="menu-solutions" role="menu" aria-labelledby="trigger-solutions">
+              <div class="nav-dropdown__section">
+                <p class="nav-dropdown__heading">App Developers</p>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/trading">Trading Platforms</a>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
               </div>
-              <div class="nav__section">
-                <p class="nav__heading">Blockchain Developers</p>
-                <a class="nav__mlink" role="menuitem" href="https://www.availproject.org/da">Data Availability</a>
+              <div class="nav-dropdown__section">
+                <p class="nav-dropdown__heading">Blockchain Developers</p>
+                <a class="nav-dropdown__link" role="menuitem" href="https://www.availproject.org/da">Data Availability</a>
               </div>
             </div>
           </div>
 
-          <a class="nav__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
-          <a class="nav__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
-          <a class="nav__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
+          <a class="nav-links__item" href="https://www.availproject.org/ecosystem">Ecosystem</a>
+          <a class="nav-links__item" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+          <a class="nav-links__item" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
         </div>
       </nav>
-      <a class="nav__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+      <a class="btn btn-primary nav-header__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
     </div>
   </div>
 
-  <div class="hero__inner">
-    <div class="hero__copy">
-      <h1 class="hero__title">Drive 40% More Deposit Volume</h1>
-      <p class="hero__lede">The simplest way for traders to fund their accounts using multiple tokens across supported chains, all in just a few clicks.</p>
-      <div class="hero__actions">
-        <a class="btn btn--dark" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
-        <a class="btn btn--outline" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
+  <div class="deposit-hero__inner">
+    <div class="deposit-hero__copy">
+      <h1 class="deposit-hero__title">Drive 40% More Deposit Volume</h1>
+      <p class="deposit-hero__lede">The simplest way for traders to fund their accounts using multiple tokens across supported chains, all in just a few clicks.</p>
+      <div class="deposit-hero__actions">
+        <a class="btn btn-primary" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+        <a class="btn btn-secondary" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
       </div>
     </div>
 
-    <div class="hero__visual">
-      <img class="hero__art" src="assets/hero-visual.webp" width="2055" height="1779"
+    <div class="deposit-hero__visual">
+      <img class="deposit-hero__art" src="assets/hero-visual.webp" width="2055" height="1779"
            srcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
            sizes="(max-width: 1000px) 100vw, 52vw"
            fetchpriority="high" decoding="async"
            alt="A trading app with the Deposit USDC modal open, offering wallet, cash, crypto transfer and Hyperliquid funding methods">
-      <div class="hero__rowhint" aria-hidden="true"></div>
-      <div class="hero__radio" aria-hidden="true"></div>
-      <div class="hero__cta" aria-hidden="true"><i></i></div>
-      <div class="hero__cursor" aria-hidden="true">
+      <div class="deposit-hero__rowhint" aria-hidden="true"></div>
+      <div class="deposit-hero__radio" aria-hidden="true"></div>
+      <div class="deposit-hero__cta" aria-hidden="true"><i></i></div>
+      <div class="deposit-hero__cursor" aria-hidden="true">
         <svg viewBox="0 0 16 20" width="100%" height="100%" focusable="false">
           <path d="M1.2 .8 L1.2 16.4 L5.3 12.7 L7.9 18.2 L10.4 17 L7.8 11.7 L13 11.7 Z"
                 fill="#101a33" stroke="#101a33" stroke-width=".7" stroke-linejoin="round"/>
@@ -138,25 +138,25 @@
 <main>
 
 <!-- ================= Fast Cross-Chain Deposits ================= -->
-<section class="stats">
+<section class="deposit-stats">
   <div class="container">
-    <div class="stats__head">
+    <div class="deposit-stats__head">
       <h2 class="h2 h2--light">Fast Cross-Chain Deposits</h2>
-      <p class="stats__lede">Deposit infrastructure that gets users funded and ready to trade.</p>
+      <p class="deposit-stats__lede">Deposit infrastructure that gets users funded and ready to trade.</p>
     </div>
 
-    <div class="stats__grid">
-      <div class="stat"><div class="stat__value">&lt;20s</div><div class="stat__label">Deposit Confirmation</div></div>
-      <div class="stat"><div class="stat__value">40%</div><div class="stat__label">increase in deposit volume</div></div>
-      <div class="stat"><div class="stat__value">99.9%</div><div class="stat__label">Uptime SLA</div></div>
-      <div class="stat"><div class="stat__value">&lt;4s</div><div class="stat__label">quote Generation<br>from 100+ routes</div></div>
+    <div class="deposit-stats__grid">
+      <div class="deposit-stat"><div class="deposit-stat__value">&lt;20s</div><div class="deposit-stat__label">Deposit Confirmation</div></div>
+      <div class="deposit-stat"><div class="deposit-stat__value">40%</div><div class="deposit-stat__label">increase in deposit volume</div></div>
+      <div class="deposit-stat"><div class="deposit-stat__value">99.9%</div><div class="deposit-stat__label">Uptime SLA</div></div>
+      <div class="deposit-stat"><div class="deposit-stat__value">&lt;4s</div><div class="deposit-stat__label">quote Generation<br>from 100+ routes</div></div>
     </div>
   </div>
 
-  <div class="ready">
+  <div class="deposit-ready">
     <div>
-      <h2 class="ready__title">Ready to Trade.<br>Not Ready to Deposit.</h2>
-      <div class="ready__body">
+      <h2 class="deposit-ready__title">Ready to Trade.<br>Not Ready to Deposit.</h2>
+      <div class="deposit-ready__body">
         <p>A trader can arrive with funds spread across different chains and tokens, while your platform accepts one collateral asset on one destination chain.</p>
         <p>When traders leave your app to bridge, swap or find gas, every handoff creates another chance for the deposit to be delayed, reduced or abandoned.</p>
       </div>
@@ -307,8 +307,8 @@
       <p class="configure__lede">Choose the destination chain and asset, define source coverage, match your design system, then copy the generated code and paste it into your frontend to integrate immediately.</p>
     </div>
     <div class="configure__actions">
-      <a class="btn btn--light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Try Interactive Demo</a>
-      <a class="btn btn--ghost-l" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+      <a class="btn btn-light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Try Interactive Demo</a>
+      <a class="btn btn-ghost" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
     </div>
   </div>
 
@@ -331,8 +331,8 @@
         <p class="cta__text">Configure the deposit experience around your destination chain, collateral asset and user funding preferences.</p>
       </div>
       <div class="cta__actions">
-        <a class="btn btn--light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Get Started</a>
-        <a class="btn btn--ghost-l" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Talk to Sales</a>
+        <a class="btn btn-light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Get Started</a>
+        <a class="btn btn-ghost" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Talk to Sales</a>
       </div>
     </div>
   </div>
@@ -383,78 +383,78 @@
 </main>
 
 <!-- ========================= FOOTER ========================= -->
-<footer class="footer">
-  <div class="footer__top">
-    <div class="footer__pitch">
-      <h2 class="footer__title">Have questions?</h2>
-      <p class="footer__text">Let's talk about how Avail can help your app grow beyond one chain.</p>
-      <a class="btn footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule A Demo</a>
-      <p class="footer__copy">Copyright &copy; Avail Project. All rights reserved.</p>
+<footer class="site-footer">
+  <div class="site-footer__top">
+    <div class="site-footer__cta">
+      <h2 class="site-footer__headline">Have questions?</h2>
+      <p class="site-footer__subcopy">Let's talk about how Avail can help your app grow beyond one chain.</p>
+      <a class="btn btn-primary site-footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule A Demo</a>
+      <p class="site-footer__copyright">Copyright &copy; Avail Project. All rights reserved.</p>
     </div>
 
-    <nav class="footer__nav" aria-label="Footer">
-      <div class="footer__col footer__col--pages">
-        <h3>Pages</h3>
-        <ul>
-          <li><a href="https://www.availproject.org/">Home</a></li>
-          <li><a href="https://www.availproject.org/about">About Us</a></li>
-          <li><a href="https://www.availproject.org/nexus">Nexus</a></li>
-          <li><a href="https://www.availproject.org/da">DA</a></li>
-          <li><a href="https://www.availproject.org/deposits">Deposits</a></li>
-          <li><a href="https://www.availproject.org/atomic">Atomic</a></li>
-          <li><a href="https://www.availproject.org/token">Token</a></li>
-          <li><a href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a></li>
-          <li><a href="https://www.availproject.org/ecosystem">Ecosystem</a></li>
-          <li><a href="https://www.availproject.org/events">Events</a></li>
-          <li><a href="https://www.availproject.org/terms">T&amp;C</a></li>
-          <li><a href="https://www.availproject.org/whitepaper">Whitepaper</a></li>
-          <li><a href="https://avail.keka.com/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
-          <li><a href="https://www.availproject.org/brand">Brand Assets</a></li>
+    <nav class="site-footer__nav" aria-label="Footer">
+      <div class="site-footer__nav-group site-footer__nav-group--pages">
+        <h3 class="site-footer__nav-heading">Pages</h3>
+        <ul class="site-footer__nav-list site-footer__nav-list--pages">
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/">Home</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/about">About Us</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Nexus</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">DA</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/deposits">Deposits</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/atomic">Atomic</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/token">Token</a></li>
+          <li><a class="site-footer__nav-link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/ecosystem">Ecosystem</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/events">Events</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/terms">T&amp;C</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/whitepaper">Whitepaper</a></li>
+          <li><a class="site-footer__nav-link" href="https://avail.keka.com/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/brand">Brand Assets</a></li>
         </ul>
       </div>
 
-      <div class="footer__col">
-        <h3>Solutions</h3>
-        <ul>
-          <li><a href="https://www.availproject.org/prediction-markets">Prediction Markets</a></li>
-          <li><a href="https://www.availproject.org/trading">Trading Platforms</a></li>
-          <li><a href="https://www.availproject.org/nexus">Multi-Chain Solutions</a></li>
-          <li><a href="https://www.availproject.org/da">Data Availability</a></li>
+      <div class="site-footer__nav-group">
+        <h3 class="site-footer__nav-heading">Solutions</h3>
+        <ul class="site-footer__nav-list">
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/prediction-markets">Prediction Markets</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/trading">Trading Platforms</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">Data Availability</a></li>
         </ul>
       </div>
 
-      <div class="footer__col">
-        <h3>Support</h3>
-        <ul>
-          <li><a href="https://www.availproject.org/contact">Contact Us</a></li>
-          <li><a href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a></li>
-          <li><a href="https://discord.com/invite/AvailProject" target="_blank" rel="noopener noreferrer">Discord</a></li>
-          <li><a href="https://github.com/availproject" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      <div class="site-footer__nav-group">
+        <h3 class="site-footer__nav-heading">Support</h3>
+        <ul class="site-footer__nav-list">
+          <li><a class="site-footer__nav-link" href="https://www.availproject.org/contact">Contact Us</a></li>
+          <li><a class="site-footer__nav-link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a></li>
+          <li><a class="site-footer__nav-link" href="https://discord.com/invite/AvailProject" target="_blank" rel="noopener noreferrer">Discord</a></li>
+          <li><a class="site-footer__nav-link" href="https://github.com/availproject" target="_blank" rel="noopener noreferrer">GitHub</a></li>
         </ul>
       </div>
 
-      <div class="footer__col">
-        <h3>Socials</h3>
-        <ul>
-          <li><a href="https://x.com/AvailProject" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-          <li><a href="https://www.linkedin.com/company/availproject/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a href="https://t.me/AvailCommunity" target="_blank" rel="noopener noreferrer">Telegram</a></li>
-          <li><a href="https://www.youtube.com/@AvailProject" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+      <div class="site-footer__nav-group">
+        <h3 class="site-footer__nav-heading">Socials</h3>
+        <ul class="site-footer__nav-list">
+          <li><a class="site-footer__nav-link" href="https://x.com/AvailProject" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.linkedin.com/company/availproject/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="site-footer__nav-link" href="https://t.me/AvailCommunity" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.youtube.com/@AvailProject" target="_blank" rel="noopener noreferrer">YouTube</a></li>
         </ul>
       </div>
 
-      <div class="footer__col">
-        <h3>Labs</h3>
-        <ul>
-          <li><a href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a></li>
-          <li><a href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a></li>
+      <div class="site-footer__nav-group">
+        <h3 class="site-footer__nav-heading">Labs</h3>
+        <ul class="site-footer__nav-list">
+          <li><a class="site-footer__nav-link" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a></li>
+          <li><a class="site-footer__nav-link" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a></li>
         </ul>
       </div>
     </nav>
   </div>
 
-  <div class="footer__mark">
-    <img src="assets/footer-wordmark.webp" alt="" loading="lazy">
+  <div class="site-footer__logo">
+    <img class="site-footer__logo-img" src="assets/footer-wordmark.webp" alt="" loading="lazy">
   </div>
 </footer>
 
@@ -490,7 +490,7 @@
     <a class="mobile-menu__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
     <a class="mobile-menu__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
     <a class="mobile-menu__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
-    <a class="btn mobile-menu__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+    <a class="btn btn-primary mobile-menu__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
   </nav>
 </div>
 
@@ -506,7 +506,7 @@
   if (!toggle || !menu) return;
 
   function position() {
-    var header = document.querySelector('.header');
+    var header = document.querySelector('.nav-header');
     if (!header) return;
     menu.style.setProperty('--mobile-menu-top',
       (header.getBoundingClientRect().bottom + window.scrollY) + 'px');
@@ -551,8 +551,8 @@
 // Desktop dropdowns open on hover and focus in CSS. The only thing left for
 // script is keeping aria-expanded honest about what is actually on screen.
 (function () {
-  Array.prototype.forEach.call(document.querySelectorAll('.nav__item'), function (item) {
-    var trigger = item.querySelector('.nav__trigger');
+  Array.prototype.forEach.call(document.querySelectorAll('.nav-dropdown'), function (item) {
+    var trigger = item.querySelector('.nav-links__trigger');
     if (!trigger) return;
     function sync(open) { trigger.setAttribute('aria-expanded', String(open)); }
     item.addEventListener('pointerenter', function () { sync(true); });

@@ -17,13 +17,13 @@
 
 /* ---------- Tokens ---------- */
 :root {
-  --ink:            #141413;
+  --black:            #141413;
   --ink-card:       #141415;
   --ink-strong:     #151514;
   --text-lg:        #6b6b6a;   /* 20px hero paragraph */
   --text-md:        #565654;   /* 18/15px body */
   --text-muted:     #858585;   /* footer links */
-  --text-nav:       #858582;
+  --nav-link:       #858582;
   --card-body:      rgba(20, 20, 21, .7);
 
   --dark-bg:        #121212;
@@ -31,15 +31,18 @@
   --dark-text:      #9c9c9c;
   --dark-card-text: rgba(255, 255, 255, .7);
 
-  --surface:        #ffffff;
-  --surface-alt:    #f0f0ef;
+  --white:        #fffffe;   /* parent's --white */
+  --heading:      #161615;   /* parent's --heading */
+  --btn-dark:     #202224;   /* parent's --btn-dark */
+  --btn-dark-text:#f7f7f7;
+  --grey:    #f0f0ef;
   --surface-tab:    #f5f5f5;
   --icon-tile:      #f7fbff;
   --frame:          #ebebeb;
   --border:         #f0f0ef;
 
-  --font-display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;
-  --font-body:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;
+  --sans:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-ui:      'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --r-sm: 4px;
@@ -51,13 +54,13 @@
      max-width below is expressed as a fraction of it, so the whole
      composition scales instead of just gaining empty gutters. */
   --page:   1355px;
-  --band:   10px;                            /* Figma frame inset */
-  --gutter: 72px;                            /* fixed, as on availproject.org */
-  --pad:    80px;
+  --section-frame:   10px;                            /* Figma frame inset */
+  --content-inset: 72px;                            /* fixed, as on availproject.org */
+  --gutter:    80px;
 }
 
 @media (min-width: 1201px) {
-  :root { --page: clamp(1355px, calc(100vw - 2 * var(--band)), 1760px); }
+  :root { --page: clamp(1355px, calc(100vw - 2 * var(--section-frame)), 1760px); }
 }
 
 /* ---------- Reset ---------- */
@@ -65,9 +68,9 @@
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: var(--surface);
-  color: var(--ink);
-  font-family: var(--font-body);
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
   overflow-x: hidden;
 }
 img { display: block; max-width: 100%; }
@@ -81,40 +84,50 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Figma insets the body by 10px on the top/left/right and puts a 10px gap
    between section blocks; the frame colour shows through those gaps. */
 .frame {
-  background: var(--surface-alt);
-  padding: var(--band) var(--band) 0;
+  background: var(--grey);
+  padding: var(--section-frame) var(--section-frame) 0;
 }
-.frame > .hero { margin-bottom: var(--band); }
+.frame > .deposit-hero { margin-bottom: var(--section-frame); }
 .frame > main {
   display: flex; flex-direction: column;
-  gap: var(--band);
+  gap: var(--section-frame);
 }
 /* the footer butts directly against the last section — no gap in Figma */
 
-.container { max-width: var(--page); margin-inline: auto; padding-inline: var(--pad); }
-.container--wide { padding-inline: var(--gutter); }
+.container { max-width: var(--page); margin-inline: auto; padding-inline: var(--gutter); }
+.container--wide { padding-inline: var(--content-inset); }
 
-/* ---------- Buttons ---------- */
+/* ---------- Buttons ----------
+   .btn / .btn-primary / .btn-secondary are the parent site's rules verbatim
+   (common.css "deposit-base" block): 60px tall, square, Geist 500 16px. They
+   are duplicated here only so this folder stands alone — DELETE this pair on
+   merge and let common.css supply them.
+   .btn-light / .btn-ghost are page-local: the parent has no on-dark variants,
+   it re-tints .btn-secondary by context instead. */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 52px; padding-inline: 30px;
-  border-radius: var(--r-sm);
-  font-family: var(--font-ui); font-weight: 500; font-size: 16px; line-height: 16px;
+  height: 60px; padding: 0 30px;
+  font-family: var(--sans); font-weight: 500; font-size: 16px; line-height: 1;
   text-align: center; white-space: nowrap;
-  transition: opacity .18s ease, background-color .18s ease, color .18s ease;
+  transition: opacity .2s ease, background .2s ease, color .2s ease;
 }
-.btn:hover { opacity: .85; }
-.btn--dark    { background: var(--ink); color: #f7f7f7; }
-.btn--outline { background: #fff; color: var(--ink); border: 1.818px solid var(--ink); text-transform: capitalize; }
-.btn--light   { background: #fff; color: var(--dark-bg); }
-.btn--ghost-l { background: var(--dark-bg); color: #fff; border: 1.818px solid #fff; text-transform: capitalize; }
+.btn-primary { background: var(--btn-dark); color: var(--btn-dark-text); }
+.btn-primary:hover { opacity: .88; }
+.btn-secondary {
+  background: transparent; color: var(--btn-dark);
+  border: 2px solid var(--btn-dark);
+}
+.btn-secondary:hover { background: var(--btn-dark); color: var(--btn-dark-text); }
+.btn-light   { background: #fff; color: var(--dark-bg); }
+.btn-ghost   { background: var(--dark-bg); color: #fff; border: 2px solid #fff; text-transform: capitalize; }
+.btn-light:hover, .btn-ghost:hover { opacity: .88; }
 
 /* ============================================================
    HERO
    ============================================================ */
-.hero {
+.deposit-hero {
   position: relative;
-  background: var(--surface);
+  background: var(--white);
   overflow: hidden;
 }
 /* Blue pixel-grid backdrop (4941x2520), mirrored from the supplied art. Not a
@@ -122,7 +135,7 @@ ul { margin: 0; padding: 0; list-style: none; }
    so it is placed once and anchored right, letting the crop come off the sparse
    left side. No opacity here: the PNG already
    carries a flat alpha of 64/255, so the 25% wash is baked into the file. */
-.hero::before {
+.deposit-hero::before {
   content: '';
   position: absolute; inset: 0;
   background-image: url('assets/hero-bg.webp');
@@ -131,69 +144,72 @@ ul { margin: 0; padding: 0; list-style: none; }
   background-repeat: no-repeat;
   pointer-events: none;
 }
-.hero > * { position: relative; z-index: 1; }
+.deposit-hero > * { position: relative; z-index: 1; }
 
 /* ---- Header ----------------------------------------------------------
    Nav interactions mirror availproject.org: the dropdowns open on hover and
    focus with no JS, an invisible bridge keeps the 10px gap hoverable, and
    :has() closes any sibling that is no longer the one being pointed at. */
-.header {
+.nav-header {
   display: flex; align-items: center; justify-content: space-between;
+  gap: 24px;
   max-width: var(--page); margin-inline: auto;
-  padding: 40px var(--gutter);
+  padding: 40px var(--content-inset);
   position: relative; z-index: 50;
 }
-.brand { display: flex; align-items: center; gap: 4px; }
-.brand__mark { width: 30px; height: 30px; }
-.brand__word { width: 57px; height: 21px; }
+/* logo runs at the parent's size: 48px mark + 91x34 wordmark on a 48px row */
+.nav-logo { display: inline-flex; align-items: center; gap: 6px; height: 48px; flex-shrink: 0; }
+.nav-logo__mark { width: 48px; height: 48px; flex-shrink: 0; }
+.nav-logo__wordmark { width: 91px; height: 34px; flex-shrink: 0; }
 
 /* the pill holds the links and the CTA, as on the live nav */
 .nav-pill {
   display: flex; align-items: center; gap: 16px;
   flex-shrink: 0;
-  background: var(--surface-alt);
+  background: var(--grey);
   padding: 8px; border-radius: var(--r-sm);
   overflow: visible;
+  --nav-pill-height: 62px;   /* the anchor nav.css measures its dropdowns from */
 }
 .nav { display: flex; align-items: center; align-self: stretch; overflow: visible; }
-.nav__links { display: flex; align-items: center; align-self: stretch; gap: 16px; }
+.nav-links { display: flex; align-items: center; align-self: stretch; gap: 16px; }
 
 /* triggers and plain links share one resting/hover treatment: colour only */
-.nav__link,
-.nav__trigger {
+.nav-links__item,
+.nav-links__trigger {
   padding: 8px 14px; border-radius: var(--r-sm);
   font-family: inherit; font-weight: 600; font-size: 14px; line-height: normal;
-  color: var(--text-nav);
+  color: var(--nav-link);
   transition: color .2s ease;
 }
-.nav__trigger { background: none; border: 0; cursor: pointer; }
-.nav__link:hover,
-.nav__trigger:hover,
-.nav__item:hover .nav__trigger,
-.nav__item:focus-within .nav__trigger { color: var(--ink); }
+.nav-links__trigger { background: none; border: 0; cursor: pointer; }
+.nav-links__item:hover,
+.nav-links__trigger:hover,
+.nav-dropdown:hover .nav-links__trigger,
+.nav-dropdown:focus-within .nav-links__trigger { color: var(--black); }
 
-.nav__item { position: relative; display: flex; align-items: center; align-self: stretch; }
+.nav-dropdown { position: relative; display: flex; align-items: center; align-self: stretch; }
 
 /* invisible bridge across the gap, so travelling into the menu keeps it open */
-.nav__item::after {
+.nav-dropdown::after {
   content: '';
   position: absolute; left: 0; top: 100%;
   min-width: 248px; height: 18px;
   z-index: 99;
   pointer-events: none;
 }
-.nav__item:hover::after,
-.nav__item:focus-within::after { pointer-events: auto; }
+.nav-dropdown:hover::after,
+.nav-dropdown:focus-within::after { pointer-events: auto; }
 
-.nav__menu {
+.nav-dropdown__menu {
   position: absolute;
   /* 10px under the pill, not under the trigger: 100% is the stretched item,
      plus the pill's own 8px bottom padding */
-  top: calc(100% + 18px);
+  top: calc((var(--nav-pill-height, 62px) + 100%) / 2 + 10px);
   left: 0;
   min-width: 248px;
   padding: 16px 20px;
-  background: var(--surface-alt);
+  background: var(--grey);
   border-radius: var(--r-sm);
   box-shadow: 0 4px 16px rgba(0, 0, 0, .06);
   z-index: 100;
@@ -203,66 +219,68 @@ ul { margin: 0; padding: 0; list-style: none; }
   pointer-events: none;
 }
 /* keeps the gap itself hoverable once the menu is open */
-.nav__menu::before {
+.nav-dropdown__menu::before {
   content: '';
   position: absolute; left: 0; right: 0; top: -18px; height: 18px;
 }
-.nav__item:hover .nav__menu,
-.nav__item:focus-within .nav__menu {
+.nav-dropdown:hover .nav-dropdown__menu,
+.nav-dropdown:focus-within .nav-dropdown__menu {
   opacity: 1; visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
 }
 /* only one open at a time */
-.nav__links:has(.nav__item:hover) .nav__item:not(:hover) .nav__menu,
-.nav__links:has(.nav__item:focus-within) .nav__item:not(:focus-within) .nav__menu {
+.nav-links:has(.nav-dropdown:hover) .nav-dropdown:not(:hover) .nav-dropdown__menu,
+.nav-links:has(.nav-dropdown:focus-within) .nav-dropdown:not(:focus-within) .nav-dropdown__menu {
   opacity: 0; visibility: hidden;
   transform: translateY(-4px);
   pointer-events: none;
 }
-.nav__links:has(.nav__item:hover) .nav__item:not(:hover)::after,
-.nav__links:has(.nav__item:focus-within) .nav__item:not(:focus-within)::after {
+.nav-links:has(.nav-dropdown:hover) .nav-dropdown:not(:hover)::after,
+.nav-links:has(.nav-dropdown:focus-within) .nav-dropdown:not(:focus-within)::after {
   pointer-events: none;
 }
 
-.nav__menu--products { padding-block: 12px; }
-.nav__menu--products .nav__mlink { padding: 8px 0; }
+.nav-dropdown__menu--products { padding-block: 12px; }
+.nav-dropdown__menu--products .nav-dropdown__link { padding: 8px 0; }
 
-.nav__section + .nav__section {
+.nav-dropdown__section + .nav-dropdown__section {
   margin-top: 12px; padding-top: 12px;
   border-top: 1px solid rgba(20, 20, 19, .08);
 }
-.nav__heading {
+.nav-dropdown__heading {
   margin: 0 0 4px;
-  font-family: var(--font-ui);
+  font-family: var(--sans);
   font-size: 11px; font-weight: 600;
   letter-spacing: .08em; text-transform: uppercase;
   color: #888888;
 }
 /* menu links run the hover the other way: black at rest, grey on hover */
-.nav__mlink {
+.nav-dropdown__link {
   display: block; padding: 6px 0;
-  font-family: var(--font-ui); font-size: 14px; line-height: normal;
-  color: var(--ink); white-space: nowrap;
+  font-family: var(--sans); font-size: 14px; line-height: normal;
+  color: var(--black); white-space: nowrap;
   transition: color .2s ease;
 }
-.nav__mlink:hover { color: var(--text-nav); }
+.nav-dropdown__link:hover { color: var(--nav-link); }
 
-.nav__cta {
-  background: var(--ink); color: #fff;
-  padding: 14px 22px; border-radius: var(--r-sm);
-  font-family: var(--font-ui); font-weight: 500; font-size: 15px; line-height: 15px;
-  white-space: nowrap; flex-shrink: 0;
-  transition: opacity .18s ease;
+/* matches nav.css's `.landing__container .nav-header__cta` override: the pill
+   CTA is shorter and rounder than a page .btn, and it is set in Geist. */
+.nav-header__cta {
+  height: auto; padding: 14px 22px;
+  border-radius: var(--r-sm);
+  background: var(--black); color: var(--white);
+  font-size: 15px; line-height: 15px;
+  flex-shrink: 0;
 }
-.nav__cta:hover { opacity: .85; }
+.nav-header__cta:hover { opacity: .85; }
 
 /* ---- Menu button + slide-in panel (mobile) ---- */
 .nav-menu {
   display: none; align-items: center; gap: 8px;
   padding: 8px 12px; border-radius: var(--r-sm);
-  font-family: var(--font-ui); font-size: 14px; line-height: normal;
-  color: var(--ink);
+  font-family: var(--sans); font-size: 14px; line-height: normal;
+  color: var(--black);
   background: rgba(255, 255, 255, .85);
   backdrop-filter: blur(4px);
   border: 0; cursor: pointer;
@@ -316,14 +334,14 @@ ul { margin: 0; padding: 0; list-style: none; }
   display: flex; align-items: center; justify-content: center;
   width: 56px; height: 56px; padding: 0;
   background: transparent; border: 0; cursor: pointer;
-  font-size: 48px; line-height: 1; color: var(--ink);
+  font-size: 48px; line-height: 1; color: var(--black);
 }
 .mobile-menu__close::before { content: '\00d7'; }
 
 .mobile-menu__link {
   display: block; padding: 16px 0;
-  font-family: var(--font-ui); font-size: 16px; line-height: 1.3;
-  color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.3;
+  color: var(--black);
   border-bottom: 1px solid var(--border);
 }
 .mobile-menu__details { border-bottom: 1px solid var(--border); }
@@ -345,7 +363,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .mobile-menu__sub { padding: 0 0 12px 16px; }
 .mobile-menu__heading {
   margin: 8px 0 4px;
-  font-family: var(--font-ui);
+  font-family: var(--sans);
   font-size: 11px; font-weight: 600;
   letter-spacing: .08em; text-transform: uppercase;
   color: #888888;
@@ -355,55 +373,56 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .mobile-menu__sublink {
   display: block; padding: 10px 0;
-  font-family: var(--font-ui); font-size: 16px; line-height: 1.3;
-  color: var(--ink);
+  font-family: var(--sans); font-size: 16px; line-height: 1.3;
+  color: var(--black);
 }
 .mobile-menu__cta {
   margin-top: 24px; width: 100%;
-  background: var(--ink); color: #fff;
-  padding: 14px 22px; border-radius: var(--r-sm);
-  font-family: var(--font-ui); font-weight: 500; font-size: 15px;
+  height: auto; padding: 14px 22px;
+  background: var(--black); color: var(--white);
+  border-radius: var(--r-sm);
+  font-size: 15px;
   text-align: center;
 }
 body.menu-open { overflow: hidden; }
 
 /* ---- Hero body ---- */
-.hero__inner {
+.deposit-hero__inner {
   overflow: hidden;             /* clips the visual at the frame edge, as in Figma */
   display: grid;
   grid-template-columns: minmax(0, 547fr) minmax(0, 685fr);
   align-items: center;
   column-gap: 3.975%;           /* 51px across the 1283px content box */
   max-width: var(--page); margin-inline: auto;
-  padding: 0 0 0 var(--gutter);
+  padding: 0 0 0 var(--content-inset);
   min-height: 573px;
 }
-.hero__copy { padding-block: 40px; }
-.hero__title {
-  font-family: var(--font-display); font-weight: 500;
+.deposit-hero__copy { padding-block: 40px; }
+.deposit-hero__title {
+  font-family: var(--display); font-weight: 500;
   font-size: clamp(34px, 4.723vw, 74px);
   line-height: 1.2; letter-spacing: -1.68px;
-  text-transform: capitalize; color: var(--ink);
+  text-transform: capitalize; color: var(--black);
 }
 /* The headline wraps to two lines by design; the old one-line rule was for
    the shorter "Multichain Deposits" and would now overflow the column. */
 
-.hero__lede {
+.deposit-hero__lede {
   margin-top: 24px;
   font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6; color: var(--text-lg);
 }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 56px; }
-.hero__actions .btn--dark { width: 152px; }
+.deposit-hero__actions { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 56px; }
+.deposit-hero__actions .btn-primary { width: 152px; }
 
 /* ---- Hero visual (single Figma export, base box 685×593) ---- */
-.hero__visual {
+.deposit-hero__visual {
   position: relative;
   container-type: inline-size;
   aspect-ratio: 685 / 593;
   justify-self: end;
   width: 100%;
 }
-.hero__art {
+.deposit-hero__art {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
@@ -417,13 +436,13 @@ body.menu-open { overflow: hidden; }
    y 891 / 1051 / 1207 (row centres 45.90 / 54.64 / 63.52 / 72.26%), each radio
    is 40px across centred on x 348.5, and the Continue button is
    x 291-1214, y 1401-1516. Each row holds ~1.55s, travel takes ~0.45s. */
-.hero__rowhint,
-.hero__radio,
-.hero__cta,
-.hero__cursor { position: absolute; pointer-events: none; }
+.deposit-hero__rowhint,
+.deposit-hero__radio,
+.deposit-hero__cta,
+.deposit-hero__cursor { position: absolute; pointer-events: none; }
 
 /* the row tint — the modal's own blue at low alpha, not a neutral grey */
-.hero__rowhint {
+.deposit-hero__rowhint {
   left: 14.16%; width: 44.92%; height: 8.55%;
   top: 41.63%;
   border-radius: 1.1cqw;
@@ -435,7 +454,7 @@ body.menu-open { overflow: hidden; }
 
 /* the radio filling in on the hovered row: solid blue disc, white centre punched
    out with a radial-gradient, soft halo via box-shadow */
-.hero__radio {
+.deposit-hero__radio {
   left: 15.99%; top: 44.78%;
   width: 1.947cqw; height: 1.947cqw;
   border-radius: 50%;
@@ -448,13 +467,13 @@ body.menu-open { overflow: hidden; }
 
 /* CTA sheen: a skewed white band clipped to the button's box and swept across
    once per loop, while the pointer is resting on the last row */
-.hero__cta {
+.deposit-hero__cta {
   left: 14.16%; top: 78.75%; width: 44.92%; height: 6.47%;
   border-radius: 1.17cqw;
   overflow: hidden;
   background: linear-gradient(100deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, 0) 55%);
 }
-.hero__cta i {
+.deposit-hero__cta i {
   position: absolute; inset: -20% auto; left: 0;
   width: 34%;
   background: linear-gradient(90deg,
@@ -463,7 +482,7 @@ body.menu-open { overflow: hidden; }
   animation: hero-cta-sweep 8s infinite linear;
 }
 
-.hero__cursor {
+.deposit-hero__cursor {
   left: 17.2%; top: 46.60%;
   width: 1.55cqw;
   filter: drop-shadow(0 .16cqw .26cqw rgba(16, 26, 51, .3));
@@ -511,12 +530,12 @@ body.menu-open { overflow: hidden; }
   95%, 100%  { transform: translateX(440%)  skewX(-18deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__rowhint, .hero__radio, .hero__cursor, .hero__cta i { animation: none; }
-  .hero__cursor, .hero__cta i { display: none; }
+  .deposit-hero__rowhint, .deposit-hero__radio, .deposit-hero__cursor, .deposit-hero__cta i { animation: none; }
+  .deposit-hero__cursor, .deposit-hero__cta i { display: none; }
 }
 
 /* ---- Logo marquee (chains + teams) ---- */
-/* Every logo is drawn in --ink: the chain slices and Crest are recoloured at the
+/* Every logo is drawn in --black: the chain slices and Crest are recoloured at the
    source (Arbitrum keeps its white knock-out slashes, so the mark stays legible),
    the four raster team logos have their RGB flattened to the same value with the
    alpha channel left alone. */
@@ -557,25 +576,25 @@ body.menu-open { overflow: hidden; }
 /* ============================================================
    SECTION: Deposit stats (dark)
    ============================================================ */
-.stats { background: var(--dark-bg); color: #fff; padding: 96px 0 100px; }
-.stats__head { max-width: calc(var(--page) * 0.89225); margin-inline: auto; text-align: center; }  /* 1209px */
+.deposit-stats { background: var(--dark-bg); color: #fff; padding: 96px 0 100px; }
+.deposit-stats__head { max-width: calc(var(--page) * 0.89225); margin-inline: auto; text-align: center; }  /* 1209px */
 .h2 {
-  font-family: var(--font-display); font-weight: 400;
+  font-family: var(--display); font-weight: 400;
   font-size: clamp(30px, 3.542vw, 55px);
   line-height: 1.05; letter-spacing: -.06px;
 }
 .h2--light { color: #fff; }
-.stats__lede {
+.deposit-stats__lede {
   margin-top: 24px;
   font-family: var(--font-ui); font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6;
   color: var(--dark-text);
 }
-.stats__grid {
+.deposit-stats__grid {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 23px; justify-content: center;
   max-width: calc(var(--page) * 0.80664); margin: 64px auto 0;   /* 1093px */
 }
-.stat {
+.deposit-stat {
   position: relative; overflow: hidden;
   background: var(--dark-card); border-radius: var(--r-md);
   min-height: 153px;
@@ -583,34 +602,34 @@ body.menu-open { overflow: hidden; }
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
   text-align: center;
 }
-.stat::before {
+.deposit-stat::before {
   content: '';
   position: absolute; inset: 0;
   background: url('assets/stat-noise.webp') center / cover no-repeat;
   opacity: .3; pointer-events: none;
 }
-.stat > * { position: relative; }
-.stat__value { font-family: var(--font-display); font-weight: 500; font-size: clamp(36px, 3.542vw, 55px); line-height: 1; }
+.deposit-stat > * { position: relative; }
+.deposit-stat__value { font-family: var(--display); font-weight: 500; font-size: clamp(36px, 3.542vw, 55px); line-height: 1; }
 /* Every card reserves two lines of label. The card centres its contents, so
    without this the one taller label pushes its number up out of line with the
    rest of the row. */
-.stat__label {
+.deposit-stat__label {
   font-family: var(--font-ui); font-size: 16px; line-height: 24px;
   min-height: 48px;
   color: var(--dark-card-text); text-transform: capitalize;
 }
 
 /* ---- Ready to trade split ---- */
-.ready {
+.deposit-ready {
   display: grid;
   grid-template-columns: minmax(0, 517fr) minmax(0, 656fr);
   gap: 38px; align-items: center;
   max-width: var(--page); margin: 195px auto 0;
-  padding-inline: var(--gutter);
+  padding-inline: var(--content-inset);
 }
-.ready__title { font-family: var(--font-display); font-size: clamp(30px, 3.100vw, 48px); line-height: 1.2; color: #fff; }
-.ready__body { margin-top: 18px; font-size: 18px; line-height: 1.3; color: var(--dark-text); }
-.ready__body p + p { margin-top: 23.4px; }
+.deposit-ready__title { font-family: var(--display); font-size: clamp(30px, 3.100vw, 48px); line-height: 1.2; color: #fff; }
+.deposit-ready__body { margin-top: 18px; font-size: 18px; line-height: 1.3; color: var(--dark-text); }
+.deposit-ready__body p + p { margin-top: 23.4px; }
 
 .diagram {
   position: relative;
@@ -632,8 +651,8 @@ body.menu-open { overflow: hidden; }
 /* ============================================================
    SECTION: Get Traders to Their First Trade
    ============================================================ */
-.section-light { background: var(--surface); padding: 100px 0; }
-.section__title { text-align: center; color: var(--ink); }
+.section-light { background: var(--white); padding: 100px 0; }
+.section__title { text-align: center; color: var(--black); }
 .section__title--left { text-align: left; }
 
 .feature-grid {
@@ -661,7 +680,7 @@ body.menu-open { overflow: hidden; }
 /* ============================================================
    SECTION: One Flow to a Trading Balance
    ============================================================ */
-.flow { background: var(--surface); padding: 100px 0 0; overflow: hidden; }
+.flow { background: var(--white); padding: 100px 0 0; overflow: hidden; }
 .flow__lede {
   max-width: calc(var(--page) * 0.60886); margin: 18px auto 0;   /* 825px */
   font-size: 18px; line-height: 1.3; color: var(--text-md); text-align: center;
@@ -678,7 +697,7 @@ body.menu-open { overflow: hidden; }
 .tabs__pill {
   position: absolute; top: 7px; bottom: 7px; left: 0;
   width: 0;
-  background: var(--ink);
+  background: var(--black);
   border-radius: var(--r-sm);
   pointer-events: none;
   transition: transform .5s cubic-bezier(.4, 0, .2, 1),
@@ -692,8 +711,8 @@ body.menu-open { overflow: hidden; }
   font-size: 16px; color: #666; white-space: nowrap;
   transition: background-color .3s ease, color .3s ease;
 }
-.tab:hover { color: var(--ink); }
-.tab[aria-selected="true"] { background: var(--ink); color: #fff; font-weight: 500; }
+.tab:hover { color: var(--black); }
+.tab[aria-selected="true"] { background: var(--black); color: #fff; font-weight: 500; }
 
 /* The panel holds four clips of one continuous deposit run; only the
    selected tab's clip is shown. The gradient box keeps the Figma size and
@@ -702,7 +721,7 @@ body.menu-open { overflow: hidden; }
   position: relative;
   /* Held at the Figma panel width so the 1642px clips land at exactly 2x
      on a retina display — scaling it up would mean upscaling the video. */
-  width: min(100% - var(--pad) * 2, calc(var(--page) * 0.60590), 821px);
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.60590), 821px);
   margin: 42px auto 0;
   aspect-ratio: 821 / 537;          /* the Figma panel, unchanged */
   border-radius: var(--r-sm); overflow: hidden;
@@ -721,7 +740,7 @@ body.menu-open { overflow: hidden; }
 /* ============================================================
    SECTION: Built for Trading Metrics
    ============================================================ */
-.metrics { background: var(--surface); padding: 100px 0; }
+.metrics { background: var(--white); padding: 100px 0; }
 /* Flex rather than grid: with seven cards the last row is short, and
    justify-content centres the remainder instead of leaving it left-aligned
    against an empty fourth column. Card width is still a strict quarter. */
@@ -748,7 +767,7 @@ body.menu-open { overflow: hidden; }
 }
 .mcard__icon img { width: 32px; height: 32px; }
 .mcard__icon img[data-flip] { transform: scaleX(-1); }
-.mcard__title { font-weight: 500; font-size: 24px; line-height: 30px; color: var(--ink); }
+.mcard__title { font-weight: 500; font-size: 24px; line-height: 30px; color: var(--black); }
 .mcard__text  { margin-top: 8px; font-size: 15px; line-height: 21px; color: var(--text-md); }
 
 /* ============================================================
@@ -756,18 +775,18 @@ body.menu-open { overflow: hidden; }
    ============================================================ */
 .configure { background: var(--dark-bg); padding: 100px 0 0; overflow: hidden; }
 /* The 1211px cap alone left this section flush to the frame edge on anything
-   narrower than that — every other section sits at --pad. min() keeps the
+   narrower than that — every other section sits at --gutter. min() keeps the
    1211px plate on desktop and hands back a proper gutter once it can't fit. */
 .configure__head {
   display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
-  width: min(100% - var(--pad) * 2, calc(var(--page) * 0.89373));   /* 1211px */
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.89373));   /* 1211px */
   margin-inline: auto;
 }
 .configure__copy { max-width: 722px; }
 .configure__lede { margin-top: 18px; max-width: 671px; font-size: 18px; line-height: 1.3; color: var(--dark-text); }
 .configure__actions { display: flex; gap: 20px; flex-shrink: 0; flex-wrap: wrap; }
 .configure__panel {
-  width: min(100% - var(--pad) * 2, calc(var(--page) * 0.89373));   /* 1211px */
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.89373));   /* 1211px */
   margin: 40px auto 0;
 }
 .configure__panel img { width: 100%; height: auto; border-radius: var(--r-sm); }
@@ -822,23 +841,23 @@ body.menu-open { overflow: hidden; }
 }
 /* narrower than the block, so it needs auto margins — without them it sits
    flush left and its centred text reads off-axis */
-.cta__title { font-family: var(--font-display); font-size: clamp(28px, 3.542vw, 55px); line-height: 1.05; color: #fff; max-width: 620px; margin-inline: auto; }
+.cta__title { font-family: var(--display); font-size: clamp(28px, 3.542vw, 55px); line-height: 1.05; color: #fff; max-width: 620px; margin-inline: auto; }
 .cta__text  { margin: 12px auto 0; max-width: 529px; font-size: 18px; line-height: 1.4; color: var(--dark-text); }
 .cta__actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-/* these two read as written — no capitalize inherited from .btn--ghost-l */
+/* these two read as written — no capitalize inherited from .btn-ghost */
 .cta__actions .btn { text-transform: none; }
 
 /* ============================================================
    SECTION: FAQs
    ============================================================ */
-.faq { background: var(--surface); padding: 100px 0; }
+.faq { background: var(--white); padding: 100px 0; }
 .faq__list { max-width: calc(var(--page) * 0.88192); margin: 40px auto 0; }   /* 1195px */
 .faq__item { border-bottom: .909px solid var(--border); }
 .faq__q {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   padding: 22px 0; text-align: left;
-  font-family: var(--font-ui); font-weight: 500; font-size: 18px; letter-spacing: -.36px; color: var(--ink);
+  font-family: var(--font-ui); font-weight: 500; font-size: 18px; letter-spacing: -.36px; color: var(--black);
 }
 .faq__icon {
   flex: 0 0 auto;
@@ -861,49 +880,49 @@ body.menu-open { overflow: hidden; }
 /* ============================================================
    FOOTER
    ============================================================ */
-.footer { background: var(--surface-alt); padding-top: 64px; overflow: hidden; }
-.footer__top {
+.site-footer { background: var(--grey); padding-top: 64px; overflow: hidden; }
+.site-footer__top {
   display: flex; gap: 112px; justify-content: space-between; flex-wrap: wrap;
   max-width: var(--page); margin-inline: auto;
-  padding-inline: var(--gutter);   /* 72px at desktop, stepping down with the page gutter */
+  padding-inline: var(--content-inset);   /* 72px at desktop, stepping down with the page gutter */
 }
-.footer__pitch { max-width: 530px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-.footer__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(30px, 2.657vw, 41px); line-height: 54px; letter-spacing: -.72px; color: var(--ink); }
-.footer__text  { max-width: 301px; font-size: 20px; line-height: 30px; color: var(--text-lg); }
-.footer__btn   { background: #202224; color: #f7f7f7; height: 60px; }
-.footer__copy  { font-size: 14px; line-height: 18px; color: var(--text-muted); }
+.site-footer__cta { max-width: 530px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.site-footer__headline { font-family: var(--display); font-weight: 500; font-size: 36px; line-height: 54px; letter-spacing: -.72px; color: var(--heading); }
+.site-footer__subcopy  { max-width: 301px; font-size: 20px; line-height: 30px; color: var(--text-lg); }
+.site-footer__btn   { width: 169px; }   /* fill/height come from .btn-primary */
+.site-footer__copyright  { font-size: 14px; line-height: 18px; color: var(--text-muted); }
 
-.footer__nav { display: flex; gap: 64px; flex-wrap: wrap; }
-.footer__col { display: flex; flex-direction: column; gap: 12px; }
-.footer__col h3 { font-weight: 500; font-size: 14px; line-height: 18px; color: var(--ink-strong); }
-.footer__col ul { display: flex; flex-direction: column; gap: 18px; }
-.footer__col--pages { min-width: 194px; }
-.footer__col--pages ul {
+.site-footer__nav { display: flex; gap: 64px; flex-wrap: wrap; }
+.site-footer__nav-group { display: flex; flex-direction: column; gap: 12px; }
+.site-footer__nav-heading { font-weight: 500; font-size: 14px; line-height: 18px; color: var(--ink-strong); }
+.site-footer__nav-list { display: flex; flex-direction: column; gap: 18px; }
+.site-footer__nav-group--pages { min-width: 194px; }
+.site-footer__nav-list--pages {
   display: grid; grid-template-columns: 85px 85px; gap: 18px 24px;
   grid-auto-flow: row;
 }
-.footer__col a { font-size: 14px; line-height: 18px; color: var(--text-muted); transition: color .18s ease; }
-.footer__col a:hover { color: var(--ink); }
+.site-footer__nav-link { font-size: 14px; line-height: 18px; color: var(--text-muted); transition: color .2s ease; }
+.site-footer__nav-link:hover { color: var(--ink-strong); }
 
-.footer__mark { display: flex; justify-content: center; padding: 60px 24px 0; }
-.footer__mark img { width: calc(var(--page) * 0.53653); max-width: 100%; height: auto; }   /* 727px */
+.site-footer__logo { display: flex; justify-content: center; padding: 60px 24px 0; }
+.site-footer__logo-img { display: block; width: calc(var(--page) * 0.53653); max-width: 100%; height: auto; }   /* 727px */
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 1200px) {
-  :root { --gutter: 48px; --pad: 48px; }
-  .hero__inner { gap: 32px; }
-  .stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .ready { gap: 32px; }
+  :root { --content-inset: 48px; --gutter: 48px; }
+  .deposit-hero__inner { gap: 32px; }
+  .deposit-stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .deposit-ready { gap: 32px; }
   .mcard { flex-basis: calc((100% - 14px) / 2); }
-  .footer__top { gap: 56px; }
-  .footer__nav { gap: 40px; }
+  .site-footer__top { gap: 56px; }
+  .site-footer__nav { gap: 40px; }
 }
 
 @media (max-width: 1000px) {
-  :root { --gutter: 32px; --pad: 32px; }
-  .header { padding: 24px var(--gutter); }
+  :root { --content-inset: 32px; --gutter: 32px; }
+  .nav-header { padding: 24px var(--content-inset); }
   /* below the desktop breakpoint the pill gives way to the Menu button and
      the slide-in panel, exactly as on the live nav */
   .nav-pill { display: none; }
@@ -911,26 +930,26 @@ body.menu-open { overflow: hidden; }
   .mobile-menu:not([hidden]) { display: block; }
   .mobile-menu-overlay:not([hidden]) { display: block; }
 
-  .hero__inner {
+  .deposit-hero__inner {
     grid-template-columns: minmax(0, 1fr);
     gap: 40px; padding: 0;
     min-height: 0;
   }
-  .hero__copy { padding: 8px var(--gutter) 0; max-width: 620px; }
-  .hero__actions { margin-top: 36px; }
+  .deposit-hero__copy { padding: 8px var(--content-inset) 0; max-width: 620px; }
+  .deposit-hero__actions { margin-top: 36px; }
   /* was margin-left only, so the art ran 10px past the frame and got clipped;
      a matching right margin lines it up with the copy above it */
   /* width:auto matters as much as the margins: the base rule sets width:100%,
      which beats justify-self:stretch and re-inflates the box to the full
      column, pushing the margins straight back off the frame edge. */
-  .hero__visual { justify-self: stretch; width: auto; max-width: none; margin-inline: var(--gutter); }
-  .hero__title { letter-spacing: -1px; }
+  .deposit-hero__visual { justify-self: stretch; width: auto; max-width: none; margin-inline: var(--content-inset); }
+  .deposit-hero__title { letter-spacing: -1px; }
 
   .trust { padding: 32px 0 40px; }
 
-  .stats { padding: 72px 0 80px; }
-  .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 560px; margin-inline: auto; }
-  .ready { grid-template-columns: minmax(0, 1fr); margin-top: 96px; gap: 32px; }
+  .deposit-stats { padding: 72px 0 80px; }
+  .deposit-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 560px; margin-inline: auto; }
+  .deposit-ready { grid-template-columns: minmax(0, 1fr); margin-top: 96px; gap: 32px; }
 
   .section-light, .metrics, .faq { padding: 72px 0; }
   .flow, .configure { padding-top: 72px; }
@@ -949,11 +968,11 @@ body.menu-open { overflow: hidden; }
     background: var(--dark-bg);
     padding: 56px 32px;
     border-radius: var(--r-md);
-    margin-inline: var(--gutter);
+    margin-inline: var(--content-inset);
   }
 
-  .footer__top { flex-direction: column; gap: 48px; }
-  .footer__mark { padding-top: 48px; }
+  .site-footer__top { flex-direction: column; gap: 48px; }
+  .site-footer__logo { padding-top: 48px; }
 }
 
 @media (max-width: 460px) {
@@ -966,7 +985,7 @@ body.menu-open { overflow: hidden; }
 }
 
 @media (max-width: 640px) {
-  :root { --gutter: 20px; --pad: 20px; }
+  :root { --content-inset: 20px; --gutter: 20px; }
 
   /* ---- Mobile type scale -------------------------------------------------
      The display sizes carry a 1.05 line-height, which is right for a 55px
@@ -974,59 +993,59 @@ body.menu-open { overflow: hidden; }
      Body copy had drifted too: 15/16/17/18px across sections at 1.3–1.6
      leading. Settled here as 34 / 28 / 22 / 19 for headings and 16/15 for
      copy, with leading that loosens as the size comes down. */
-  .hero__title { font-size: 34px; line-height: 1.15; }
+  .deposit-hero__title { font-size: 34px; line-height: 1.15; }
   .h2,
-  .ready__title,
+  .deposit-ready__title,
   .cta__title,
-  .footer__title { font-size: 28px; line-height: 1.18; }
+  .site-footer__headline { font-size: 28px; line-height: 1.18; }
   /* the feature cards and the metric cards sit in sibling sections and read as
      one tier, so they share a size instead of drifting 22 against 19 */
   .fcard__title,
   .mcard__title  { font-size: 19px; line-height: 1.35; }
-  .hero__lede,
-  .stats__lede,
-  .ready__body,
+  .deposit-hero__lede,
+  .deposit-stats__lede,
+  .deposit-ready__body,
   .flow__lede,
   .configure__lede,
   .cta__text,
   .fcard__text,
-  .footer__text  { font-size: 16px; line-height: 1.55; }
+  .site-footer__subcopy  { font-size: 16px; line-height: 1.55; }
   .faq__q        { font-size: 16px; line-height: 1.4; }
   .faq__a p,
   .mcard__text   { font-size: 15px; line-height: 1.55; }
 
   /* ---- Mobile buttons ----------------------------------------------------
-     44px tall instead of 52 (60 in the footer), with the label stepped 16 -> 15
+     44px tall instead of the desktop 60, with the label stepped 16 -> 15
      and the side padding 30 -> 16 to match. Every pair shares its row: with the
      smaller box the widest pair (Try Interactive Demo + Docs) comes to ~253px
      inside a 330px column, so flex-wrap only kicks in below ~330px viewport,
      where wrapping still beats overflowing. */
   .btn { height: 44px; padding-inline: 16px; font-size: 15px; line-height: 15px; }
-  .footer__btn { height: 44px; }
-  .hero__actions,
+  .site-footer__btn { height: 44px; }
+  .deposit-hero__actions,
   .configure__actions,
   .cta__actions { gap: 12px; }
-  .hero__actions .btn,
+  .deposit-hero__actions .btn,
   .configure__actions .btn,
   .cta__actions .btn { flex: 1 1 auto; min-width: 0; }
-  .hero__lede { margin-top: 18px; }
-  .hero__actions .btn--dark { width: auto; }   /* drops the fixed 152px */
-  .hero__visual { margin-left: var(--gutter); }
+  .deposit-hero__lede { margin-top: 18px; }
+  .deposit-hero__actions .btn-primary { width: auto; }   /* drops the fixed 152px */
+  .deposit-hero__visual { margin-left: var(--content-inset); }
 
   .trust__item { padding-inline: 16px; }
   .trust__item img { height: 26px; }
   .trust__item img.trust__team { height: 18px; }
   .trust__item img[src$="fuffletools.webp"] { height: 23px; }
 
-  .stats { padding: 56px 0 64px; }
+  .deposit-stats { padding: 56px 0 64px; }
   /* 2x2 rather than a single column. The 320px cap goes with it — it was also
      what made this the one block inset 35px while everything else sat at 30.
      Padding and type come down to match: at 159px per card the 36px padding and
      40px value would have overflowed. */
-  .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: none; }
-  .stat { padding: 24px 14px; min-height: 132px; gap: 8px; }
-  .stat__value { font-size: 32px; }
-  .stat__label { font-size: 14px; line-height: 20px; min-height: 40px; }
+  .deposit-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: none; }
+  .deposit-stat { padding: 24px 14px; min-height: 132px; gap: 8px; }
+  .deposit-stat__value { font-size: 32px; }
+  .deposit-stat__label { font-size: 14px; line-height: 20px; min-height: 40px; }
 
   .fcard__body { padding: 20px 20px 24px; }
   .fcard__title { letter-spacing: -.4px; }
@@ -1063,7 +1082,7 @@ body.menu-open { overflow: hidden; }
     transition: background-color .3s ease, color .3s ease;
   }
   .tab[aria-selected="true"],
-  .tabs--pill .tab[aria-selected="true"] { background: var(--ink); color: #fff; }
+  .tabs--pill .tab[aria-selected="true"] { background: var(--black); color: #fff; }
   /* Gentle portrait crop so the card reads on a phone: cover trims the
      gradient at the sides only — 5/6 keeps the card itself fully inside. */
   .flow__panel { aspect-ratio: 5 / 6; }
@@ -1082,22 +1101,22 @@ body.menu-open { overflow: hidden; }
   .faq__q { gap: 16px; padding: 18px 0; }
   .faq__a p { padding-right: 0; }
 
-  .footer { padding-top: 48px; }
+  .site-footer { padding-top: 48px; }
   /* five flex columns wrapped into three ragged pairings with three different
      widths; a 2-col grid gives every column the same left edge, with Pages
      spanning the full row since its own list is already two columns */
-  .footer__nav {
+  .site-footer__nav {
     display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 32px 20px;
   }
-  .footer__col--pages { min-width: 0; grid-column: 1 / -1; }
-  .footer__col--pages ul { grid-template-columns: repeat(2, minmax(80px, 1fr)); }
+  .site-footer__nav-group--pages { min-width: 0; grid-column: 1 / -1; }
+  .site-footer__nav-group--pages ul { grid-template-columns: repeat(2, minmax(80px, 1fr)); }
   /* links were 18px tall — the row gap moves onto the link itself so the tap
      target reaches 44px without opening the list up */
-  .footer__col ul { gap: 0; }
-  .footer__col a { display: block; padding-block: 13px; }
-  .brand { padding-block: 7px; }
-  .footer__mark { padding-top: 40px; }
+  .site-footer__nav-group ul { gap: 0; }
+  .site-footer__nav-group a { display: block; padding-block: 13px; }
+  .nav-logo { padding-block: 7px; }
+  .site-footer__logo { padding-top: 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

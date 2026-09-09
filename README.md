@@ -49,6 +49,57 @@ static host as-is.
   shadow, which is what produced the hard edge against the gradient. The trading
   shot is opaque and square, so it *is* clipped at 12px, as in the design.
 
+## Merging into availproject.org
+
+This page uses the parent site's class names and tokens, so the chrome drops
+straight into `availproject.org` without a rename pass.
+
+**Names adopted from the parent** (`nav.css`, `footer.css`, `common.css`):
+
+| Chrome | Classes |
+|---|---|
+| header | `.nav-header` `.nav-logo` `.nav-logo__mark` `.nav-logo__wordmark` `.nav-pill` `.nav-links` `.nav-links__item` `.nav-links__trigger` `.nav-dropdown` `.nav-dropdown__menu` `.nav-dropdown__section` `.nav-dropdown__heading` `.nav-dropdown__link` `.nav-header__cta` |
+| mobile | `.nav-menu*` `.mobile-menu*` `body.menu-open` (already ported verbatim) |
+| footer | `.site-footer` `__top` `__cta` `__headline` `__subcopy` `__btn` `__copyright` `__nav` `__nav-group` `__nav-group--pages` `__nav-heading` `__nav-list` `__nav-list--pages` `__nav-link` `__logo` `__logo-img` |
+| buttons | `.btn` `.btn-primary` `.btn-secondary` (`.btn-light` / `.btn-ghost` are page-local; the parent re-tints `.btn-secondary` by context instead) |
+
+**Tokens** are the parent's names where an equivalent exists: `--black` `--white`
+`--grey` `--heading` `--btn-dark` `--btn-dark-text` `--border` `--nav-link`
+`--display` `--sans` `--content-inset` (72px) `--gutter` (80px) `--section-frame`
+(10px). Note `--content-inset` and `--gutter` are deliberately *not* swapped:
+the parent's `--gutter` is 80px and its `--content-inset` is 72px, so using the
+old local names would have silently rebound `.wrap` site-wide.
+
+**Sections are namespaced** where a bare name would collide with `common.css`:
+`.deposit-hero*`, `.deposit-ready*`, `.deposit-stats*`, `.deposit-stat*`.
+Everything else (`.trust`, `.flow`, `.fcard`, `.mcard`, `.configure`, `.cta`,
+`.faq`, `.container`, `.frame`, `.section__title`) is already unique.
+
+**Delete on merge** — these are duplicated here only so the folder stands alone:
+
+* `.btn` / `.btn-primary` / `.btn-secondary` — `common.css` supplies them
+* every `.nav-*`, `.nav-dropdown*`, `.mobile-menu*` rule and `body.menu-open` —
+  `nav.css` supplies them, including the `.nav-header__cta` /
+  `.mobile-menu__cta` overrides
+* the whole `.site-footer*` block — `footer.css` supplies it
+
+**Deliberate deltas left in place**, because the parent's values are worse here:
+
+* `.nav-header` and `.site-footer__top` are capped at `--page`, not the parent's
+  `1440px`. `--page` is `clamp(1355px, 100vw - 20px, 1760px)` and every inner
+  width in this page is a fraction of it, so clamping to 1440 would rescale the
+  whole composition. **This is the one open decision before merge** — the page
+  will be wider than every other page on the site.
+* `.site-footer__top` keeps `padding-inline: var(--content-inset)` (72px) so the
+  footer aligns with the header. The parent uses 48px, which lines up with
+  nothing on its own pages.
+* The `.frame` wrapper reproduces the 10px band with padding rather than the
+  parent's `.page-shell` borders + `.section-gap` divs. Same result; renaming it
+  to `.page-shell` would inherit that rule's `max-width: 1440px`.
+* Inter stays on body copy (`.deposit-stats__lede`, `.deposit-ready__body`,
+  `.fcard__text`, `.faq__q`) — it is one of the three families in the Figma
+  file. All *chrome* is Geist, matching the live site.
+
 ## Breakpoints
 
 `--page` is the content width. Every inner max-width is written as a fraction
