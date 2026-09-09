@@ -870,6 +870,7 @@ function setStep(i,state){
     sub.textContent='Waiting';
   }
   sub.hidden = !sub.textContent;
+  sizeDevice();   // a finished row drops its sub, so the frame follows it down
 }
 function resetFlow(){
   flowTimers.forEach(clearTimeout);flowTimers=[];
@@ -956,9 +957,22 @@ function setScreen(i){
     enter(nextEl,i);
   });
 }
+/* The device frame is sized to whichever screen is showing. It used to be set
+   once on enter, which was fine while every screen was a fixed height - but the
+   in-flight steps shrink as they complete (a finished row drops its sub-line),
+   so the frame kept the taller opening height and left dead space under the
+   card. A ResizeObserver keeps it in step; `transition: height` on .device
+   already makes that read as a settle rather than a jump. */
+function sizeDevice(){
+  const active = document.querySelector('.screen.active');
+  if(active) document.getElementById('device').style.height = active.offsetHeight + 'px';
+}
+const screenRO = new ResizeObserver(()=>requestAnimationFrame(sizeDevice));
+document.querySelectorAll('.screen').forEach(el=>screenRO.observe(el));
+
 function enter(el,i){
   // size the device frame to this screen (expands when content is taller)
-  requestAnimationFrame(()=>{ document.getElementById('device').style.height = el.offsetHeight + 'px'; });
+  requestAnimationFrame(sizeDevice);
   // per-screen entrance behaviour
   stopHeat();
   if(el.id==='s-fund'){ setBaseChain(false); if(!playing) fundAutoSelect(); }
