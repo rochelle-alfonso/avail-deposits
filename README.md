@@ -5,7 +5,8 @@ Static build of the Figma page
 
 ```
 index.html        markup for all 8 sections
-styles.css        tokens, layout, responsive rules
+styles.css        tokens, layout, responsive rules — carries its own MERGE: markers
+js/deposits.js    page behaviour: mobile nav, flow tabs, FAQ, scroll observers
 assets/           real exports pulled from Figma (no redrawn approximations)
 assets/fonts/     Delight Regular + Medium, self-hosted as woff2
 assets/flow/      the four deposit-flow clips + poster frames
@@ -13,6 +14,7 @@ flow/player.html            source the deposit clips are recorded from
 flow/configurator.html      the Widget Configurator prototype, embedded live
 flow/build-configurator.py  regenerates the above from the prototype
 flow/config-bg.webp         that panel's gradient plate, from the artboard
+flow/record.py              records a player.html segment to mp4 + poster
 ```
 
 ## Run
@@ -23,6 +25,26 @@ python3 -m http.server 8899   # then open http://127.0.0.1:8899
 
 Assets are referenced by relative path, so the folder can be dropped onto any
 static host as-is.
+
+## Project conventions
+
+| Item | Value |
+|---|---|
+| Boilerplate/template page | None — single page. The parent site is the template; derive new pages from `avail-web-kit/template.html`, not from this file. |
+| Shared CSS + load order | One file, `styles.css`, in this order: fonts → tokens → reset → layout primitives → buttons → hero/header/nav → sections → footer → responsive. **Order is load-bearing** — several rules depend on it. |
+| Body class pattern | `page-deposits`, matching the parent's `.page-*` convention (`common.css` already maps `.page-deposits` to a `--hero-base`) |
+| Breakpoints | 1200 / 1000 / 640 / 460 (plus a 1201 min-width refinement). See *Breakpoints* below. |
+| Cache-busting policy | `?v=N` on `styles.css` and `js/deposits.js`, bumped together. Never mixed with unversioned links. |
+| Dev server | `python3 -m http.server 8899` |
+| Deploy target | GitHub Pages, `main` branch, repo root |
+
+A note on the CSS being one file rather than the usual
+`variables / base / nav / footer / components` split: this page is destined to
+be absorbed into availproject.org, which **already has** files by exactly those
+names. Splitting here would produce five files that collide by name with the
+parent's, four of which get deleted on merge — so the boundaries are marked
+inside the single file instead (`MERGE: DROP` / `MERGE: KEEP`). One file with
+clear boundaries is less work to merge than five files with a name clash.
 
 ## Fidelity notes
 
@@ -55,6 +77,13 @@ static host as-is.
 
 This page uses the parent site's class names and tokens, so the chrome drops
 straight into `availproject.org` without a rename pass.
+
+`styles.css` marks its own boundaries: every block the parent already supplies
+is banner-commented **`MERGE: DROP`**, and the token block tags each name the
+parent's `variables.css` defines with `/* (parent) */`. Everything unmarked is
+page-specific and travels. `js/deposits.js` moves into the parent's `js/` as-is
+— it already matches the one-file-per-page-behaviour convention there, and the
+page loads it with `defer`.
 
 **Names adopted from the parent** (`nav.css`, `footer.css`, `common.css`):
 

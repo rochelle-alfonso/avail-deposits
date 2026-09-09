@@ -1,9 +1,33 @@
+/* ============================================================================
+   MERGING INTO availproject.org
+   ----------------------------------------------------------------------------
+   This file is written to be absorbed, not shipped next to the parent's
+   stylesheets. The parent loads variables -> base -> nav -> footer -> common,
+   and its common.css is already a concatenation of per-page files under
+   "===== <name>.css =====" banners. So the merge is:
+
+     1. Delete every block marked  MERGE: DROP.  The parent already supplies
+        it, and a second copy is how the two drift apart.
+     2. Append what is left to common.css under a new "===== deposits.css ====="
+        banner, keeping this file's internal order - several rules depend on it.
+     3. Move js/deposits.js into the parent's js/ folder as-is; it already
+        matches the parent's one-file-per-page-behaviour convention, and the
+        page loads it with defer.
+
+   Anything NOT marked MERGE: DROP is page-specific and travels with the page.
+   Class names are already namespaced (deposit-hero*, deposit-ready*,
+   deposit-stat*), so nothing here collides with the parent's common.css.
+
+   Deliberate deviations, and why, are in README > Merging into availproject.org.
+   ========================================================================== */
+
 /* ============================================================
    Avail Trading — Cross-Chain Deposit Infrastructure
    Built from Figma: Website-Design / node 74:46
    ============================================================ */
 
-/* ---------- Fonts ---------- */
+/* ---------- Fonts ----------
+   MERGE: DROP - variables.css declares both Delight faces already. */
 @font-face {
   font-family: 'Delight';
   src: local('Delight Regular'), url('assets/fonts/Delight-Regular.woff2') format('woff2');
@@ -15,15 +39,21 @@
   font-weight: 500; font-style: normal; font-display: swap;
 }
 
-/* ---------- Tokens ---------- */
+/* ---------- Tokens ----------
+   MERGE: the names below that the parent's variables.css already defines are
+   marked (parent). DROP those lines; keep the rest, which are page-local, and
+   move them into the deposits.css block so they sit with the rules using them.
+   --page is the open decision: the parent caps every page at 1440px, this one
+   runs clamp(1355px, 100vw - 20px, 1760px) and every inner width is a fraction
+   of it, so changing it rescales the whole composition. */
 :root {
-  --black:            #141413;
+  --black:            #141413;   /* (parent) */
   --ink-card:       #141415;
   --ink-strong:     #151514;
   --text-lg:        #6b6b6a;   /* 20px hero paragraph */
   --text-md:        #565654;   /* 18/15px body */
   --text-muted:     #858585;   /* footer links */
-  --nav-link:       #858582;
+  --nav-link:       #858582;   /* (parent) */
   --card-body:      rgba(20, 20, 21, .7);
 
   --dark-bg:        #121212;
@@ -31,18 +61,18 @@
   --dark-text:      #9c9c9c;
   --dark-card-text: rgba(255, 255, 255, .7);
 
-  --white:        #fffffe;   /* parent's --white */
-  --heading:      #161615;   /* parent's --heading */
-  --btn-dark:     #202224;   /* parent's --btn-dark */
-  --btn-dark-text:#f7f7f7;
-  --grey:    #f0f0ef;
+  --white:        #fffffe;   /* (parent) */
+  --heading:      #161615;   /* (parent) */
+  --btn-dark:     #202224;   /* (parent) */
+  --btn-dark-text:#f7f7f7;   /* (parent) */
+  --grey:    #f0f0ef;   /* (parent) */
   --surface-tab:    #f5f5f5;
   --icon-tile:      #f7fbff;
   --frame:          #ebebeb;
-  --border:         #f0f0ef;
+  --border:         #f0f0ef;   /* (parent) */
 
-  --display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;
-  --sans:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;   /* (parent) */
+  --sans:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;   /* (parent) */
 
   --r-sm: 4px;
   --r-md: 8px;
@@ -53,16 +83,17 @@
      max-width below is expressed as a fraction of it, so the whole
      composition scales instead of just gaining empty gutters. */
   --page:   1355px;
-  --section-frame:   10px;                            /* Figma frame inset */
-  --content-inset: 72px;                            /* fixed, as on availproject.org */
-  --gutter:    80px;
+  --section-frame:   10px;   /* (parent) */                            /* Figma frame inset */
+  --content-inset: 72px;   /* (parent) */                            /* fixed, as on availproject.org */
+  --gutter:    80px;   /* (parent) */
 }
 
 @media (min-width: 1201px) {
   :root { --page: clamp(1355px, calc(100vw - 2 * var(--section-frame)), 1760px); }
 }
 
-/* ---------- Reset ---------- */
+/* ---------- Reset ----------
+   MERGE: DROP - base.css covers the reset and the a/img/button defaults. */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
@@ -97,12 +128,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .container--wide { padding-inline: var(--content-inset); }
 
 /* ---------- Buttons ----------
-   .btn / .btn-primary / .btn-secondary are the parent site's rules verbatim
-   (common.css "deposit-base" block): 60px tall, square, Geist 500 16px. They
-   are duplicated here only so this folder stands alone — DELETE this pair on
-   merge and let common.css supply them.
-   .btn-light / .btn-ghost are page-local: the parent has no on-dark variants,
-   it re-tints .btn-secondary by context instead. */
+   MERGE: DROP .btn / .btn-primary / .btn-secondary — they are the parent's rules
+   verbatim (common.css, "deposit-base" block): 60px tall, square, Geist 500
+   16px, duplicated here only so this folder stands alone.
+   MERGE: KEEP .btn-light / .btn-ghost — page-local on-dark variants. The parent
+   has no equivalent; it re-tints .btn-secondary by context instead. */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   height: 60px; padding: 0 30px;
@@ -146,6 +176,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 .deposit-hero > * { position: relative; z-index: 1; }
 
 /* ---- Header ----------------------------------------------------------
+   MERGE: DROP from here down to `body.menu-open` — nav.css supplies the whole
+   nav, dropdown, hamburger and slide-in panel, including the .nav-header__cta
+   and .mobile-menu__cta overrides. What follows is a port of those rules, kept
+   so this folder stands alone. The one line worth carrying over is
+   `.nav-header { max-width: var(--page) }`, if --page survives the merge — see
+   the README on that open decision.
+
    Nav interactions mirror availproject.org: the dropdowns open on hover and
    focus with no JS, an invisible bridge keeps the 10px gap hoverable, and
    :has() closes any sibling that is no longer the one being pointed at. */
@@ -384,6 +421,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   text-align: center;
 }
 body.menu-open { overflow: hidden; }
+/* ---- end of the nav.css port (everything above is MERGE: DROP) ---- */
 
 /* ---- Hero body ---- */
 .deposit-hero__inner {
@@ -878,6 +916,11 @@ body.menu-open { overflow: hidden; }
 
 /* ============================================================
    FOOTER
+   MERGE: DROP this whole block — footer.css supplies it, and the class names
+   here are already the parent's, so the markup needs no change. Two values
+   differ on purpose and are worth a look before dropping: __top uses
+   --content-inset (72px) rather than the parent's 48px, so the footer lines up
+   with the header, and it is capped at --page rather than 1440px.
    ============================================================ */
 .site-footer { background: var(--grey); padding-top: 64px; overflow: hidden; }
 .site-footer__top {
