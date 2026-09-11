@@ -136,6 +136,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   height: 60px; padding: 0 30px;
+  border-radius: var(--r-sm);        /* 4px, the same small radius the tabs
+                                        and nav controls already use */
   font-family: var(--sans); font-weight: 500; font-size: 16px; line-height: 1;
   text-align: center; white-space: nowrap;
   transition: opacity .2s ease, background .2s ease, color .2s ease;
