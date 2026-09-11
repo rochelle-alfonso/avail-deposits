@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Avail Trading | Cross-Chain Deposit Infrastructure</title>
-<meta name="description" content="Let traders fund your app using assets across supported chains, on-ramps or QR deposits, without leaving to bridge, swap, switch networks or find gas.">
+<title>Avail Prediction Markets | Cross-Chain Deposit Infrastructure</title>
+<meta name="description" content="Let users move from market discovery to a funded position using assets across supported chains, without leaving your app to bridge, swap, switch networks or find gas.">
 <link rel="icon" href="assets/avail-mark.svg">
 <link rel="preload" as="image" href="assets/hero-bg.webp" fetchpriority="high">
-<link rel="preload" as="image" href="assets/hero-visual.webp"
-      imagesrcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
+<link rel="preload" as="image" href="assets/hero-position.webp"
+      imagesrcset="assets/hero-position-900.webp 900w, assets/hero-position-1400.webp 1400w, assets/hero-position.webp 2055w"
       imagesizes="(max-width: 1000px) 100vw, 52vw" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=5">
 </head>
-<body class="page-deposits">
+<body class="page-position">
 <div class="frame">
 
 <!-- ========================= HERO ========================= -->
@@ -82,8 +82,8 @@
 
   <div class="deposit-hero__inner">
     <div class="deposit-hero__copy">
-      <h1 class="deposit-hero__title">Drive 40% More Deposit Volume</h1>
-      <p class="deposit-hero__lede">The simplest way for traders to fund their accounts using multiple tokens across supported chains, all in just a few clicks.</p>
+      <h1 class="deposit-hero__title">Make predictions easier to fund</h1>
+      <p class="deposit-hero__lede">Let users move from market discovery to a funded position using assets across supported chains, without leaving your app to bridge, swap, switch networks or find gas.</p>
       <div class="deposit-hero__actions">
         <a class="btn btn-primary" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
         <a class="btn btn-secondary" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
@@ -91,15 +91,14 @@
     </div>
 
     <div class="deposit-hero__visual">
-      <img class="deposit-hero__art" src="assets/hero-visual.webp" width="2055" height="1779"
-           srcset="assets/hero-visual-900.webp 900w, assets/hero-visual-1400.webp 1400w, assets/hero-visual.webp 2055w"
+      <img class="deposit-hero__art" src="assets/hero-position.webp" width="2055" height="1779"
+           srcset="assets/hero-position-900.webp 900w, assets/hero-position-1400.webp 1400w, assets/hero-position.webp 2055w"
            sizes="(max-width: 1000px) 100vw, 52vw"
            fetchpriority="high" decoding="async"
-           alt="A trading app with the Deposit USDC modal open, offering wallet, cash, crypto transfer and Hyperliquid funding methods">
-      <div class="deposit-hero__rowhint" aria-hidden="true"></div>
-      <div class="deposit-hero__radio" aria-hidden="true"></div>
-      <div class="deposit-hero__cta" aria-hidden="true"><i></i></div>
-      <div class="deposit-hero__cursor" aria-hidden="true">
+           alt="A prediction market app with the Deposit modal open: 20 ctUSD being funded from USDC on Ethereum, ETH on Optimism and ETH on MegaETH">
+      <div class="deposit-hero__caret" aria-hidden="true"></div>
+      <div class="deposit-hero__chip" aria-hidden="true"></div>
+      <div class="deposit-hero__cursor deposit-hero__cursor--chips" aria-hidden="true">
         <svg viewBox="0 0 16 20" width="100%" height="100%" focusable="false">
           <path d="M1.2 .8 L1.2 16.4 L5.3 12.7 L7.9 18.2 L10.4 17 L7.8 11.7 L13 11.7 Z"
                 fill="#101a33" stroke="#101a33" stroke-width=".7" stroke-linejoin="round"/>
@@ -171,44 +170,38 @@
   </div>
 </section>
 
-<!-- ============== One Flow to a Trading Balance ============== -->
+<!-- ============== One Flow to a Funded Position ============== -->
 <section class="flow">
   <div class="container">
-    <h2 class="h2 section__title">One Flow to a Trading Balance</h2>
-    <p class="flow__lede">Traders see eligible balances across supported chains in one view. They enter what they want to spend or what the app needs to receive, while the flow handles routing, gas and deposit completion.</p>
+    <h2 class="h2 section__title">One Flow to a Funded Position</h2>
+    <p class="flow__lede">Users select an outcome and position size, view eligible balances across supported chains, then confirm. The flow handles routing, swaps and gas before returning them to the market ready to participate.</p>
 
-    <div class="tabs" role="tablist" aria-label="Deposit flow steps">
-      <button class="tab" role="tab" id="tab-funding" data-seg="funding" data-label="Funding Source" aria-controls="clip-funding" aria-selected="true">Funding Source</button>
-      <button class="tab" role="tab" id="tab-balance" data-seg="balance" data-label="Unified Balance" aria-controls="clip-balance" aria-selected="false">Unified Balance</button>
-      <button class="tab" role="tab" id="tab-steps"   data-seg="steps" data-label="Intent Steps"   aria-controls="clip-steps"   aria-selected="false">Intent Steps</button>
-      <button class="tab" role="tab" id="tab-funded"  data-seg="funded" data-label="Funded"  aria-controls="clip-funded"  aria-selected="false">Funded</button>
+    <div class="tabs" role="tablist" aria-label="Funded position steps">
+      <button class="tab" role="tab" id="tab-fund"    data-seg="fund"    data-label="Fund"    aria-controls="clip-fund"    aria-selected="true">Fund</button>
+      <button class="tab" role="tab" id="tab-predict" data-seg="predict" data-label="Predict" aria-controls="clip-predict" aria-selected="false">Predict</button>
+      <button class="tab" role="tab" id="tab-trade"   data-seg="trade"   data-label="Trade"   aria-controls="clip-trade"   aria-selected="false">Trade</button>
     </div>
   </div>
 
-  <!-- One continuous deposit run, cut into the four parts the tabs describe. -->
+  <!-- One continuous run from an empty wallet to a cast bet, cut into the
+       three parts the tabs describe. -->
   <div class="flow__panel">
-    <video class="flow__video is-on" id="clip-funding" data-seg="funding"
-           role="tabpanel" aria-labelledby="tab-funding"
-           aria-label="Choosing a funding method, entering 499.50 USDC, and the flow resolving a route"
-           data-src="assets/flow/funding.mp4" data-src-sm="assets/flow/funding-sm.mp4" data-poster="assets/flow/funding.webp"
+    <video class="flow__video is-on" id="clip-fund" data-seg="fund"
+           role="tabpanel" aria-labelledby="tab-fund"
+           aria-label="An empty ctUSD wallet on Citrea funded in one deposit, drawing on balances across supported chains"
+           data-src="assets/position/fund.mp4" data-src-sm="assets/position/fund-sm.mp4" data-poster="assets/position/fund.webp"
            muted playsinline preload="none"></video>
 
-    <video class="flow__video" id="clip-balance" data-seg="balance"
-           role="tabpanel" aria-labelledby="tab-balance" aria-hidden="true"
-           aria-label="Editing the funding sources and picking tokens across chains"
-           data-src="assets/flow/balance.mp4" data-src-sm="assets/flow/balance-sm.mp4" data-poster="assets/flow/balance.webp"
+    <video class="flow__video" id="clip-predict" data-seg="predict"
+           role="tabpanel" aria-labelledby="tab-predict" aria-hidden="true"
+           aria-label="Picking an outcome on the Citrea Markets question — will BTC close above $120,000 in 2026 — and sizing the position"
+           data-src="assets/position/predict.mp4" data-src-sm="assets/position/predict-sm.mp4" data-poster="assets/position/predict.webp"
            muted playsinline preload="none"></video>
 
-    <video class="flow__video" id="clip-steps" data-seg="steps"
-           role="tabpanel" aria-labelledby="tab-steps" aria-hidden="true"
-           aria-label="The in-flight intent steps completing one by one — approve swaps, swap tokens, receive USDT on Arbitrum, then approve the deposit to Aave"
-           data-src="assets/flow/steps.mp4" data-src-sm="assets/flow/steps-sm.mp4" data-poster="assets/flow/steps.webp"
-           muted playsinline preload="none"></video>
-
-    <video class="flow__video" id="clip-funded" data-seg="funded"
-           role="tabpanel" aria-labelledby="tab-funded" aria-hidden="true"
-           aria-label="Deposit complete — 499.50 USDC received on Arbitrum"
-           data-src="assets/flow/funded.mp4" data-src-sm="assets/flow/funded-sm.mp4" data-poster="assets/flow/funded.webp"
+    <video class="flow__video" id="clip-trade" data-seg="trade"
+           role="tabpanel" aria-labelledby="tab-trade" aria-hidden="true"
+           aria-label="Casting the bet — 20.00 ctUSD for 24.09 shares at 83 cents, to win $23.26"
+           data-src="assets/position/trade.mp4" data-src-sm="assets/position/trade-sm.mp4" data-poster="assets/position/trade.webp"
            muted playsinline preload="none"></video>
   </div>
 </section>
@@ -288,12 +281,12 @@
       <article class="mcard">
         <div class="mcard__icon"><img src="assets/ic-qr.svg" alt="" loading="lazy"></div>
         <h3 class="mcard__title">QR Code-based Deposits</h3>
-        <p class="mcard__text">Let users fund their account by scanning a QR code from a wallet or exchange.</p>
+        <p class="mcard__text">Let users scan a QR code or send to a deposit address from an external wallet or exchange.</p>
       </article>
       <article class="mcard">
         <div class="mcard__icon"><img src="assets/ic-embedded.svg" alt="" loading="lazy"></div>
         <h3 class="mcard__title">Embedded UI</h3>
-        <p class="mcard__text">The deposit remains inside the trading app experience.</p>
+        <p class="mcard__text">Let users fund their account by scanning a QR code from a wallet or exchange.</p>
       </article>
     </div>
   </div>
@@ -317,22 +310,21 @@
     <div class="configurator" id="configurator">
       <iframe class="configurator__frame" id="configuratorFrame"
               title="Widget Configurator walkthrough — presets, chain and tokens, destination, amount rules, theming and the embed code"
-              data-src="flow/configurator.html?hold=1"
+              data-src="flow/configurator.html?hold=1&amp;bg=position-config-bg.webp"
               loading="lazy" tabindex="-1" scrolling="no"></iframe>
     </div>
   </div>
 
   <div class="cta">
-    <img class="cta__bg" src="assets/cta-gradient.webp" alt="" loading="lazy">
+    <img class="cta__bg" src="assets/position-cta-gradient.webp" alt="" loading="lazy">
     <img class="cta__mask" src="assets/cta-union.svg" alt="" loading="lazy" decoding="async">
     <div class="cta__inner">
       <div>
-        <h2 class="cta__title">Integrate in minutes.<br>Go live in hours</h2>
+        <h2 class="cta__title">Help Every Trader<br>Fund and Trade</h2>
         <p class="cta__text">Configure the deposit experience around your destination chain, collateral asset and user funding preferences.</p>
       </div>
       <div class="cta__actions">
         <a class="btn btn-light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Get Started</a>
-        <a class="btn btn-ghost" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Talk to Sales</a>
       </div>
     </div>
   </div>

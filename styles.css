@@ -571,6 +571,92 @@ body.menu-open { overflow: hidden; }
   .deposit-hero__cursor, .deposit-hero__cta i { display: none; }
 }
 
+/* ---- Hero cursor loop · funded position ----------------------------------
+   The prediction hero (prediction-markets.html) bakes a different modal: no
+   funding rows to walk and no Continue button, but a live amount field and a
+   row of amount chips. Same 8s timeline, new targets. Coordinates are again
+   percentages off the 2055x1779 export: the caret sits at x 381-385,
+   y 731-811, and the four chips span y 906-972 at x 272 / 491 / 709 / 927,
+   each 205 wide - so their left edges are 13.24 / 23.89 / 34.50 / 45.11%. */
+.deposit-hero__caret,
+.deposit-hero__chip { position: absolute; pointer-events: none; }
+
+/* the caret is baked into the export, so the blink is a white patch laid over
+   it: opacity 1 covers the bar, 0 lets it through */
+.deposit-hero__caret {
+  left: 18.42%; top: 40.85%;
+  width: .62cqw; height: 4.9%;
+  background: #fff;
+  animation: hero-caret 1.06s infinite steps(1, end);
+}
+@keyframes hero-caret {
+  0%, 50%      { opacity: 0; }
+  50.01%, 100% { opacity: 1; }
+}
+
+/* the chip tint hops 25 -> 50 -> 75 -> MAX on the same cadence the deposit
+   hero uses for its rows, and drops out between stops so each landing reads as
+   a fresh hover rather than one block sliding across the gaps */
+.deposit-hero__chip {
+  left: 13.24%; top: 50.93%;
+  width: 9.98%; height: 3.71%;
+  border-radius: 1.17cqw;
+  background: rgba(45, 105, 235, .10);
+  opacity: 0;
+  animation: hero-chip-move 8s infinite cubic-bezier(.45, 0, .2, 1),
+             hero-hint-fade 8s infinite;
+}
+@keyframes hero-chip-move {
+  0%,   19.4% { left: 13.24%; }
+  25%,  44.4% { left: 23.89%; }
+  50%,  69.4% { left: 34.50%; }
+  75%,  94.4% { left: 45.11%; }
+  100%        { left: 13.24%; }
+}
+
+/* the pointer rides just past each chip's label rather than sitting on it */
+.deposit-hero__cursor--chips {
+  left: 19.8%; top: 52.9%;
+  animation-name: hero-cursor-chips;
+}
+@keyframes hero-cursor-chips {
+  0%,   19.4% { left: 19.8%; top: 52.9%; }
+  25%,  44.4% { left: 30.5%; top: 53.1%; }
+  50%,  69.4% { left: 41.1%; top: 52.9%; }
+  75%,  94.4% { left: 51.7%; top: 53.1%; }
+  100%        { left: 19.8%; top: 52.9%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deposit-hero__chip, .deposit-hero__caret { animation: none; }
+  .deposit-hero__caret { display: none; }
+}
+
+/* ---- Plates on the prediction page ---------------------------------------
+   The Figma runs one illustration behind all four panels - hero, flow, the
+   configurator and the closing CTA - cropped differently in each slot, where
+   the deposits page uses a separate gradient per panel. The hero carries its
+   crop in the <img>; these two are the other shipped crops. (The flow panel's
+   is baked into its clips: flow/position-bg@3x.png, passed to the recorder.)
+
+   The CTA crop is framed differently from the deposits one: in the Figma the
+   gradient starts 30px down a 655-tall block and runs 625px, against the
+   deposits plate's 15.1% / 92.5%. */
+.page-position .cta__bg { top: 4.58%; height: 95.42%; }
+
+/* The deposits panel is held at the Figma's 821px; this one runs at 1000, so the
+   plate reads as a wider frame rather than a narrow inset. The height is
+   unchanged, and so is the recorded card - it is sized off SH - so only the
+   background around it grows. Its clips are shot at 2000x1074, still exactly 2x.
+   The mobile `aspect-ratio: 5/6` below needs no counterpart: that crop is
+   driven by the source's height, which has not moved, and the card is centred,
+   so the phone framing comes out identical either way. */
+.page-position .flow__panel {
+  width: min(100% - var(--gutter) * 2, 1000px);
+  aspect-ratio: 1000 / 537;
+}
+.page-position .configurator.is-live { background-image: url('flow/position-config-bg.webp'); }
+
+
 /* ---- Logo marquee (chains + teams) ---- */
 /* Every logo is drawn in --black: the chain slices and Crest are recoloured at the
    source (Arbitrum keeps its white knock-out slashes, so the mark stays legible),
@@ -1093,12 +1179,15 @@ body.menu-open { overflow: hidden; }
   .fcard__title { letter-spacing: -.4px; }
 
   /* ---- Flow tabs: label-only pills ----------------------------------------
-     Four pills in one row. At the desktop 16px the labels needed 567px and only
-     two fitted; at 10px they come to ~67px of content in a 75px cell, so the two
-     longer ones wrap to a second line and all four sit on one row. Grid stretch
-     keeps the one- and two-line pills the same height. */
+     Every pill in one row. At the desktop 16px the deposit run's four labels
+     needed 567px and only two fitted; at 10px they come to ~67px of content in
+     a 75px cell, so the two longer ones wrap to a second line and all four sit
+     on one row. Grid stretch keeps the one- and two-line pills the same height.
+     Auto-flow columns rather than a fixed four, so the funded-position run's
+     three tabs split the row in thirds instead of leaving a dead cell. */
   .tabs {
-    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: grid;
+    grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
     gap: 6px;
     width: auto; max-width: none;
     margin-inline: auto;

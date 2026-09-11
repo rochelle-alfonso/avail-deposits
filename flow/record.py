@@ -24,13 +24,30 @@ REPO     = os.path.dirname(ROOT)
 OUT      = os.path.join(REPO, 'assets', 'flow')
 PORT     = int(os.environ.get('CDP_PORT', '9222'))
 SERVE    = os.environ.get('SERVE', 'http://127.0.0.1:8899')
-PANEL_W, PANEL_H = 821, 537
+# The Figma panel. PANEL_W is overridable because the prediction page runs a
+# wider frame (1000) at the same height, so the card keeps its size and only
+# the plate around it grows.
+PANEL_W  = int(os.environ.get('PANEL_W', '821'))
+PANEL_H  = int(os.environ.get('PANEL_H', '537'))
 ZOOM     = 2
 FPS      = 30
 CHROME   = ('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
+# PLAYER selects which prototype to record: player.html for the deposit film,
+# player-prediction.html for the funded-position one. OUTDIR keeps a second
+# film's clips out of the first one's folder.
+PLAYER   = os.environ.get('PLAYER', 'player.html')
+OUT      = os.environ.get('OUTDIR', OUT)
+# INTRO=0 records a segment without the opening rise, for a clip that continues
+# from the previous one rather than starting the run.
+INTRO    = os.environ.get('INTRO', '1')
+# BG picks the plate the film is shot against — the player defaults to
+# flow-bg@3x.png. The prediction page runs the same illustration as its hero,
+# cropped to the panel: position-bg@3x.png.
+BG       = os.environ.get('BG', '')
 
-URL = (f'{SERVE}/flow/player.html?seg={SEG}&hold=1'
-       f'&sw={PANEL_W}&sh={PANEL_H}&zoom={ZOOM}')
+URL = (f'{SERVE}/flow/{PLAYER}?seg={SEG}&hold=1&intro={INTRO}'
+       f'&sw={PANEL_W}&sh={PANEL_H}&zoom={ZOOM}'
+       + (f'&bg={BG}' if BG else ''))
 
 
 def cdp_targets():
@@ -71,7 +88,7 @@ async def main():
     for _ in range(80):
         try:
             for t in cdp_targets():
-                if t.get('type') == 'page' and 'player.html' in t.get('url', ''):
+                if t.get('type') == 'page' and PLAYER in t.get('url', ''):
                     ws_url = t['webSocketDebuggerUrl']
                     break
         except Exception:
@@ -138,8 +155,13 @@ async def main():
         # The poster is the parked opening frame as a real png. The screen is
         # parked mid-entrance, so drop the from-state for the shot and put it
         # back - otherwise the poster is an empty plate.
+        # Dropping .intro does not teleport the stage: #vstage .stage carries
+        # `transition: transform .44s`, so it RIDES back up, and shooting on
+        # the next round trip catches the card still below frame. Wait the
+        # transition out (plus a beat) or the poster is a plate and a gradient.
         await evaluate("document.getElementById('vstage')"
                        ".classList.remove('intro')")
+        await asyncio.sleep(.65)
         poster = (await send('Page.captureScreenshot',
                              {'format': 'png'}))['data']
         await evaluate('window.__armIntro && window.__armIntro()')
@@ -217,7 +239,7 @@ async def main():
     from PIL import Image
     Image.open(os.path.join(frames_dir, 'poster.png')).convert('RGB').save(
         os.path.join(OUT, f'{SEG}.webp'), 'WEBP', quality=82, method=6)
-    print('wrote', f'assets/flow/{SEG}.webp')
+    print('wrote', os.path.relpath(os.path.join(OUT, f'{SEG}.webp'), REPO))
     shutil.rmtree(frames_dir, ignore_errors=True)
 
 

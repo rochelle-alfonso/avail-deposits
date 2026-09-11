@@ -4,17 +4,24 @@ Static build of the Figma page
 [`Website-Design` → node `74:46`](https://www.figma.com/design/HrZY2cXjkwYMn6OnmEVPuM/Website-Design?node-id=74-46).
 
 ```
-index.html        markup for all 8 sections
+index.html              the trading page — markup for all 8 sections
+prediction-markets.html the prediction-markets page, same 8 sections
 styles.css        tokens, layout, responsive rules — carries its own MERGE: markers
 js/deposits.js    page behaviour: mobile nav, flow tabs, FAQ, scroll observers
 assets/           real exports pulled from Figma (no redrawn approximations)
 assets/fonts/     Delight Regular + Medium, self-hosted as woff2
 assets/flow/      the four deposit-flow clips + poster frames
+assets/position/  the three funded-position clips + poster frames
+assets/position-cta-gradient.webp   that page's closing-CTA plate
 flow/player.html            source the deposit clips are recorded from
+flow/player-prediction.html source the funded-position clips are recorded from
+flow/build-prediction.py    regenerates the above from player.html
+flow/position-bg@3x.png     plate the funded-position clips are shot against
+flow/position-config-bg.webp  that page's configurator plate
 flow/configurator.html      the Widget Configurator prototype, embedded live
 flow/build-configurator.py  regenerates the above from the prototype
 flow/config-bg.webp         that panel's gradient plate, from the artboard
-flow/record.py              records a player.html segment to mp4 + poster
+flow/record.py              records a player segment to mp4 + poster
 ```
 
 ## Run
@@ -303,6 +310,113 @@ build divides the ratio back out in `moveTo` and in the hue-drag loop, via a
 the same way in `player.html`. Leave the original prototypes alone — the
 correction belongs in the player builds, since it only applies when scaled.
 
+## The prediction-markets page
+
+`prediction-markets.html` is the Figma page
+[node `142:6298`](https://www.figma.com/design/HrZY2cXjkwYMn6OnmEVPuM/Website-Design?node-id=142-6298).
+It is the same eight sections in the same order as `index.html`, sharing
+`styles.css` and `js/deposits.js` verbatim — the design changes copy and two
+pieces of art, not structure, so the page is built by transforming `index.html`
+rather than re-authored. What actually differs:
+
+| Section | Change |
+|---|---|
+| Hero | "Make predictions easier to fund" + new lede; new export (`assets/hero-position*.webp`) |
+| One Flow… | "One Flow to a Funded Position" + new lede; four tabs become **Fund / Predict / Trade** on `assets/position/` |
+| Built for Trading Metrics | QR and Embedded UI copy |
+| Closing CTA | "Help Every Trader Fund and Trade"; the second button (Talk to Sales) is gone |
+
+Everything else — nav, chains marquee, deposit stats, "Ready to Trade", the four
+feature cards, the configurator panel, the FAQs and the footer — is identical to
+the trading page, as the design has it.
+
+**Hero loop.** The deposits hero bakes a four-row funding picker, so its cursor
+walks rows and finishes on a Continue button. This modal has neither: it has a
+live amount field and a row of amount chips. The overlays change with it — the
+caret blinks (a white patch over the baked bar) and the tint hops
+25 → 50 → 75 → MAX on the same 8s timeline. Coordinates are percentages off the
+2055×1779 export, written out above the rules in `styles.css`.
+
+**One illustration behind four panels.** Where the deposits page uses a
+separate gradient per panel, this design runs a single halftone landscape —
+road, hills, a yellow car — cropped four ways: the hero, the flow panel, the
+configurator and the closing CTA. Each crop is exported from its own Figma slot
+at the scale of the asset it replaces:
+
+| Slot | Asset | Source node | Size |
+|---|---|---|---|
+| Hero | `assets/hero-position*.webp` | `142:7029` | 2055×1779 (3×) |
+| Flow panel | `flow/position-bg@3x.png` | `142:6521` | 2463×1611 (3×) |†
+| Configurator | `flow/position-config-bg.webp` | `142:7052` | 2422×1162 (2×) |*
+| Closing CTA | `assets/position-cta-gradient.webp` | `142:7051` | 1800×830 |
+
+\* passed to the iframe as `?bg=`, not set in CSS — see below.  
+† Figma clips that group to its 821-wide slot, so this is the only crop that is
+not 1:1 with its frame: the player's `#vbg` is `object-fit: cover`, and in the
+1000-wide panel it fills the width and crops ~58px off the top and bottom. The
+dot pitch is unchanged; the composition just sits tighter. Asking Figma for a
+wider window is not an option — it re-clips the group to the same slot, and the
+unclipped `rawImages` are the smooth illustration without the halftone.
+
+Written at q72 rather than the hero's q82 — these crops are wall-to-wall
+halftone, which lossy webp spends a lot of bits on, and the dots survive the
+drop. The CTA crop is also framed differently from the deposits one: the Figma
+starts the gradient 30px down a 655-tall block and runs it 625px, against the
+deposits plate's `top: 15.1% / height: 92.5%`, so `.page-position` restates
+both. The configurator crop is exactly the panel's 1211×581, so `cover` lands
+1:1 with no reframing.
+
+Two of those four are not CSS layers. **The configurator's plate is drawn by
+the iframe**, not by the page: `configurator.html` creates its own `#vbg` from
+`?bg=` (defaulting to `config-bg.webp`), and it paints over whatever the page
+put behind it — so the page's `.configurator.is-live` background only shows in
+the moment before the iframe loads. The plate is switched on the iframe's own
+URL; the CSS rule stays so the two match during that moment rather than
+flashing the deposits plate.
+
+**The flow panel's plate is baked into the clips.** It gets there through
+`record.py`'s new `BG` env var, which the player reads as `?bg=`; unset, the
+player keeps its own `flow-bg@3x.png`. The three clips were shot as:
+
+```sh
+SERVE=http://127.0.0.1:8899 PLAYER=player-prediction.html \
+OUTDIR="$PWD/assets/position" BG=position-bg@3x.png PANEL_W=1000 PANEL_H=537 \
+  INTRO=1 python3 flow/record.py fund
+  INTRO=1 python3 flow/record.py predict
+  INTRO=0 python3 flow/record.py trade     # continues the card Predict ends on
+```
+
+`PANEL_W`/`PANEL_H` are the panel this film is shot for — 1000×537 rather than
+the deposits page's 821×537, matching `.page-position .flow__panel`. Only the
+width moved: the card is sized off `SH`, so it comes out identical and the plate
+around it grows.
+
+Frame size costs capture rate, and it is worth watching the number the recorder
+prints. A 1195-wide cut (2390×1074) fell to ~24fps and, because frames carry
+their own timestamps, that starvation stretched Fund from 8.2s to 10.2s of real
+playback. At 1000 (2000×1074) capture holds 39–53fps and the clips come back to
+their true length.
+
+They come out heavier than the pastel plate they replaced — 1.9MB for the three
+full cuts against 1.4MB — because dense halftone is expensive for x264. Still
+comfortably under the deposits page's four clips (2.7MB), with the `-sm` cuts at
+0.9MB, but do not add a fourth chapter without re-checking the total.
+
+**The card is sized per screen, not per film.** `player.html` picks one scale
+for the whole deposit film so the card never zooms between cuts. This film does
+not: its Deposit screen is 661px tall, and one shared scale pinned every other
+screen to 0.75 — the Wallet card, 450×304, came out at 41% of the panel's width.
+Each screen now fits its own height, capped at 1 so the widget is never drawn
+above its design size: Wallet and Placed land at 1, Bet at .84, Deposit at .75.
+The resize is not a separate move — `.stage` carries `transition: transform
+.44s`, which runs on the same beat as the screen swap's blur and scale, so the
+card changes size as part of the cut.
+
+**Two flow sections on one page.** `js/deposits.js` runs its tab loop once per
+`.flow` section and takes the segment order from that section's own tabs, so a
+three-clip run and a four-clip run drive independently. The mobile `.tabs` grid
+flows columns rather than pinning four, so three tabs split the row in thirds.
+
 ## Needs product sign-off
 
 * **FAQ answers.** The Figma shows every row collapsed, so no answer copy
@@ -310,10 +424,23 @@ correction belongs in the player builds, since it only applies when scaled.
   on this page (the feature cards and section ledes). Replace with the real
   copy before shipping.
 * **Link targets.** Every `href` is `#`.
+* **Embedded UI copy on the prediction page.** The Figma gives that card the
+  QR card's sentence ("Let users fund their account by scanning a QR code from
+  a wallet or exchange") while the QR card carries a longer variant. Built as
+  drawn, but it reads as a paste that was never finished — the trading page
+  says "The deposit remains inside the trading app experience." Confirm which
+  is intended.
+* **Prediction-page framing.** The design keeps the trading page's wording in
+  several places — the stats section, "Ready to Trade. Not Ready to Deposit.",
+  "Get Traders to Their First Trade", "Built for Trading Metrics", "Trading App
+  Deposit FAQs" and "Help Every Trader Fund and Trade" — while the hero and the
+  flow section speak about predictions and positions. Built as drawn; confirm
+  the mixed voice is deliberate.
 * **Token-picker scale.** It is the one screen tall enough that fitting it in
   the 821×537 box shrinks the widget noticeably. If that reads too small, the
   fix is a shorter picker in the prototype, not a taller panel.
-* **Flow panel width.** Held at 821px so the clips stay pixel-exact. If it
+* **Flow panel width.** Held at 821px on the trading page so the clips stay
+  pixel-exact (the prediction page runs 1000, with its clips re-shot to suit). If it
   should grow with the rest of the page on large screens, the clips need
   re-recording at a higher zoom (and will lose some frame rate).
 * **Configurator on mobile.** Even cropped it is a dense desktop UI at ~0.48

@@ -76,15 +76,22 @@
   });
 })();
 
-// Flow tabs — the four clips are one continuous run, so each hands off to the
-// next before it finishes. The outgoing and incoming clips overlap for the
+// Flow tabs — a section's clips are one continuous run, so each hands off to
+// the next before it finishes. The outgoing and incoming clips overlap for the
 // length of the fade, which turns the join into a cross-dissolve rather than
 // a cut, and a single pill slides between tabs to match.
-(function () {
-  var tabsEl = document.querySelector('.tabs');
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
-  var clips = Array.prototype.slice.call(document.querySelectorAll('.flow__video'));
-  var order = ['funding', 'balance', 'steps', 'funded'];
+//
+// Runs once per .flow section and takes its order from that section's own tabs,
+// so a page carrying more than one of these (the deposit run and the funded-
+// position run) drives each independently instead of the first one winning.
+Array.prototype.slice.call(document.querySelectorAll('.flow')).forEach(function (section) {
+  var tabsEl = section.querySelector('.tabs');
+  var tabs = Array.prototype.slice.call(section.querySelectorAll('.tab'));
+  var clips = Array.prototype.slice.call(section.querySelectorAll('.flow__video'));
+  var panel = section.querySelector('.flow__panel');
+  if (!tabsEl || !panel || !tabs.length || !clips.length) return;
+
+  var order = tabs.map(function (t) { return t.dataset.seg; });
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   // The 1642px clips exist so the 821px panel lands at exactly 2x on retina.
   // Phones, and any display below 1.5 DPR, are served the lighter 1280px cut.
@@ -110,6 +117,26 @@
     v.setAttribute('src', pick(v));
   }
   function next(seg) { return order[(order.indexOf(seg) + 1) % order.length]; }
+  // A play() issued while the clip is still fetching is aborted by the load
+  // ("interrupted by a new load request") and the promise rejects, which used
+  // to leave the run stalled on a paused first frame with nothing to restart
+  // it. On the live page the two observers below fire a screenful apart so the
+  // data is usually there in time; anywhere the panel is near the top of the
+  // page, or the network is slow, they land in the same tick. Retry once the
+  // clip actually has data.
+  function tryPlay(v) {
+    if (!v || still) return;
+    var p;
+    try { p = v.play(); } catch (e) { return; }
+    if (!p || !p.catch) return;
+    p.catch(function () {
+      v.addEventListener('canplay', function once() {
+        v.removeEventListener('canplay', once);
+        if (v.dataset.seg !== current) return;
+        try { v.play(); } catch (e) {}
+      });
+    });
+  }
 
   // ---- sliding pill ----
   var pill = document.createElement('span');
@@ -149,7 +176,8 @@
       load(v);
       v.__handedOff = false;
       if (still) return;
-      try { v.currentTime = 0; v.play(); } catch (e) {}
+      try { v.currentTime = 0; } catch (e) {}
+      tryPlay(v);
     });
 
     // once the dissolve is over, park whatever is no longer on screen
@@ -198,8 +226,7 @@
   // Nothing here is fetched at parse time. The panel sits well below the fold,
   // so the posters and the first clips only start downloading once the section
   // is close enough to be worth it.
-  var first = clips[0];
-  first.classList.add('is-on');
+  clips[0].classList.add('is-on');
   movePill(false);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { movePill(false); });
   if (window.ResizeObserver) new ResizeObserver(function () { movePill(false); }).observe(tabsEl);
@@ -216,7 +243,6 @@
   // a tab press before the section is armed still has to work
   tabs.forEach(function (t) { t.addEventListener('click', arm); });
 
-  var panel = document.querySelector('.flow__panel');
   if (window.IntersectionObserver) {
     // start the download a screenful early, so the first clip is ready by the
     // time the panel actually arrives
@@ -231,16 +257,16 @@
         entries.forEach(function (e) {
           var v = clipFor(current);
           if (!v) return;
-          if (e.isIntersecting) { try { v.play(); } catch (err) {} }
+          if (e.isIntersecting) tryPlay(v);
           else v.pause();
         });
       }, { threshold: 0.2 }).observe(panel);
     }
   } else {
     arm();
-    if (!still) { try { first.play(); } catch (e) {} }
+    if (!still) tryPlay(clips[0]);
   }
-})();
+});
 
 // Widget Configurator — the prototype runs live in an iframe, scaled to the
 // panel. It only loads and only runs while the section is on screen.

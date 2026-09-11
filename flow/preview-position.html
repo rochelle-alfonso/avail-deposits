@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fund, Predict, Trade — section preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+/* Local review harness only — the section itself uses the page's own
+   .flow / .tabs / .flow__panel rules from styles.css, unchanged, so what
+   renders here is what will render once it is pasted into index.html. */
+body { background: var(--white); padding: 0 0 90px; }
+.prev-bar {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 14px 24px; background: #141413; color: #fff;
+  font-family: var(--sans); font-size: 13px; line-height: 1.4;
+}
+.prev-bar b { font-weight: 600; }
+.prev-bar .sep { opacity: .35; }
+.prev-bar a { color: #8db4ff; text-decoration: none; }
+.prev-bar a:hover { text-decoration: underline; }
+
+.flow { padding-top: 72px; }
+
+/* the beat description under the panel, keyed to the selected tab */
+.flow__notes { max-width: 660px; margin: 30px auto 0; min-height: 122px; }
+.flow__note { display: none; }
+.flow__note.is-on { display: block; animation: noteIn .45s ease both; }
+@keyframes noteIn { from { opacity: 0; transform: translateY(6px) } to { opacity: 1; transform: none } }
+.flow__note h3 {
+  margin: 0 0 8px; font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--text-md);
+}
+.flow__note p { margin: 0; font-family: var(--sans); font-size: 17px; line-height: 1.55; color: var(--black); }
+.flow__note b { font-weight: 600; }
+
+.prev-meta {
+  max-width: 660px; margin: 44px auto 0; padding-top: 22px;
+  border-top: 1px solid #e8e8e6;
+  font-family: var(--sans); font-size: 14px; line-height: 1.65; color: var(--text-md);
+}
+.prev-meta b { color: var(--black); font-weight: 600; }
+.prev-meta ul { margin: 10px 0 0; padding-left: 20px; }
+.prev-meta li { margin-bottom: 6px; }
+.prev-meta code { font-size: 13px; background: #f2f2f0; padding: 1px 5px; border-radius: 3px; }
+</style>
+</head>
+<body class="page-deposits">
+
+<div class="prev-bar">
+  <b>Local preview</b>
+  <span class="sep">·</span>
+  <span>section markup + the site's own styles.css</span>
+  <span class="sep">·</span>
+  <a href="player-prediction.html?seg=full&amp;auto" target="_blank">open the prototype (full run)</a>
+  <span class="sep">·</span>
+  <a href="../index.html" target="_blank">the live page (unchanged)</a>
+</div>
+
+<!-- ============== One Flow to a Funded Position ============== -->
+<section class="flow">
+  <div class="container">
+    <h2 class="h2 section__title">One Flow to a Funded Position</h2>
+    <p class="flow__lede">Traders pick an outcome and size a position. The flow handles the
+      shortfall, the routing across chains and the buy itself, so the run ends at a position
+      they own rather than a balance they still have to spend.</p>
+
+    <div class="tabs" role="tablist" aria-label="Funded position flow steps">
+      <button class="tab" role="tab" id="tab-fund"    data-seg="fund"    aria-controls="clip-fund"    aria-selected="true">Fund</button>
+      <button class="tab" role="tab" id="tab-predict" data-seg="predict" aria-controls="clip-predict" aria-selected="false">Predict</button>
+      <button class="tab" role="tab" id="tab-trade"   data-seg="trade"   aria-controls="clip-trade"   aria-selected="false">Trade</button>
+    </div>
+  </div>
+
+  <!-- One continuous run, cut into the three parts the tabs describe. -->
+  <div class="flow__panel">
+    <video class="flow__video is-on" id="clip-fund" data-seg="fund"
+           role="tabpanel" aria-labelledby="tab-fund"
+           aria-label="An empty Citrea wallet, a 20 ctUSD deposit auto-routed from three chains, and the balance arriving"
+           data-src="../assets/position/fund.mp4" data-src-sm="../assets/position/fund-sm.mp4"
+           data-poster="../assets/position/fund.webp"
+           muted playsinline preload="none"></video>
+
+    <video class="flow__video" id="clip-predict" data-seg="predict"
+           role="tabpanel" aria-labelledby="tab-predict" aria-hidden="true"
+           aria-label="Choosing the No outcome and sizing the bet to the full balance, with shares, cost and payout resolving"
+           data-src="../assets/position/predict.mp4" data-src-sm="../assets/position/predict-sm.mp4"
+           data-poster="../assets/position/predict.webp"
+           muted playsinline preload="none"></video>
+
+    <video class="flow__video" id="clip-trade" data-seg="trade"
+           role="tabpanel" aria-labelledby="tab-trade" aria-hidden="true"
+           aria-label="Casting the bet and the position landing — 24.09 No shares at 83 cents"
+           data-src="../assets/position/trade.mp4" data-src-sm="../assets/position/trade-sm.mp4"
+           data-poster="../assets/position/trade.webp"
+           muted playsinline preload="none"></video>
+  </div>
+
+  <div class="flow__notes">
+    <div class="flow__note is-on" data-seg="fund">
+      <h3>1 · Fund</h3>
+      <p>The wallet is empty — <b>$0.00 on Citrea</b>. One tap on Deposit and Nexus has already
+        picked the route: three assets across Ethereum, Optimism and MegaETH, auto-selected to
+        cover the $20. Deposit Now, and the balance arrives.</p>
+    </div>
+    <div class="flow__note" data-seg="predict">
+      <h3>2 · Predict</h3>
+      <p>Nothing is chosen yet — both outcomes inert, the summary blank. A tap on <b>No&nbsp;83¢</b>
+        resolves the card around that side, and <b>MAX</b> puts the whole balance behind it:
+        24.09 shares, 20.00 ctUSD, <b>$23.26</b> to win.</p>
+    </div>
+    <div class="flow__note" data-seg="trade">
+      <h3>3 · Trade</h3>
+      <p>Cast bet. The button goes to work, and the position lands — <b>24.09 No shares at 83¢</b>.
+        The run started with an empty wallet and ends owning something.</p>
+    </div>
+  </div>
+
+  <div class="prev-meta">
+    <b>Fund · Predict · Trade — one run, cut three ways, looping.</b> 8.7s · 6.9s · 7.6s.
+    Recorded from <code>flow/player-prediction.html</code> at 2× against the five numbered
+    screens on the Paper page “Prediction Market”, on the same 821×537 panel as the
+    trading-balance film.
+    <ul>
+      <li>Trade continues the exact card Predict ends on, so it is recorded without the opening
+        rise and that join is invisible. Fund and Predict each open somewhere new, so they keep
+        theirs — the rise now reads as a chapter starting rather than a stutter.</li>
+      <li><b>$20 is the only dollar figure in the film</b>, and MAX does the sizing: after the
+        deposit the balance is 20.00 ctUSD, so one tap on the chip as drawn puts the whole
+        balance on the bet. No invented quick-amount.</li>
+      <li>Four numbers were changed from the artboards to survive a loop — see the notes handed
+        back with this build.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- The section is driven by the page's real script, unmodified: the clips
+     hand off to each other 0.55s before the end so the join is a cross-dissolve,
+     the pill slides, and the run loops. The only thing added here is keeping
+     the beat note in step with whichever tab the loop has moved to. -->
+<script src="../js/deposits.js" defer></script>
+<script>
+addEventListener('DOMContentLoaded', function () {
+  var tabs = document.querySelectorAll('.tab');
+  var notes = document.querySelectorAll('.flow__note');
+  function sync() {
+    tabs.forEach(function (t) {
+      if (t.getAttribute('aria-selected') !== 'true') return;
+      notes.forEach(function (n) { n.classList.toggle('is-on', n.dataset.seg === t.dataset.seg); });
+    });
+  }
+  tabs.forEach(function (t) {
+    new MutationObserver(sync).observe(t, { attributes: true, attributeFilter: ['aria-selected'] });
+  });
+  sync();
+});
+</script>
+</body>
+</html>
