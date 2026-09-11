@@ -658,6 +658,11 @@ body.menu-open { overflow: hidden; }
 }
 .page-position .configurator.is-live { background-image: url('flow/position-config-bg.webp'); }
 
+/* The deposits stat labels are force-capitalised; the prediction design writes
+   them in sentence case ("Deposit confirmation", "Chains supported"). Scoped,
+   so the deposits page keeps its own casing. */
+.page-position .deposit-stat__label { text-transform: none; }
+
 
 /* ---- Logo marquee (chains + teams) ---- */
 /* Every logo is drawn in --black: the chain slices and Crest are recoloured at the
