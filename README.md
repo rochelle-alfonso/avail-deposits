@@ -16,6 +16,9 @@ assets/position-cta-gradient.webp   that page's closing-CTA plate
 flow/player.html            source the deposit clips are recorded from
 flow/player-prediction.html source the funded-position clips are recorded from
 flow/build-prediction.py    regenerates the above from player.html
+flow/build-hero.py          regenerates flow/hero.html from player-prediction.html
+flow/record-smooth.py       deterministic recorder (uniform fps, see below)
+flow/stamp-assets.py        re-stamps ?v= on recorded assets from their mtimes
 flow/position-bg@3x.png     plate the funded-position clips are shot against
 flow/position-config-bg.webp  that page's configurator plate
 flow/configurator.html      the Widget Configurator prototype, embedded live
@@ -385,6 +388,19 @@ OUTDIR="$PWD/assets/position" BG=position-bg@3x.png PANEL_W=1000 PANEL_H=537 \
   INTRO=1 python3 flow/record.py predict
   INTRO=0 python3 flow/record.py trade     # continues the card Predict ends on
 ```
+
+After any re-record, re-stamp the pages that reference the clips:
+
+```sh
+python3 flow/stamp-assets.py
+```
+
+The browser caches clips by URL, and a hand-maintained `?v=2` goes stale the
+moment the next take lands — at which point a stale clip is indistinguishable
+from a change that silently did not apply. This derives each stamp from the
+file's own mtime, so it cannot disagree with what is on disk. It leaves
+`styles.css` and `js/deposits.js` alone: those stamps are a deliberate decision
+about breaking cache for visitors, not a build artefact.
 
 `PANEL_W`/`PANEL_H` are the panel this film is shot for — 1000×537 rather than
 the deposits page's 821×537, matching `.page-position .flow__panel`. Only the

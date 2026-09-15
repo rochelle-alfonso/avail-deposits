@@ -4,16 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Avail Prediction Markets | Cross-Chain Deposit Infrastructure</title>
-<meta name="description" content="Let users move from market discovery to a funded position using assets across supported chains, without leaving your app to bridge, swap, switch networks or find gas.">
+<meta name="description" content="The simplest way for users to fund prediction market positions using multiple tokens across supported chains, all in just a few clicks.">
 <link rel="icon" href="../assets/avail-mark.svg">
 <link rel="preload" as="image" href="../assets/hero-bg.webp" fetchpriority="high">
-<link rel="preload" as="image" href="../assets/hero-position.webp"
-      imagesrcset="../assets/hero-position-900.webp 900w, ../assets/hero-position-1400.webp 1400w, ../assets/hero-position.webp 2055w"
-      imagesizes="(max-width: 1000px) 100vw, 52vw" fetchpriority="high">
+<link rel="preload" as="image" href="../assets/position/hero-poster.webp?v=1789458089" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=6">
+<link rel="stylesheet" href="../styles.css?v=13">
 </head>
 <body class="page-position">
 <div class="frame">
@@ -83,27 +81,25 @@
   <div class="deposit-hero__inner">
     <div class="deposit-hero__copy">
       <h1 class="deposit-hero__title">Make predictions easier to fund</h1>
-      <p class="deposit-hero__lede">Let users move from market discovery to a funded position using assets across supported chains, without leaving your app to bridge, swap, switch networks or find gas.</p>
+      <p class="deposit-hero__lede">The simplest way for users to fund prediction market positions using multiple tokens across supported chains, all in just a few clicks.</p>
       <div class="deposit-hero__actions">
         <a class="btn btn-primary" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
-        <a class="btn btn-secondary" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
+        <a class="btn btn-secondary" href="https://widgets.availproject.org/docs/components/deposit" target="_blank" rel="noopener noreferrer">Interactive demo</a>
       </div>
     </div>
 
     <div class="deposit-hero__visual">
-      <img class="deposit-hero__art" src="../assets/hero-position.webp" width="2055" height="1779"
-           srcset="../assets/hero-position-900.webp 900w, ../assets/hero-position-1400.webp 1400w, ../assets/hero-position.webp 2055w"
-           sizes="(max-width: 1000px) 100vw, 52vw"
-           fetchpriority="high" decoding="async"
-           alt="A prediction market app with the Deposit modal open: 20 ctUSD being funded from USDC on Ethereum, ETH on Optimism and ETH on MegaETH">
-      <div class="deposit-hero__caret" aria-hidden="true"></div>
-      <div class="deposit-hero__chip" aria-hidden="true"></div>
-      <div class="deposit-hero__cursor deposit-hero__cursor--chips" aria-hidden="true">
-        <svg viewBox="0 0 16 20" width="100%" height="100%" focusable="false">
-          <path d="M1.2 .8 L1.2 16.4 L5.3 12.7 L7.9 18.2 L10.4 17 L7.8 11.7 L13 11.7 Z"
-                fill="#101a33" stroke="#101a33" stroke-width=".7" stroke-linejoin="round"/>
-        </svg>
-      </div>
+      <!-- The hero is a film, not a still: the widget is real DOM recorded from
+           flow/hero.html, so the amount and the funding mix are live content
+           rather than baked pixels. It loops seamlessly — the last frame is the
+           first. The poster is a resolved frame, not frame 0, so the card reads
+           as funded before a byte of video arrives. -->
+      <video class="deposit-hero__film" width="1370" height="1186"
+             poster="../assets/position/hero-poster.webp?v=1789458089"
+             autoplay muted loop playsinline preload="auto"
+             aria-label="A prediction market app with the Deposit modal open. 20 USDC is typed and the flow resolves two stablecoins to cover it, then 40 USDC pulls in a native token and a longtail token alongside them.">
+        <source src="../assets/position/hero.mp4?v=1789457970" type="video/mp4">
+      </video>
     </div>
   </div>
 
@@ -145,7 +141,7 @@
     </div>
 
     <div class="deposit-stats__grid">
-      <div class="deposit-stat"><div class="deposit-stat__value">&lt;20s</div><div class="deposit-stat__label">Deposit confirmation</div></div>
+      <div class="deposit-stat"><div class="deposit-stat__value">&lt;10s</div><div class="deposit-stat__label">Deposit Completion</div></div>
       <div class="deposit-stat"><div class="deposit-stat__value">12+</div><div class="deposit-stat__label">Chains supported</div></div>
       <div class="deposit-stat"><div class="deposit-stat__value">99.9%</div><div class="deposit-stat__label">Uptime SLA</div></div>
       <div class="deposit-stat"><div class="deposit-stat__value">&lt;4s</div><div class="deposit-stat__label">Quote generation</div></div>
@@ -161,11 +157,13 @@
       </div>
     </div>
     <div class="diagram">
-      <img class="diagram__base" src="../assets/diagram-card.webp" loading="lazy" decoding="async" alt="Capital scattered across chains — Ethereum, Base, Arbitrum, Avalanche and 8 other chains routing through Avail Deposits into a trading app on one destination chain">
+      <img class="diagram__base" src="../assets/diagram-card.webp" loading="lazy" decoding="async" alt="Capital scattered across chains — Ethereum, Base, Arbitrum, Avalanche and 8 other chains routing through Avail Deposits into a prediction market on one destination chain">
       <img class="diagram__pin" data-row="1" src="../assets/dg-icon-1.webp" loading="lazy" decoding="async" alt="">
       <img class="diagram__pin" data-row="2" src="../assets/dg-icon-2.webp" loading="lazy" decoding="async" alt="">
       <img class="diagram__pin" data-row="3" src="../assets/dg-icon-3.webp" loading="lazy" decoding="async" alt="">
       <img class="diagram__pin" data-row="4" src="../assets/dg-icon-4.webp" loading="lazy" decoding="async" alt="">
+      <!-- masks "Trading app", which is baked into the artwork -->
+      <span class="diagram__label" aria-hidden="true">Prediction Market</span>
     </div>
   </div>
 </section>
@@ -174,7 +172,7 @@
 <section class="flow">
   <div class="container">
     <h2 class="h2 section__title">One flow to a funded position</h2>
-    <p class="flow__lede">Users select an outcome and position size, view eligible balances across supported chains, then confirm. The flow handles routing, swaps and gas before returning them to the market ready to participate.</p>
+    <p class="flow__lede">Users fund their account using assets across supported chains, predict an outcome and place their trade. Routing, swaps and gas are handled behind the scenes.</p>
 
     <div class="tabs" role="tablist" aria-label="Funded position steps">
       <button class="tab" role="tab" id="tab-fund"    data-seg="fund"    data-label="Fund"    aria-controls="clip-fund"    aria-selected="true">Fund</button>
@@ -189,19 +187,19 @@
     <video class="flow__video is-on" id="clip-fund" data-seg="fund"
            role="tabpanel" aria-labelledby="tab-fund"
            aria-label="An empty ctUSD wallet on Citrea funded in one deposit, drawing on balances across supported chains"
-           data-src="../assets/position/fund.mp4" data-src-sm="../assets/position/fund-sm.mp4" data-poster="../assets/position/fund.webp"
+           data-src="../assets/position/fund.mp4?v=1789459073" data-src-sm="../assets/position/fund-sm.mp4?v=1789459074" data-poster="../assets/position/fund.webp?v=1789459074"
            muted playsinline preload="none"></video>
 
     <video class="flow__video" id="clip-predict" data-seg="predict"
            role="tabpanel" aria-labelledby="tab-predict" aria-hidden="true"
            aria-label="Picking an outcome on the Citrea Markets question — will BTC close above $120,000 in 2026 — and sizing the position"
-           data-src="../assets/position/predict.mp4" data-src-sm="../assets/position/predict-sm.mp4" data-poster="../assets/position/predict.webp"
+           data-src="../assets/position/predict.mp4?v=1789466193" data-src-sm="../assets/position/predict-sm.mp4?v=1789466195" data-poster="../assets/position/predict.webp?v=1789466195"
            muted playsinline preload="none"></video>
 
     <video class="flow__video" id="clip-trade" data-seg="trade"
            role="tabpanel" aria-labelledby="tab-trade" aria-hidden="true"
            aria-label="Casting the bet — 20.00 ctUSD for 24.09 shares at 83 cents, to win $23.26"
-           data-src="../assets/position/trade.mp4" data-src-sm="../assets/position/trade-sm.mp4" data-poster="../assets/position/trade.webp"
+           data-src="../assets/position/trade.mp4?v=1789465878" data-src-sm="../assets/position/trade-sm.mp4?v=1789465880" data-poster="../assets/position/trade.webp?v=1789465880"
            muted playsinline preload="none"></video>
   </div>
 </section>
@@ -300,7 +298,7 @@
       <p class="configure__lede">Choose the destination chain and asset, define source coverage, match your design system, then copy the generated code and paste it into your frontend to integrate immediately.</p>
     </div>
     <div class="configure__actions">
-      <a class="btn btn-light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Try Interactive Demo</a>
+      <a class="btn btn-light" href="https://configurator.availproject.org/" target="_blank" rel="noopener noreferrer">Try the Configurator</a>
       <a class="btn btn-ghost" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
     </div>
   </div>
@@ -310,7 +308,7 @@
     <div class="configurator" id="configurator">
       <iframe class="configurator__frame" id="configuratorFrame"
               title="Widget Configurator walkthrough — presets, chain and tokens, destination, amount rules, theming and the embed code"
-              data-src="../flow/configurator.html?hold=1&amp;bg=position-config-bg.webp"
+              data-src="../flow/configurator.html?hold=1&amp;bg=position-config-bg.webp&amp;app=prediction"
               loading="lazy" tabindex="-1" scrolling="no"></iframe>
     </div>
   </div>
@@ -324,7 +322,7 @@
         <p class="cta__text">Configure the deposit experience around your destination chain, collateral asset and user funding preferences.</p>
       </div>
       <div class="cta__actions">
-        <a class="btn btn-light" href="https://docs.availproject.org/docs/nexus/widgets/components/deposit" target="_blank" rel="noopener noreferrer">Get Started</a>
+        <a class="btn btn-light" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule a Demo</a>
       </div>
     </div>
   </div>
@@ -486,7 +484,7 @@
   </nav>
 </div>
 
-<script src="../js/deposits.js?v=6" defer></script>
+<script src="../js/deposits.js?v=13" defer></script>
 
 </body>
 </html>

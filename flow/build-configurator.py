@@ -21,6 +21,43 @@ def sub(old, new, what):
     return src.replace(old, new, 1)
 
 
+# 0 ── app identity, switchable per page --------------------------------------
+# Both site pages embed this one file, so the Aave branding cannot simply be
+# replaced: the trading page still wants it. `?app=prediction` swaps every
+# Aave-branded string for the generic prediction-market equivalent, the same way
+# `?bg=` swaps the plate. Anything else keeps the prototype's own defaults.
+src = sub(
+    "const PRESETS=[",
+    """const APP = ((new URLSearchParams(location.search)).get('app') === 'prediction')
+  ? { name:'Prediction Market', heading:'Deposit on Prediction Market',
+      ph:'Deposit on Prediction Market', typed:'Fund your next position',
+      presetA:'Prediction Market - Base', presetB:'Prediction Market - Arbitrum',
+      // the preset icon names the app; with no app brand it falls to the chain
+      imgA:'chain_base', imgB:'chain_arbitrum' }
+  : { name:'Aave', heading:'Deposit on Aave Arbitrum',
+      ph:'Deposit on Aave', typed:'Earn yield on Aave',
+      presetA:'Aave - Arbitrum', presetB:'Aave - Ethereum',
+      imgA:'aave', imgB:'aave' };
+const PRESETS=[""",
+    'the preset table (to seat the app-identity switch)')
+
+for old, new, what in (
+    ("{n:'Aave - Arbitrum', img:IMG.aave}", "{n:APP.presetA, img:IMG[APP.imgA]}", 'preset A'),
+    ("{n:'Aave - Ethereum', img:IMG.aave}", "{n:APP.presetB, img:IMG[APP.imgB]}", 'preset B'),
+):
+    src = sub(old, new, what)
+
+# these repeat, so replace every occurrence rather than the first
+for old, new in (
+    ("S.appName='Aave'",                   "S.appName=APP.name"),
+    ("S.heading='Deposit on Aave Arbitrum'", "S.heading=APP.heading"),
+    ("'Deposit on Aave'",                  "APP.ph"),
+    ("'Earn yield on Aave'",               "APP.typed"),
+):
+    if old not in src:
+        sys.exit('build: could not find %r — has the prototype changed?' % old)
+    src = src.replace(old, new)
+
 # 1 ── scale-correct the demo cursor ------------------------------------------
 # The prototype measures targets with getBoundingClientRect (painted pixels) but
 # applies the result as a translate *inside* .frame, which this build scales to

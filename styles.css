@@ -466,6 +466,14 @@ body.menu-open { overflow: hidden; }
   width: 100%; height: 100%;
   object-fit: cover;
 }
+/* The prediction hero is a recorded film in the same box the still occupied —
+   same 685x593 ratio, so `cover` lands 1:1 with no crop. */
+.deposit-hero__film {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ---- Hero cursor loop ----------------------------------------------------
    The hero is one flat export, so there is nothing to :hover. A fake pointer,
@@ -573,65 +581,11 @@ body.menu-open { overflow: hidden; }
   .deposit-hero__cursor, .deposit-hero__cta i { display: none; }
 }
 
-/* ---- Hero cursor loop · funded position ----------------------------------
-   The prediction hero (prediction-markets.html) bakes a different modal: no
-   funding rows to walk and no Continue button, but a live amount field and a
-   row of amount chips. Same 8s timeline, new targets. Coordinates are again
-   percentages off the 2055x1779 export: the caret sits at x 381-385,
-   y 731-811, and the four chips span y 906-972 at x 272 / 491 / 709 / 927,
-   each 205 wide - so their left edges are 13.24 / 23.89 / 34.50 / 45.11%. */
-.deposit-hero__caret,
-.deposit-hero__chip { position: absolute; pointer-events: none; }
-
-/* the caret is baked into the export, so the blink is a white patch laid over
-   it: opacity 1 covers the bar, 0 lets it through */
-.deposit-hero__caret {
-  left: 18.42%; top: 40.85%;
-  width: .62cqw; height: 4.9%;
-  background: #fff;
-  animation: hero-caret 1.06s infinite steps(1, end);
-}
-@keyframes hero-caret {
-  0%, 50%      { opacity: 0; }
-  50.01%, 100% { opacity: 1; }
-}
-
-/* the chip tint hops 25 -> 50 -> 75 -> MAX on the same cadence the deposit
-   hero uses for its rows, and drops out between stops so each landing reads as
-   a fresh hover rather than one block sliding across the gaps */
-.deposit-hero__chip {
-  left: 13.24%; top: 50.93%;
-  width: 9.98%; height: 3.71%;
-  border-radius: 1.17cqw;
-  background: rgba(45, 105, 235, .10);
-  opacity: 0;
-  animation: hero-chip-move 8s infinite cubic-bezier(.45, 0, .2, 1),
-             hero-hint-fade 8s infinite;
-}
-@keyframes hero-chip-move {
-  0%,   19.4% { left: 13.24%; }
-  25%,  44.4% { left: 23.89%; }
-  50%,  69.4% { left: 34.50%; }
-  75%,  94.4% { left: 45.11%; }
-  100%        { left: 13.24%; }
-}
-
-/* the pointer rides just past each chip's label rather than sitting on it */
-.deposit-hero__cursor--chips {
-  left: 19.8%; top: 52.9%;
-  animation-name: hero-cursor-chips;
-}
-@keyframes hero-cursor-chips {
-  0%,   19.4% { left: 19.8%; top: 52.9%; }
-  25%,  44.4% { left: 30.5%; top: 53.1%; }
-  50%,  69.4% { left: 41.1%; top: 52.9%; }
-  75%,  94.4% { left: 51.7%; top: 53.1%; }
-  100%        { left: 19.8%; top: 52.9%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .deposit-hero__chip, .deposit-hero__caret { animation: none; }
-  .deposit-hero__caret { display: none; }
-}
+/* The prediction hero used to be a still with a fake cursor, a blinking caret
+   and a tint hopping across the amount chips layered over it. It is a recorded
+   film now (.deposit-hero__film), which carries all of that for real, so those
+   overlays and their keyframes are gone. The deposits hero still uses its own
+   set above — do not remove those. */
 
 /* ---- Plates on the prediction page ---------------------------------------
    The Figma runs one illustration behind all four panels - hero, flow, the
@@ -777,6 +731,32 @@ body.menu-open { overflow: hidden; }
 .diagram__pin[data-row="2"] { top: 41.46%; border: .5px solid var(--frame); border-radius: 50%; }
 .diagram__pin[data-row="3"] { top: 53.66%; border-radius: 50%; }
 .diagram__pin[data-row="4"] { top: 66.12%; }
+
+/* The diagram's app label is baked into diagram-card.webp — Figma holds it as a
+   single image fill (142:6487), so there is nothing to retype there. The
+   prediction page masks it and sets its own, the same way the hero's app name
+   is handled. Coordinates measured off the 1600x900 artwork: the glyphs sit at
+   x 1205-1331, y 541-561, on a white card, and the type samples #141723.
+   cqw throughout because .diagram is a container — the label tracks the
+   artwork at any width. */
+.page-position .diagram__label {
+  position: absolute;
+  /* Only as wide as the white card behind it (x 65.6%-93.5% at this row) — a
+     full-width mask would white out the chain rows on the left. And it stops
+     short of 63.6%, where "One destination chain" begins. */
+  left: 66.5%; width: 26%;
+  top: 59.2%;
+  height: 3.9%;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;                 /* covers "Trading app" underneath */
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.36cqw;
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: #141723;
+  white-space: nowrap;
+}
 
 /* ============================================================
    SECTION: Get Traders to Their First Trade

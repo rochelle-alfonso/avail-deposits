@@ -44,6 +44,11 @@ INTRO    = os.environ.get('INTRO', '1')
 # flow-bg@3x.png. The prediction page runs the same illustration as its hero,
 # cropped to the panel: position-bg@3x.png.
 BG       = os.environ.get('BG', '')
+# Screencast JPEG quality. 95 is right for the deposit films; a frame that is
+# wall-to-wall halftone costs far more to encode, and dropping this is the
+# cheapest way to buy back capture rate there. The frames are re-encoded to
+# h264 at crf 29 afterwards, so the intermediate loss barely survives anyway.
+SHOT_Q   = int(os.environ.get('SHOT_Q', '95'))
 
 URL = (f'{SERVE}/flow/{PLAYER}?seg={SEG}&hold=1&intro={INTRO}'
        f'&sw={PANEL_W}&sh={PANEL_H}&zoom={ZOOM}'
@@ -147,7 +152,7 @@ async def main():
             return r.get('result', {}).get('value')
 
         await send('Page.startScreencast', {
-            'format': 'jpeg', 'quality': 95, 'everyNthFrame': 1,
+            'format': 'jpeg', 'quality': SHOT_Q, 'everyNthFrame': 1,
             'maxWidth': PANEL_W * ZOOM, 'maxHeight': PANEL_H * ZOOM,
         })
         await asyncio.sleep(.4)

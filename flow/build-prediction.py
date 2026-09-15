@@ -30,7 +30,7 @@ def grab(pattern, what):
 TEXTURE = grab(r'--paper-texture:url\("(data:image/png;base64,[^"]+)"\)', 'the artboard texture')
 HEATVID = grab(r"const HEATVID = '(data:video/mp4;base64,[^']+)'", 'the heatmap clip')
 COINS = {}
-for key in ('usdc', 'eth', 'optimism'):
+for key in ('usdc', 'eth', 'optimism', 'base'):
     COINS[key] = grab(rf'\b{key}:"(data:image/png;base64,[^"]+)"', f'the {key} mark')
 
 # ---- add the two marks this flow needs that player.html has never used ------
@@ -219,7 +219,7 @@ BODY = """
         <div class="wal-card">
           <div class="wal-cap">Available balance @eye@</div>
           <div class="wal-big tnum" id="wal-big">$0.00</div>
-          <div class="wal-sub tnum" id="wal-sub">0.00 ctUSD on Citrea</div>
+          <div class="wal-sub tnum" id="wal-sub">0.00 USDC on Base</div>
         </div>
       </div>
       <div class="pfoot"><button class="cta primary" id="wallet-cta">Deposit</button></div>
@@ -238,7 +238,7 @@ BODY = """
           </div>
           <div class="dep-row">
             <div class="dep-hero"><span class="n tnum" id="dep-n">20</span><span class="dep-caret"></span></div>
-            <div class="dep-pill">@ctusdPill@<span class="sym">ctUSD</span></div>
+            <div class="dep-pill">@usdcPill@<span class="sym">USDC</span></div>
           </div>
           <div class="dep-approx"><span class="tnum" id="dep-usd">&asymp; $20.00</span>@swap@</div>
           <div class="pcts">
@@ -286,10 +286,10 @@ BODY = """
     <section class="screen" data-name="Bet" id="s-bet">
       <div class="ocard">
         <div class="mkt">
-          <div class="mkt-tile">@citreaTile@</div>
+          <div class="mkt-tile">@marketTile@</div>
           <div>
             <div class="mkt-q">Will BTC close above $120,000 in 2026?</div>
-            <div class="mkt-meta">Citrea Markets &middot; $2.4M Vol.</div>
+            <div class="mkt-meta">Prediction Market &middot; $2.4M Vol.</div>
           </div>
         </div>
         <div class="hair"></div>
@@ -306,7 +306,7 @@ BODY = """
           <div class="amtgrp">
             <div class="amt-head">
               <div class="amt-lbl">Amount</div>
-              <div class="bal" id="bet-bal">Balance 20.00 ctUSD</div>
+              <div class="bal" id="bet-bal">Balance 20.00 USDC</div>
             </div>
             <div class="stepper">
               <div class="st-btn">@minusSm@</div>
@@ -346,7 +346,7 @@ BODY = """
             <div class="srow"><div class="slbl">Position</div>
               <div class="pos-val"><span class="pos-pill">No</span><span class="tnum" id="pos-sh">24.09</span>&nbsp;shares</div></div>
             <div class="srow"><div class="slbl">Avg price</div><div class="sv">83&cent;</div></div>
-            <div class="srow total"><div class="slbl">Total cost</div><div class="sv tnum">20.00 ctUSD</div></div>
+            <div class="srow total"><div class="slbl">Total cost</div><div class="sv tnum">20.00 USDC</div></div>
             <div class="hair" style="margin-top:2px"></div>
             <div class="srow win"><div class="slbl">To win <i class="pct">+16%</i></div>
               <div class="sv tnum" style="color:#1E7A42">$23.26</div></div>
@@ -386,8 +386,14 @@ const av34 = (coin, badge) => `<div class="av34">${mark(coin,34)}<span class="bd
 const MAP = {
   close:SVG.close, refresh:SVG.refresh, eye:SVG.eye, swap:SVG.swap, chevDsm:SVG.chevDsm,
   minusSm:SVG.minusSm, plusSm:SVG.plusSm, bigTick:SVG.bigTick,
-  citreaTile:`<img src="${IMG.citrea}" alt=""/>`,
-  ctusdPill:`<div class="av22">${mark('ctusd',22)}<span class="bd"><img src="${IMG.ctbadge}" alt=""/></span></div>`,
+  marketTile:`<svg viewBox="0 0 42 42" width="42" height="42" style="display:block">
+    <rect width="42" height="42" rx="11" fill="#161615"/>
+    <path d="M11 27.5 L17.5 20 L22.5 24.5 L31 14"
+          fill="none" stroke="#FFFFFE" stroke-width="2.4"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="31" cy="14" r="2.9" fill="#FFFFFE"/>
+  </svg>`,
+  usdcPill:`<div class="av22">${mark('usdc',22)}<span class="bd"><img src="${IMG.base}" alt=""/></span></div>`,
   avUSDC: av34('usdc', mark('eth',14)),
   avOP:   av34('eth',  mark('optimism',14)),
   avMEGA: av34('eth',  SVG.megaeth),
@@ -407,7 +413,7 @@ const PRICE = { yes:0.20, no:0.83 };
    market fee, and it is the same rate at any stake. Deriving the payout from
    it keeps every amount agreeing with the $20 card the flow actually runs on. */
 const NET   = 23.26 / 24.09;
-const BAL   = 20.00;                      // ctUSD, after the deposit in Fund
+const BAL   = 20.00;                      // USDC, after the deposit in Fund
 const CARD  = { side:null, amt:0 };
 const trunc2 = x => Math.floor(x*100)/100;   // shares: 24.09, not 24.10
 const round2 = x => Math.round(x*100)/100;   // payout: same rate at every stake
@@ -418,6 +424,7 @@ const el = id => document.getElementById(id);
 const LAST = {};
 function anim(id,to,dur,fmt){
   const node = el(id); if(!node) return;
+  dur = dur / SPEED;
   const from = (id in LAST) ? LAST[id] : null;
   LAST[id] = to;
   if(!dur || from===null || from===to){ node.textContent = fmt(to); return; }
@@ -451,19 +458,19 @@ function renderNumbers(dur){
   const c = calc();
   el('sh-lbl').textContent = 'Shares at ' + Math.round(PRICE[CARD.side]*100) + '¢';
   anim('sh-val',  c.sh,       dur, asMoney(''));
-  anim('tc-val',  CARD.amt,   dur, asMoney(' ctUSD'));
+  anim('tc-val',  CARD.amt,   dur, asMoney(' USDC'));
   anim('win-val', c.win,      dur, v => '$'+f2(v));
   el('pct').textContent = '+' + c.pct + '%';
 }
 function renderCta(){
   const cta = el('bet-cta');
-  if(!CARD.side){ cta.className='cta disabled'; cta.textContent='Select an outcome'; return; }
-  if(!CARD.amt){ cta.className='cta disabled'; cta.textContent='Enter an amount'; return; }
-  cta.className='cta primary'; cta.textContent='Cast bet';
+  if(!CARD.side){ cta.className='cta disabled'; cta.textContent='Select an Outcome'; return; }
+  if(!CARD.amt){ cta.className='cta disabled'; cta.textContent='Enter an Amount'; return; }
+  cta.className='cta primary'; cta.textContent='Cast Bet';
 }
 function setPlacing(on){
   const cta = el('bet-cta');
-  if(on){ cta.className='cta placing'; cta.innerHTML='<span class="spin w"></span>Placing bet…'; }
+  if(on){ cta.className='cta placing'; cta.innerHTML='<span class="spin w"></span>Placing Bet…'; }
   else renderCta();
 }
 function setChip(id){
@@ -484,13 +491,13 @@ function resetBet(){
   CARD.side=null; CARD.amt=0;
   Object.keys(LAST).forEach(k=>delete LAST[k]);
   setChip(null); el('stake').textContent='0'; LAST['stake']=0;
-  el('bet-bal').textContent = 'Balance ' + f2(BAL) + ' ctUSD';
+  el('bet-bal').textContent = 'Balance ' + f2(BAL) + ' USDC';
   renderNumbers(0); renderCta();
 }
 /* the wallet balance, which Fund fills in */
 function setWallet(v,dur){
   anim('wal-big', v, dur, x => '$'+f2(x));
-  anim('wal-sub', v, dur, x => f2(x)+' ctUSD on Citrea');
+  anim('wal-sub', v, dur, x => f2(x)+' USDC on Base');
 }
 
 /* ---------- confetti (bet placed) ---------- */
@@ -549,11 +556,31 @@ const cursorEl=()=>document.getElementById('democursor');
 const deviceEl=()=>document.getElementById('device');
 function clearDemoTimers(){ demoTimers.forEach(clearTimeout); demoTimers=[]; }
 function hideCursor(){ const c=cursorEl(); if(c) c.style.opacity='0'; }
-function sleep(ms){ return new Promise(res=>{ demoTimers.push(setTimeout(res,ms)); }); }
+/* Every beat, cursor move and count-up divides by SPEED, so the film's pace
+   is one number rather than a hundred scattered durations. ?speed= overrides it
+   for tuning without a rebuild. */
+const SPEED = (+((new URLSearchParams(location.search)).get('speed')) || 1.6);
+/* The JS beats divide by SPEED, but the CSS that carries the screen change, the
+   card resize and the row stagger does not — and those are long enough that
+   leaving them fixed caps how much faster the film can actually feel. Scaling
+   them here keeps the whole thing on one dial. */
+(function(){
+  const d = n => (n / SPEED).toFixed(3) + 's';
+  const st = document.createElement('style');
+  st.textContent =
+    `#vstage .stage{transition:transform ${d(.44)} var(--ease)}` +
+    `.device{transition:height ${d(.44)} var(--ease)}` +
+    `.screen{transition:opacity ${d(.5)} var(--ease),` +
+      `transform ${d(.64)} var(--ease-spring),filter ${d(.5)} var(--ease)}` +
+    `.screen.active .stagger>*{animation-duration:${d(.5)}}` +
+    `.coin{animation-duration:${d(.6)}}`;
+  document.head.appendChild(st);
+})();
+function sleep(ms){ return new Promise(res=>{ demoTimers.push(setTimeout(res,ms/SPEED)); }); }
 function snapCursor(x,y){ const c=cursorEl(); c.style.transition='none'; c.style.transform=`translate(${x}px,${y}px)`; c.style.opacity='0'; void c.offsetHeight; }
 function moveCursorTo(node,opts){
   opts=opts||{};
-  const dur=opts.dur||950;
+  const dur=(opts.dur||950)/SPEED;
   return new Promise(res=>{
     const c=cursorEl(); if(!c||!node){res();return;}
     /* Offsets, not rects: the stage is translated and scaled mid-transition. */

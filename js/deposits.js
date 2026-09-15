@@ -268,6 +268,51 @@ Array.prototype.slice.call(document.querySelectorAll('.flow')).forEach(function 
   }
 });
 
+// Hero film — the prediction page's hero is a looping clip rather than a still.
+// The one thing to get right is what it sits on when it is NOT playing. Frame 0
+// is an empty deposit card, because the loop has to end where it begins, and
+// that is the worst possible thing to leave on screen. So any time the film is
+// not running — reduced motion, a refused autoplay, a background tab — it parks
+// inside the last hold instead, where the card reads as funded.
+(function () {
+  var film = document.querySelector('.deposit-hero__film');
+  if (!film) return;
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function park() {
+    try { film.currentTime = Math.max(0, (film.duration || 8.4) - 1.6); } catch (e) {}
+    film.pause();
+  }
+  function whenReady(fn) {
+    if (film.readyState >= 1) fn();
+    else film.addEventListener('loadedmetadata', fn, { once: true });
+  }
+
+  if (still) {
+    film.removeAttribute('autoplay');
+    film.loop = false;
+    whenReady(park);
+    film.pause();
+    return;
+  }
+
+  whenReady(function () {
+    var p;
+    try { p = film.play(); } catch (e) {}
+    if (p && p.catch) p.catch(park);
+    // A resolved play() promise is not proof it is running — a background tab
+    // reports exactly that while staying paused. Check the clock instead.
+    setTimeout(function () {
+      if (film.paused && !film.currentTime) park();
+    }, 1200);
+  });
+
+  // ...and pick it up again when the tab comes back to the front
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && film.paused) { try { film.play(); } catch (e) {} }
+  });
+})();
+
 // Widget Configurator — the prototype runs live in an iframe, scaled to the
 // panel. It only loads and only runs while the section is on screen.
 (function () {

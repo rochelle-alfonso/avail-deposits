@@ -670,9 +670,19 @@ document.getElementById('availlogo').src = IMG.avail;
 document.documentElement.style.setProperty('--cardbg','url('+IMG.cardbg+')');
 
 /* ---------------- data ---------------- */
+const APP = ((new URLSearchParams(location.search)).get('app') === 'prediction')
+  ? { name:'Prediction Market', heading:'Deposit on Prediction Market',
+      ph:'Deposit on Prediction Market', typed:'Fund your next position',
+      presetA:'Prediction Market - Base', presetB:'Prediction Market - Arbitrum',
+      // the preset icon names the app; with no app brand it falls to the chain
+      imgA:'chain_base', imgB:'chain_arbitrum' }
+  : { name:'Aave', heading:'Deposit on Aave Arbitrum',
+      ph:APP.ph, typed:APP.typed,
+      presetA:'Aave - Arbitrum', presetB:'Aave - Ethereum',
+      imgA:'aave', imgB:'aave' };
 const PRESETS=[
-  {n:'Aave - Arbitrum', img:IMG.aave},
-  {n:'Aave - Ethereum', img:IMG.aave},
+  {n:APP.presetA, img:IMG[APP.imgA]},
+  {n:APP.presetB, img:IMG[APP.imgB]},
   {n:'Compound - Polygon USDT', img:IMG.compound},
   {n:'Fluid - Base USDC', img:IMG.fluid},
   {n:'Mystic - Citrea ctUSD', img:IMG.mystic},
@@ -740,7 +750,7 @@ function renderPanel(){
   $('maxVal').innerHTML = S.max ? S.max : ph('1000');
 
   $('appNameVal').innerHTML = S.appName ? S.appName : ph('Acme App');
-  $('headingVal').innerHTML = S.heading ? S.heading : ph('Deposit on Aave');
+  $('headingVal').innerHTML = S.heading ? S.heading : ph(APP.ph);
   $('logoVal').innerHTML = S.logo ? S.logo : ph('https://.../logo.svg');
   $('hexVal').textContent = S.color.toUpperCase();
   $('bridgeHex').textContent = S.color.toUpperCase();
@@ -762,7 +772,7 @@ function renderWidget(){
   $('previewSub').classList.toggle('ok', ready);
   $('previewTitle').textContent = S.view==='code' ? 'Generated Code' : 'Live Preview';
 
-  $('wTitle').textContent = S.heading || 'Deposit on Aave';
+  $('wTitle').textContent = S.heading || APP.ph;
   $('wbTitle').textContent = S.heading || 'Move funds to Arbitrum';
   const toks = S.tokens.length ? S.tokens : [1];
   $('wTokStack').innerHTML = '<span class="tokone">'
@@ -829,7 +839,7 @@ function codeLines(){
   L.push('          appearance: {');
   L.push('            appName: "'+(S.appName||'Acme App')+'",');
   L.push('            appLogoURL: "https://files.availproject.org/uploads/2026-04-16/aave.svg",');
-  L.push('            heading: "'+(S.heading||'Deposit on Aave')+'",');
+  L.push('            heading: "'+(S.heading||APP.ph)+'",');
   L.push('            primaryColor: "'+S.color.toUpperCase()+'",');
   L.push('          },');
   L.push('        }}');
@@ -952,7 +962,7 @@ function fillPresetFieldsAnimated(){
     ()=>{ $('abiBox').textContent=PRESET_ABI; flash('abiBox'); },
     ()=>{ $('fnBlock').classList.remove('hidden'); },
     ()=>{ $('gasVal').textContent='400000'; flash('gasVal'); },
-    ()=>{ S.appName='Aave'; S.heading='Deposit on Aave Arbitrum'; S.logo='https://files.availproject.org/uploads/2026-04-16/aave.svg';
+    ()=>{ S.appName=APP.name; S.heading=APP.heading; S.logo='https://files.availproject.org/uploads/2026-04-16/aave.svg';
           renderPanel(); renderWidget(); flash('appNameVal'); flash('headingVal'); flash('logoVal'); },
   ];
   seq.forEach((fn,i)=>demoTimers.push(setTimeout(fn,i*140)));
@@ -960,7 +970,7 @@ function fillPresetFieldsAnimated(){
 }
 function applyPresetInstant(){
   S.preset=PRESET_IDX; S.chain=CHAIN_IDX; S.tokens=[0,1]; S.dest='contract';
-  S.appName='Aave'; S.heading='Deposit on Aave Arbitrum';
+  S.appName=APP.name; S.heading=APP.heading;
   S.logo='https://files.availproject.org/uploads/2026-04-16/aave.svg';
   fillPresetFieldsInstant();
 }
@@ -987,7 +997,7 @@ function snapshot(i){
   if(i>=2){ applyPresetInstant(); S.mounted=true; }
   if(i>=3){ S.tokens=[0,1,2]; }
   if(i>=5){ S.amountMode='fixed'; S.amount='250'; S.min='10'; S.max='5000'; }
-  if(i>=6){ S.heading='Earn yield on Aave'; S.color='#7B3FE4'; $('huedot').style.left='82%'; }
+  if(i>=6){ S.heading=APP.typed; S.color='#7B3FE4'; $('huedot').style.left='82%'; }
   $('panel-deposit').scrollTop = (i>=3&&i<=4)?170:(i===5?430:0);
   render();
   paintCode(false);
@@ -1044,8 +1054,8 @@ async function playChapter(i){
   if(CH[i].id==='look'){
     await panelScrollTo($('sec-appearance'));
     await tap($('headingField')); $('headingField').classList.add('focus');
-    await typeInto($('headingVal'),'Earn yield on Aave',80,v=>{S.heading=v;$('wTitle').textContent=v;});
-    S.heading='Earn yield on Aave'; closeMenus(); render(); await sleep(600);
+    await typeInto($('headingVal'),APP.typed,80,v=>{S.heading=v;$('wTitle').textContent=v;});
+    S.heading=APP.typed; closeMenus(); render(); await sleep(600);
     await tap($('swatch')); $('colorPop').classList.add('open'); await sleep(750);
     await moveTo($('huedot'),{dur:420});
     const steps=[['#3E52E8','69%'],['#5C46E6','76%'],['#7B3FE4','82%']];
