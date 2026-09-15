@@ -741,10 +741,12 @@ body.menu-open { overflow: hidden; }
    artwork at any width. */
 .page-position .diagram__label {
   position: absolute;
-  /* Only as wide as the white card behind it (x 65.6%-93.5% at this row) — a
-     full-width mask would white out the chain rows on the left. And it stops
-     short of 63.6%, where "One destination chain" begins. */
-  left: 66.5%; width: 26%;
+  /* Sized to the label, not to the card. The card is white from 65.6% to 93.5%
+     at this row, but the dashed orbit arcs cross it at 68.1-70.6% and
+     87.9-90.4% — masking the full card width clipped them. "Prediction Market"
+     only needs 73.2%-85.4%, so the mask sits inside the arcs with ~1.5% either
+     side. It also stops short of 63.6%, where "One destination chain" begins. */
+  left: 72.2%; width: 14.4%;
   top: 59.2%;
   height: 3.9%;
   display: flex; align-items: center; justify-content: center;
