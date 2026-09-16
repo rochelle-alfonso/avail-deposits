@@ -164,12 +164,19 @@ async def main():
         # `transition: transform .44s`, so it RIDES back up, and shooting on
         # the next round trip catches the card still below frame. Wait the
         # transition out (plus a beat) or the poster is a plate and a gradient.
-        await evaluate("document.getElementById('vstage')"
-                       ".classList.remove('intro')")
-        await asyncio.sleep(.65)
+        was_armed = await evaluate(
+            "(() => { const v = document.getElementById('vstage');"
+            "  const a = v.classList.contains('intro');"
+            "  v.classList.remove('intro'); return a; })()")
+        if was_armed:
+            await asyncio.sleep(.65)
         poster = (await send('Page.captureScreenshot',
                              {'format': 'png'}))['data']
-        await evaluate('window.__armIntro && window.__armIntro()')
+        # Only put it back if the page armed it in the first place. The four tab
+        # clips have no entrance; re-arming unconditionally handed one to
+        # whichever segment happened to be recording.
+        if was_armed:
+            await evaluate('window.__armIntro && window.__armIntro()')
         await asyncio.sleep(.15)
         # Stamp the trim point BEFORE starting, not after: evaluate() awaits a
         # CDP round trip, so by the time it returns the opening animation is

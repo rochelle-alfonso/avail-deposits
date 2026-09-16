@@ -1323,10 +1323,13 @@ if(/[?&]auto/.test(location.search)) play();
      hop the whole screen read as frozen for ~2s. What is left is mostly cursor
      travel, so the screen stays alive. */
   async function segBalance(t){
-    navTo('s-resolved'); setBaseChain(false);
-    snapCursor(300, 430); await sleep(500); if(!alive(t)) return;
-    await tap(q('#go-picker')); if(!alive(t)) return;
-    navTo('s-picker'); await sleep(400); if(!alive(t)) return;   // let the rescale settle
+    /* Opens straight on the picker. The resolved screen used to bookend this
+       segment - 2 assets before, 3 after - but the opening copy duplicated
+       what the funding tab already ends on, so only the closing one is kept.
+       That is the payoff anyway: it is where the extra chain shows up.
+       setBaseChain(false) first, so ticking Base actually changes something. */
+    setBaseChain(false);
+    navTo('s-picker'); snapCursor(300, 300); await sleep(520); if(!alive(t)) return;
     const cb = q('#picker-base-row .cb');
     // faster cursor here than elsewhere: the picker is a tall, busy, static
     // screen, and a 950ms glide across it does not read as motion at all
@@ -1398,14 +1401,17 @@ if(/[?&]auto/.test(location.search)) play();
   // Park on the segment's opening screen at load so frame 0 is already correct.
   // Re-entering the same screen on start replays its entrance behaviour
   // (step progression, count-up, confetti) from the top.
-  const FIRST = { funding:'s-fund', balance:'s-resolved', steps:'s-flow',
+  // balance parks on the picker now, not the resolved screen it used to open on
+  const FIRST = { funding:'s-fund', balance:'s-picker', steps:'s-flow',
                   funded:'s-success', full:'s-fund' };
   hideCursor();
   if(SEG === 'funding' || SEG === 'full'){ selectFundRow(null); setBaseChain(false); }
   if(SEG === 'balance'){ setBaseChain(false); }
   if(SEG === 'steps' || SEG === 'funded'){ setBaseChain(true); }
   navTo(FIRST[SEG] || 's-fund');
-  if(P.has('hold')) requestAnimationFrame(armIntro);   // recording: open on the rise
+  // Only the `full` take opens on the rise. The four tab clips on the page have
+  // never had an entrance, and giving one to a single tab would look like a bug.
+  if(P.has('hold') && SEG === 'full') requestAnimationFrame(armIntro);
 
   // hold the first frame until the recorder (or the page) says go
   window.__startSegment = () => { window.__cycle = 0; loop(); };
