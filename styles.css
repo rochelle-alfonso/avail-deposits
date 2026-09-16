@@ -1097,6 +1097,13 @@ body.menu-open { overflow: hidden; }
      the slide-in panel, exactly as on the live nav */
   .nav-pill { display: none; }
   .nav-menu { display: inline-flex; }
+
+  /* The logo steps down with the pill, as nav.css / common.css do upstream.
+     48px mark + 91x34 wordmark is a desktop size; next to the Menu button it
+     reads as twice the weight of everything around it. */
+  .nav-logo { height: 24px; gap: 3px; }
+  .nav-logo__mark { width: 24px; height: 24px; }
+  .nav-logo__wordmark { width: 46px; height: 17px; }
   .mobile-menu:not([hidden]) { display: block; }
   .mobile-menu-overlay:not([hidden]) { display: block; }
 
@@ -1288,7 +1295,7 @@ body.menu-open { overflow: hidden; }
      target reaches 44px without opening the list up */
   .site-footer__nav-group ul { gap: 0; }
   .site-footer__nav-group a { display: block; padding-block: 13px; }
-  .nav-logo { padding-block: 7px; }
+  .nav-logo { padding-block: 4px; }   /* was 7px, sized against the 48px logo */
   .site-footer__logo { padding-top: 40px; }
 }
 
