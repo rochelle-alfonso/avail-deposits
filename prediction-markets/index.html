@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css?v=20">
+<link rel="stylesheet" href="../styles.css?v=21">
 </head>
 <body class="page-position">
 <section class="landing" aria-label="Hero">
@@ -139,6 +139,9 @@
              poster="../assets/position/hero-poster.webp?v=1789458089"
              autoplay muted loop playsinline preload="auto"
              aria-label="A prediction market app with the Deposit modal open. 20 USDC is typed and the flow resolves two stablecoins to cover it, then 40 USDC pulls in a native token and a longtail token alongside them.">
+        <!-- 700px matches the width the flow clips switch renditions at.
+             First match wins, so the -sm source has to come first. -->
+        <source media="(max-width: 700px)" src="../assets/position/hero-sm.mp4?v=1789537674" type="video/mp4">
         <source src="../assets/position/hero.mp4?v=1789537673" type="video/mp4">
       </video>
     </div>
@@ -502,7 +505,7 @@
 </footer>
 
 
-<script src="../js/deposits.js?v=20" defer></script>
+<script src="../js/deposits.js?v=21" defer></script>
 
 </body>
 </html>
