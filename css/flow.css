@@ -1,0 +1,137 @@
+/* flow.css — the deposit-flow components: the tabbed clip runner, the sliding
+   tab pill, the Widget Configurator panel and .container.
+   Shared by both pages here, and the same file name the site uses for them.
+   Load after site.css. */
+
+.container { max-width: var(--page); margin-inline: auto; padding-inline: var(--gutter); }
+
+.container--wide { padding-inline: var(--content-inset); }
+
+/* ============================================================
+   SECTION: One Flow to a Trading Balance
+   ============================================================ */
+
+.flow { background: var(--white); padding: 100px 0 0; overflow: hidden; }
+
+.flow__lede {
+  max-width: calc(var(--page) * 0.60886); margin: 18px auto 0;   /* 825px */
+  font-size: 18px; line-height: 1.3; color: var(--text-md); text-align: center;
+}
+
+.tabs {
+  position: relative;
+  display: flex; gap: 5px; justify-content: center; flex-wrap: wrap;
+  background: var(--surface-tab); padding: 7px 6px;
+  width: max-content; max-width: 100%;
+  margin: 40px auto 0;
+}
+
+/* a single pill slides between tabs instead of the fill jumping.
+   Added by script — without JS the active tab keeps its own background. */
+
+.tabs__pill {
+  position: absolute; top: 7px; bottom: 7px; left: 0;
+  width: 0;
+  background: var(--black);
+  border-radius: var(--r-sm);
+  pointer-events: none;
+  transition: transform .5s cubic-bezier(.4, 0, .2, 1),
+              width     .5s cubic-bezier(.4, 0, .2, 1);
+}
+
+.tabs--pill .tab[aria-selected="true"] { background: transparent; }
+
+.tab {
+  position: relative; z-index: 1;
+  flex: 0 0 auto;
+  padding: 14px 40px; min-width: 198px; border-radius: var(--r-sm);
+  font-size: 16px; color: #666; white-space: nowrap;
+  transition: background-color .3s ease, color .3s ease;
+}
+
+.tab:hover { color: var(--black); }
+
+.tab[aria-selected="true"] { background: var(--black); color: #fff; font-weight: 500; }
+
+/* The panel holds four clips of one continuous deposit run; only the
+   selected tab's clip is shown. The gradient box keeps the Figma size and
+   the widget inside it is fitted per screen. */
+
+.flow__panel {
+  position: relative;
+  /* Held at the Figma panel width so the 1642px clips land at exactly 2x
+     on a retina display — scaling it up would mean upscaling the video. */
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.60590), 821px);
+  margin: 42px auto 0;
+  aspect-ratio: 821 / 537;          /* the Figma panel, unchanged */
+  border-radius: var(--r-sm); overflow: hidden;
+  background: #c9d3f7;
+}
+
+.flow__video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0; visibility: hidden;
+  transition: opacity .55s ease, visibility .55s;
+}
+
+.flow__video.is-on { opacity: 1; visibility: visible; }
+
+/* The configurator prototype runs live at its artboard size (1211x581) and is
+   scaled to whatever width the panel has. The gradient plate doubles as the
+   placeholder while the frame loads. */
+
+.configurator {
+  position: relative;
+  aspect-ratio: 1211 / 581;   /* the artboard panel, unchanged */
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  /* The plate colour alone until the section is near. As a CSS background the
+     253KB artwork loaded the moment the element rendered — ~5000px below the
+     fold, and competing with the hero for bandwidth. The observer that starts
+     the iframe adds .is-live, which brings it in. */
+  background: #c9d3f7;
+}
+
+.configurator.is-live {
+  background: #c9d3f7 url('../flow/config-bg.webp') center / cover no-repeat;
+}
+
+.configurator__frame {
+  position: absolute; top: 0; left: 0;
+  width: 1211px; height: 581px;
+  border: 0;
+  transform-origin: top left;
+  pointer-events: none;   /* a showcase, not a control surface */
+}
+
+@media (max-width: 1000px) {
+  .flow, .configure { padding-top: 72px; }
+}
+
+@media (max-width: 640px) {
+  .deposit-hero__lede, .deposit-stats__lede, .deposit-ready__body, .flow__lede, .configure__lede, .cta__text, .fcard__text, .site-footer__subcopy { font-size: 16px; line-height: 1.55; }
+  /* ---- Flow tabs: label-only pills ----------------------------------------
+     Every pill in one row. At the desktop 16px the deposit run's four labels
+     needed 567px and only two fitted; at 10px they come to ~67px of content in
+     a 75px cell, so the two longer ones wrap to a second line and all four sit
+     on one row. Grid stretch keeps the one- and two-line pills the same height.
+     Auto-flow columns rather than a fixed four, so the funded-position run's
+     three tabs split the row in thirds instead of leaving a dead cell. */
+  .tabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; width: auto; max-width: none; margin-inline: auto; padding: 6px; background: var(--surface-tab); border-radius: var(--r-md); overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  /* the pill can't slide across a grid whose cells it doesn't measure, and the
+     active cell paints its own background instead */
+  .tabs__pill { display: none; }
+  .tab, .tab[aria-selected="true"], .tabs--pill .tab[aria-selected="true"] { display: flex; align-items: center; justify-content: center; min-width: 0; padding: 13px 4px; height: auto; border-radius: var(--r-sm); font-size: 10px; line-height: 13px; font-weight: 500; text-align: center; white-space: normal; background: transparent; color: #6b6b6a; transition: background-color .3s ease, color .3s ease; }
+  .tab[aria-selected="true"], .tabs--pill .tab[aria-selected="true"] { background: var(--black); color: #fff; }
+  /* Gentle portrait crop so the card reads on a phone: cover trims the
+     gradient at the sides only — 5/6 keeps the card itself fully inside. */
+  .flow__panel { aspect-ratio: 5 / 6; }
+  /* Whole artboard, nothing cropped. The fit script takes max(byWidth,
+     byHeight) on narrow screens, so holding the plate at the artboard's own
+     1211/581 makes those two equal and the scale lands on a plain proportional
+     fit. Trade: the UI renders at ~0.27 rather than the 0.83 a 400px slice gave. */
+  .configurator { aspect-ratio: 1211 / 581; }
+}

@@ -1,0 +1,66 @@
+/* prediction.css — the prediction-markets page only, every selector scoped
+   under .page-position so it cannot reach the trading page.
+   Load last, and only by that page. */
+
+/* ---- Plates on the prediction page ---------------------------------------
+   The Figma runs one illustration behind all four panels - hero, flow, the
+   configurator and the closing CTA - cropped differently in each slot, where
+   the deposits page uses a separate gradient per panel. The hero carries its
+   crop in the <img>; these two are the other shipped crops. (The flow panel's
+   is baked into its clips: flow/position-bg@3x.png, passed to the recorder.)
+
+   The CTA crop is framed differently from the deposits one: in the Figma the
+   gradient starts 30px down a 655-tall block and runs 625px, against the
+   deposits plate's 15.1% / 92.5%. */
+
+.page-position .cta__bg { top: 4.58%; height: 95.42%; }
+
+/* The deposits panel is held at the Figma's 821px; this one runs at 1000, so the
+   plate reads as a wider frame rather than a narrow inset. The height is
+   unchanged, and so is the recorded card - it is sized off SH - so only the
+   background around it grows. Its clips are shot at 2000x1074, still exactly 2x.
+   The mobile `aspect-ratio: 5/6` below needs no counterpart: that crop is
+   driven by the source's height, which has not moved, and the card is centred,
+   so the phone framing comes out identical either way. */
+
+.page-position .flow__panel {
+  width: min(100% - var(--gutter) * 2, 1000px);
+  aspect-ratio: 1000 / 537;
+}
+
+.page-position .configurator.is-live { background-image: url('../flow/position-config-bg.webp'); }
+
+/* The deposits stat labels are force-capitalised; the prediction design writes
+   them in sentence case ("Deposit confirmation", "Chains supported"). Scoped,
+   so the deposits page keeps its own casing. */
+
+.page-position .deposit-stat__label { text-transform: none; }
+
+/* The diagram's app label is baked into diagram-card.webp — Figma holds it as a
+   single image fill (142:6487), so there is nothing to retype there. The
+   prediction page masks it and sets its own, the same way the hero's app name
+   is handled. Coordinates measured off the 1600x900 artwork: the glyphs sit at
+   x 1205-1331, y 541-561, on a white card, and the type samples #141723.
+   cqw throughout because .diagram is a container — the label tracks the
+   artwork at any width. */
+
+.page-position .diagram__label {
+  position: absolute;
+  /* Sized to the label, not to the card. The card is white from 65.6% to 93.5%
+     at this row, but the dashed orbit arcs cross it at 68.1-70.6% and
+     87.9-90.4% — masking the full card width clipped them. "Prediction Market"
+     only needs 73.2%-85.4%, so the mask sits inside the arcs with ~1.5% either
+     side. It also stops short of 63.6%, where "One destination chain" begins. */
+  left: 72.2%; width: 14.4%;
+  top: 59.2%;
+  height: 3.9%;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;                 /* covers "Trading app" underneath */
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 1.36cqw;
+  line-height: 1;
+  letter-spacing: -.01em;
+  color: #141723;
+  white-space: nowrap;
+}

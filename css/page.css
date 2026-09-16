@@ -1,0 +1,690 @@
+/* deposit-page.css — the page sections both pages share: tokens, on-dark
+   button variants, hero, logo marquee, stats, features, metrics, configure,
+   CTA and FAQ. On merge this is what folds into the page's own stylesheet.
+   Load after flow.css. */
+
+/* ---------- Tokens ----------
+   MERGE: the names below that the parent's variables.css already defines are
+   marked (parent). DROP those lines; keep the rest, which are page-local, and
+   move them into the deposits.css block so they sit with the rules using them.
+   --page is the open decision: the parent caps every page at 1440px, this one
+   runs clamp(1355px, 100vw - 20px, 1760px) and every inner width is a fraction
+   of it, so changing it rescales the whole composition. */
+
+:root {
+  --black:            #141413;   /* (parent) */
+  --ink-card:       #141415;
+  --ink-strong:     #151514;
+  --text-lg:        #6b6b6a;   /* 20px hero paragraph */
+  --text-md:        #565654;   /* 18/15px body */
+  --text-muted:     #858585;   /* footer links */
+  --nav-link:       #858582;   /* (parent) */
+  --card-body:      rgba(20, 20, 21, .7);
+
+  --dark-bg:        #121212;
+  --dark-card:      #232323;
+  --dark-text:      #9c9c9c;
+  --dark-card-text: rgba(255, 255, 255, .7);
+
+  --white:        #fffffe;   /* (parent) */
+  --heading:      #161615;   /* (parent) */
+  --btn-dark:     #202224;   /* (parent) */
+  --btn-dark-text:#f7f7f7;   /* (parent) */
+  --grey:    #f0f0ef;   /* (parent) */
+  --surface-tab:    #f5f5f5;
+  --icon-tile:      #f7fbff;
+  --frame:          #ebebeb;
+  --border:         #f0f0ef;   /* (parent) */
+
+  --display: 'Delight', 'Geist', system-ui, -apple-system, sans-serif;   /* (parent) */
+  --sans:    'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;   /* (parent) */
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+
+  /* --page is the design content width (1355px in Figma's 1375px frame).
+     Above the design width it grows with the viewport and every inner
+     max-width below is expressed as a fraction of it, so the whole
+     composition scales instead of just gaining empty gutters. */
+  /* Tracks the viewport minus one frame band each side (see the min-width:1201
+     override below), so the grey rail reads the same 10px on the left, right
+     and top. Pinning it to the site's flat 1440px — as trading.css does —
+     centres the page instead, and in a window wider than 1440 the side band
+     opens to 36px+ while the top band stays 10px: the frame stops reading as a
+     frame. The trade is that above 1440 the content sits closer to the edge
+     here than it does on /trading. */
+  --page:   1355px;
+  --section-frame:   10px;   /* (parent) */                            /* Figma frame inset */
+  --content-inset: 72px;   /* (parent) */                            /* fixed, as on availproject.org */
+  --gutter:    80px;   /* (parent) */
+}
+
+@media (min-width: 1201px) {
+  :root { --page: clamp(1355px, calc(100vw - 2 * var(--section-frame)), 1760px); }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.deposit-hero {
+  position: relative;
+  background: var(--white);
+  overflow: hidden;
+}
+
+/* Blue pixel-grid backdrop (4941x2520), mirrored from the supplied art. Not a
+   tile — the dot density is composed, heaviest down what is now the right edge —
+   so it is placed once and anchored right, letting the crop come off the sparse
+   left side. No opacity here: the PNG already
+   carries a flat alpha of 64/255, so the 25% wash is baked into the file. */
+
+.deposit-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url('../assets/hero-bg.webp');
+  background-size: cover;
+  background-position: right center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.deposit-hero > * { position: relative; z-index: 1; }
+
+/* ---- Hero body ---- */
+
+.deposit-hero__inner {
+  overflow: hidden;             /* clips the visual at the frame edge, as in Figma */
+  display: grid;
+  grid-template-columns: minmax(0, 547fr) minmax(0, 685fr);
+  align-items: center;
+  column-gap: 3.975%;           /* 51px across the 1283px content box */
+  max-width: var(--page); margin-inline: auto;
+  padding: 0 0 0 var(--content-inset);
+  min-height: 573px;
+}
+
+.deposit-hero__copy { padding-block: 40px; }
+
+.deposit-hero__title {
+  font-family: var(--display); font-weight: 500;
+  font-size: clamp(34px, 4.723vw, 74px);
+  line-height: 1.2; letter-spacing: -1.68px;
+  text-transform: capitalize; color: var(--black);
+}
+
+/* The headline wraps to two lines by design; the old one-line rule was for
+   the shorter "Multichain Deposits" and would now overflow the column. */
+
+.deposit-hero__lede {
+  margin-top: 24px;
+  font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6; color: var(--text-lg);
+}
+
+.deposit-hero__actions { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 56px; }
+
+/* ---- Hero visual (single Figma export, base box 685×593) ---- */
+
+.deposit-hero__visual {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 685 / 593;
+  justify-self: end;
+  width: 100%;
+}
+
+.deposit-hero__art {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* The prediction hero is a recorded film in the same box the still occupied —
+   same 685x593 ratio, so `cover` lands 1:1 with no crop. */
+
+.deposit-hero__film {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- Hero cursor loop ----------------------------------------------------
+   The hero is one flat export, so there is nothing to :hover. A fake pointer,
+   a hover wash, a selected radio and a CTA sheen are positioned over the baked
+   modal and share one 8s timeline. Every coordinate is a percentage measured
+   off the 2055x1779 export: the row list spans x 291-1214, the dividers sit at
+   y 891 / 1051 / 1207 (row centres 45.90 / 54.64 / 63.52 / 72.26%), each radio
+   is 40px across centred on x 348.5, and the Continue button is
+   x 291-1214, y 1401-1516. Each row holds ~1.55s, travel takes ~0.45s. */
+
+.deposit-hero__rowhint,
+.deposit-hero__radio,
+.deposit-hero__cta,
+.deposit-hero__cursor { position: absolute; pointer-events: none; }
+
+/* the row tint — the modal's own blue at low alpha, not a neutral grey */
+
+.deposit-hero__rowhint {
+  left: 14.16%; width: 44.92%; height: 8.55%;
+  top: 41.63%;
+  border-radius: 1.1cqw;
+  background: rgba(45, 105, 235, .07);
+  opacity: 0;
+  animation: hero-hint-move 8s infinite cubic-bezier(.45, 0, .2, 1),
+             hero-hint-fade 8s infinite;
+}
+
+/* the radio filling in on the hovered row: solid blue disc, white centre punched
+   out with a radial-gradient, soft halo via box-shadow */
+
+.deposit-hero__radio {
+  left: 15.99%; top: 44.78%;
+  width: 1.947cqw; height: 1.947cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 26%, #2d69eb 28% 100%);
+  box-shadow: 0 0 0 .34cqw rgba(45, 105, 235, .16);
+  opacity: 0;
+  animation: hero-radio-move 8s infinite cubic-bezier(.45, 0, .2, 1),
+             hero-hint-fade 8s infinite;
+}
+
+/* CTA sheen: a skewed white band clipped to the button's box and swept across
+   once per loop, while the pointer is resting on the last row */
+
+.deposit-hero__cta {
+  left: 14.16%; top: 78.75%; width: 44.92%; height: 6.47%;
+  border-radius: 1.17cqw;
+  overflow: hidden;
+  background: linear-gradient(100deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, 0) 55%);
+}
+
+.deposit-hero__cta i {
+  position: absolute; inset: -20% auto; left: 0;
+  width: 34%;
+  background: linear-gradient(90deg,
+              rgba(255, 255, 255, 0), rgba(255, 255, 255, .42), rgba(255, 255, 255, 0));
+  transform: translateX(-160%) skewX(-18deg);
+  animation: hero-cta-sweep 8s infinite linear;
+}
+
+.deposit-hero__cursor {
+  left: 17.2%; top: 46.60%;
+  width: 1.55cqw;
+  filter: drop-shadow(0 .16cqw .26cqw rgba(16, 26, 51, .3));
+  animation: hero-cursor 8s infinite cubic-bezier(.45, 0, .2, 1);
+}
+
+/* the paired stops are the hold; the gap between a pair and the next is the move */
+
+@keyframes hero-cursor {
+  0%,   19.4% { top: 46.60%; left: 17.2%; }
+  25%,  44.4% { top: 55.34%; left: 17.6%; }
+  50%,  69.4% { top: 64.22%; left: 17.3%; }
+  75%,  94.4% { top: 72.96%; left: 17.5%; }
+  100%        { top: 46.60%; left: 17.2%; }
+}
+
+@keyframes hero-hint-move {
+  0%,   19.4% { top: 41.63%; }
+  25%,  44.4% { top: 50.37%; }
+  50%,  69.4% { top: 59.25%; }
+  75%,  94.4% { top: 67.99%; }
+  100%        { top: 41.63%; }
+}
+
+@keyframes hero-radio-move {
+  0%,   19.4% { top: 44.78%; }
+  25%,  44.4% { top: 53.52%; }
+  50%,  69.4% { top: 62.40%; }
+  75%,  94.4% { top: 71.14%; }
+  100%        { top: 44.78%; }
+}
+
+/* tint and radio drop out while the pointer travels, so each row reads as a
+   fresh hover landing rather than one block sliding across the dividers */
+
+@keyframes hero-hint-fade {
+  0%,     17%   { opacity: 1; }
+  19.4%,  25%   { opacity: 0; }
+  27.4%,  42%   { opacity: 1; }
+  44.4%,  50%   { opacity: 0; }
+  52.4%,  67%   { opacity: 1; }
+  69.4%,  75%   { opacity: 0; }
+  77.4%,  92%   { opacity: 1; }
+  94.4%,  100%  { opacity: 0; }
+}
+
+/* linear, not eased: an eased sweep spends most of its time off-screen and
+   whips through the button in a couple of frames */
+
+@keyframes hero-cta-sweep {
+  0%,   70%  { transform: translateX(-160%) skewX(-18deg); }
+  95%, 100%  { transform: translateX(440%)  skewX(-18deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deposit-hero__rowhint, .deposit-hero__radio, .deposit-hero__cursor, .deposit-hero__cta i { animation: none; }
+  .deposit-hero__cursor, .deposit-hero__cta i { display: none; }
+}
+
+/* Every logo is drawn in --black: the chain slices and Crest are recoloured at the
+   source (Arbitrum keeps its white knock-out slashes, so the mark stays legible),
+   the four raster team logos have their RGB flattened to the same value with the
+   alpha channel left alone. */
+
+.trust { padding: 40px 0; }
+
+.trust__marquee {
+  overflow: hidden;
+  max-width: calc(var(--page) * 0.90258);   /* 1223px */
+  margin-inline: auto;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.trust__row {
+  display: flex; align-items: center;
+  width: max-content;
+  animation: trust-scroll 45s linear infinite;
+}
+
+.trust__marquee:hover .trust__row { animation-play-state: paused; }
+
+@keyframes trust-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Spacing sits on the items rather than as a flex gap. The track is two identical
+   halves and loops on translateX(-50%); a gap would put half of one at the seam
+   and the loop would visibly jump. */
+
+.trust__item { flex: 0 0 auto; display: flex; align-items: center; padding-inline: 24px; }
+
+.trust__item img { height: 32px; width: auto; display: block; }
+
+/* Team logos are cropped to their ink while the chain slices carry the source
+   strip's 38px band, so equal heights would oversize them; 22px lands their ink
+   at the chains' median. FuffleTools is a stacked lockup and needs a few more. */
+
+.trust__item img.trust__team { height: 22px; }
+
+.trust__item img[src$="fuffletools.webp"] { height: 28px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .trust__row { animation: none; width: auto; flex-wrap: wrap; justify-content: center; }
+  .trust__item[aria-hidden="true"] { display: none; }
+}
+
+/* ============================================================
+   SECTION: Deposit stats (dark)
+   ============================================================ */
+
+.deposit-stats { background: var(--dark-bg); color: #fff; padding: 96px 0 100px; }
+
+.deposit-stats__head { max-width: calc(var(--page) * 0.89225); margin-inline: auto; text-align: center; }
+
+/* 1209px */
+
+.h2 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(30px, 3.542vw, 55px);
+  line-height: 1.05; letter-spacing: -.06px;
+}
+
+.h2--light { color: #fff; }
+
+.deposit-stats__lede {
+  margin-top: 24px;
+  font-family: var(--sans); font-size: clamp(17px, 1.48vw, 20px); line-height: 1.6;
+  color: var(--dark-text);
+}
+
+.deposit-stats__grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 23px; justify-content: center;
+  max-width: calc(var(--page) * 0.80664); margin: 64px auto 0;   /* 1093px */
+}
+
+.deposit-stat {
+  position: relative; overflow: hidden;
+  background: var(--dark-card); border-radius: var(--r-md);
+  min-height: 153px;
+  padding: 36px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  text-align: center;
+}
+
+.deposit-stat::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url('../assets/stat-noise.webp') center / cover no-repeat;
+  opacity: .3; pointer-events: none;
+}
+
+.deposit-stat > * { position: relative; }
+
+.deposit-stat__value { font-family: var(--display); font-weight: 500; font-size: clamp(36px, 3.542vw, 55px); line-height: 1; }
+
+/* Every card reserves two lines of label. The card centres its contents, so
+   without this the one taller label pushes its number up out of line with the
+   rest of the row. */
+
+.deposit-stat__label {
+  font-family: var(--sans); font-size: 16px; line-height: 24px;
+  min-height: 48px;
+  color: var(--dark-card-text); text-transform: capitalize;
+}
+
+/* ---- Ready to trade split ---- */
+
+.deposit-ready {
+  display: grid;
+  grid-template-columns: minmax(0, 517fr) minmax(0, 656fr);
+  gap: 38px; align-items: center;
+  max-width: var(--page); margin: 195px auto 0;
+  padding-inline: var(--content-inset);
+}
+
+.deposit-ready__title { font-family: var(--display); font-size: clamp(30px, 3.100vw, 48px); line-height: 1.2; color: #fff; }
+
+.deposit-ready__body { margin-top: 18px; font-size: 18px; line-height: 1.3; color: var(--dark-text); }
+
+.deposit-ready__body p + p { margin-top: 23.4px; }
+
+.diagram {
+  position: relative;
+  container-type: inline-size;
+  aspect-ratio: 656 / 369;
+  background: #fff; border-radius: var(--r-md); overflow: hidden;
+  width: 100%;
+}
+
+.diagram > img.diagram__base { width: 100%; height: 100%; object-fit: cover; }
+
+.diagram__pin {
+  position: absolute; left: 4.573%; width: 2.439%; aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.diagram__pin[data-row="1"] { top: 28.99%; }
+
+.diagram__pin[data-row="2"] { top: 41.46%; border: .5px solid var(--frame); border-radius: 50%; }
+
+.diagram__pin[data-row="3"] { top: 53.66%; border-radius: 50%; }
+
+.diagram__pin[data-row="4"] { top: 66.12%; }
+
+/* ============================================================
+   SECTION: Get Traders to Their First Trade
+   ============================================================ */
+
+.section-light { background: var(--white); padding: 100px 0; }
+
+.section__title { text-align: center; color: var(--black); }
+
+.section__title--left { text-align: left; }
+
+.feature-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  max-width: calc(var(--page) * 0.79705); margin: 40px auto 0;   /* 1080px */
+}
+
+.fcard {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 0 6.7px rgba(46, 46, 46, .07);
+  display: flex; flex-direction: column;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.fcard:hover { box-shadow: 0 4px 18px rgba(46, 46, 46, .10); transform: translateY(-2px); }
+
+.fcard__art { border-bottom: 1px solid var(--border); background: #fff; }
+
+.fcard__art img { width: 100%; height: auto; aspect-ratio: 526 / 185; object-fit: cover; }
+
+.fcard__body { padding: 24px 32px 32px; }
+
+.fcard__title {
+  font-weight: 500; font-size: clamp(20px, 1.8vw, 24.1px); line-height: 32px;
+  letter-spacing: -.78px; color: var(--ink-card);
+}
+
+.fcard__text { margin-top: 14px; font-family: var(--sans); font-size: 16px; line-height: 24px; color: var(--card-body); }
+
+/* ============================================================
+   SECTION: Built for Trading Metrics
+   ============================================================ */
+
+.metrics { background: var(--white); padding: 100px 0; }
+
+/* Flex rather than grid: with seven cards the last row is short, and
+   justify-content centres the remainder instead of leaving it left-aligned
+   against an empty fourth column. Card width is still a strict quarter. */
+
+.metrics__grid {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 13px 14px;
+  max-width: calc(var(--page) * 0.88192); margin: 50px auto 0;   /* 1195px */
+}
+
+.mcard {
+  flex: 0 0 calc((100% - 3 * 14px) / 4);   /* four across, three column gaps */
+  min-width: 0;
+  background: #fff; border: 1px solid var(--border); border-radius: var(--r-md);
+  box-shadow: 0 0 6.7px rgba(46, 46, 46, .07);
+  padding: 19px 20px 24px;
+  min-height: 241px;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.mcard:hover { box-shadow: 0 4px 18px rgba(46, 46, 46, .10); transform: translateY(-2px); }
+
+.mcard__icon {
+  width: 60px; height: 60px; border-radius: 10.909px;
+  background: var(--icon-tile);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+}
+
+.mcard__icon img { width: 32px; height: 32px; }
+
+.mcard__icon img[data-flip] { transform: scaleX(-1); }
+
+.mcard__title { font-weight: 500; font-size: 24px; line-height: 30px; color: var(--black); }
+
+.mcard__text  { margin-top: 8px; font-size: 15px; line-height: 21px; color: var(--text-md); }
+
+/* ============================================================
+   SECTION: Configure Your Deposit Flow (dark) + CTA
+   ============================================================ */
+
+.configure { background: var(--dark-bg); padding: 100px 0 0; overflow: hidden; }
+
+/* The 1211px cap alone left this section flush to the frame edge on anything
+   narrower than that — every other section sits at --gutter. min() keeps the
+   1211px plate on desktop and hands back a proper gutter once it can't fit. */
+
+.configure__head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.89373));   /* 1211px */
+  margin-inline: auto;
+}
+
+.configure__copy { max-width: 722px; }
+
+.configure__lede { margin-top: 18px; max-width: 671px; font-size: 18px; line-height: 1.3; color: var(--dark-text); }
+
+.configure__actions { display: flex; gap: 20px; flex-shrink: 0; flex-wrap: wrap; }
+
+.configure__panel {
+  width: min(100% - var(--gutter) * 2, calc(var(--page) * 0.89373));   /* 1211px */
+  margin: 40px auto 0;
+}
+
+.configure__panel img { width: 100%; height: auto; border-radius: var(--r-sm); }
+
+/* ---- Big CTA over gradient ---- */
+
+.cta {
+  position: relative;
+  margin-top: 0;
+  aspect-ratio: 1355 / 655;
+  min-height: 380px;
+  display: grid; place-items: center;
+  overflow: hidden;
+}
+
+.cta__bg {
+  position: absolute; left: 0; right: 0; top: 15.1%; bottom: 0;
+  width: 100%; height: 92.5%; object-fit: cover;
+}
+
+.cta__mask {
+  position: absolute; left: 0; top: 0; width: 100%; height: 89.2%;
+  object-fit: fill;
+}
+
+.cta__inner {
+  position: relative; z-index: 2;
+  max-width: calc(var(--page) * 0.52694); padding: 40px 24px;   /* 714px */
+  display: flex; flex-direction: column; align-items: center; gap: 40px;
+  text-align: center;
+}
+
+/* narrower than the block, so it needs auto margins — without them it sits
+   flush left and its centred text reads off-axis */
+
+.cta__title { font-family: var(--display); font-size: clamp(28px, 3.542vw, 55px); line-height: 1.05; color: #fff; max-width: 620px; margin-inline: auto; }
+
+.cta__text  { margin: 12px auto 0; max-width: 529px; font-size: 18px; line-height: 1.4; color: var(--dark-text); }
+
+.cta__actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+/* these two read as written — no capitalize inherited from .btn-ghost */
+
+.cta__actions .btn { text-transform: none; }
+
+/* ============================================================
+   SECTION: FAQs
+   ============================================================ */
+
+.faq { background: var(--white); padding: 100px 0; }
+
+.faq__list { max-width: calc(var(--page) * 0.88192); margin: 40px auto 0; }
+
+/* 1195px */
+
+.faq__item { border-bottom: .909px solid var(--border); }
+
+.faq__q {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 22px 0; text-align: left;
+  font-family: var(--sans); font-weight: 500; font-size: 18px; letter-spacing: -.36px; color: var(--black);
+}
+
+.faq__icon {
+  flex: 0 0 auto;
+  font-size: 22px; line-height: 22px; font-weight: 500;
+  transition: transform .22s ease;
+}
+
+.faq__item[data-open="true"] .faq__icon { transform: rotate(45deg); }
+
+.faq__a {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .26s ease;
+}
+
+.faq__item[data-open="true"] .faq__a { grid-template-rows: 1fr; }
+
+.faq__a > div { overflow: hidden; }
+
+.faq__a p {
+  padding: 0 60px 26px 0;
+  max-width: 900px;
+  font-size: 16px; line-height: 26px; color: var(--text-md);
+}
+
+@media (max-width: 1200px) {
+  :root { --content-inset: 48px; --gutter: 48px; }
+  .deposit-hero__inner { gap: 32px; }
+  .deposit-stats__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .deposit-ready { gap: 32px; }
+  .mcard { flex-basis: calc((100% - 14px) / 2); }
+}
+
+@media (max-width: 1000px) {
+  :root { --content-inset: 32px; --gutter: 32px; }
+  .deposit-hero__inner { grid-template-columns: minmax(0, 1fr); gap: 40px; padding: 0; min-height: 0; }
+  .deposit-hero__copy { padding: 8px var(--content-inset) 0; max-width: 620px; }
+  .deposit-hero__actions { margin-top: 36px; }
+  /* width:auto matters as much as the margins: the base rule sets width:100%,
+     which beats justify-self:stretch and re-inflates the box to the full
+     column, pushing the margins straight back off the frame edge. */
+  .deposit-hero__visual { justify-self: stretch; width: auto; max-width: none; margin-inline: var(--content-inset); }
+  .deposit-hero__title { letter-spacing: -1px; }
+  .trust { padding: 32px 0 40px; }
+  .deposit-stats { padding: 72px 0 80px; }
+  .deposit-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 560px; margin-inline: auto; }
+  .deposit-ready { grid-template-columns: minmax(0, 1fr); margin-top: 96px; gap: 32px; }
+  .section-light, .metrics, .faq { padding: 72px 0; }
+  /* the plate ran straight into the CTA gradient. The gap has to go on the
+     panel, not on .configure — the CTA block lives inside that section, so a
+     section padding-bottom would sit under the gradient instead of above it. */
+  .configure__panel { margin-bottom: 64px; }
+  .feature-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; max-width: 620px; }
+  .configure__head { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .cta { margin-top: 0; padding: 56px 0; }
+  .cta__bg { top: 0; height: 100%; }
+  .cta__mask { display: none; }
+  .cta__inner { z-index: 3; background: var(--dark-bg); padding: 56px 32px; border-radius: var(--r-md); margin-inline: var(--content-inset); }
+}
+
+@media (max-width: 640px) {
+  :root { --content-inset: 20px; --gutter: 20px; }
+  /* ---- Mobile type scale -------------------------------------------------
+     The display sizes carry a 1.05 line-height, which is right for a 55px
+     heading sitting on one line and cramped for a 28px one wrapping to three.
+     Body copy had drifted too: 15/16/17/18px across sections at 1.3–1.6
+     leading. Settled here as 34 / 28 / 22 / 19 for headings and 16/15 for
+     copy, with leading that loosens as the size comes down. */
+  .deposit-hero__title { font-size: 34px; line-height: 1.15; }
+  /* the feature cards and the metric cards sit in sibling sections and read as
+     one tier, so they share a size instead of drifting 22 against 19 */
+  .fcard__title, .mcard__title { font-size: 19px; line-height: 1.35; }
+  .faq__q { font-size: 16px; line-height: 1.4; }
+  .faq__a p, .mcard__text { font-size: 15px; line-height: 1.55; }
+  .deposit-hero__actions, .configure__actions, .cta__actions { gap: 12px; }
+  .deposit-hero__actions .btn, .configure__actions .btn, .cta__actions .btn { flex: 1 1 auto; min-width: 0; }
+  .deposit-hero__lede { margin-top: 18px; }
+  /* drops the fixed 152px */
+  .deposit-hero__visual { margin-left: var(--content-inset); }
+  .trust__item { padding-inline: 16px; }
+  .trust__item img { height: 26px; }
+  .trust__item img.trust__team { height: 18px; }
+  .trust__item img[src$="fuffletools.webp"] { height: 23px; }
+  .deposit-stats { padding: 56px 0 64px; }
+  /* 2x2 rather than a single column. The 320px cap goes with it — it was also
+     what made this the one block inset 35px while everything else sat at 30.
+     Padding and type come down to match: at 159px per card the 36px padding and
+     40px value would have overflowed. */
+  .deposit-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: none; }
+  .deposit-stat { padding: 24px 14px; min-height: 132px; gap: 8px; }
+  .deposit-stat__value { font-size: 32px; }
+  .deposit-stat__label { font-size: 14px; line-height: 20px; min-height: 40px; }
+  .fcard__body { padding: 20px 20px 24px; }
+  .fcard__title { letter-spacing: -.4px; }
+  .metrics__grid { max-width: 420px; }
+  .mcard { flex-basis: 100%; min-height: 0; }
+  .configure__actions { width: 100%; }
+  .cta { aspect-ratio: auto; min-height: 0; padding: 40px 0; }
+  .cta__inner { padding: 48px 24px; gap: 28px; }
+  .faq__q { gap: 16px; padding: 18px 0; }
+  .faq__a p { padding-right: 0; }
+}

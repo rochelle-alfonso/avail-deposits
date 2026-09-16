@@ -6,7 +6,10 @@ Static build of the Figma page
 ```
 index.html              the trading page — markup for all 8 sections
 prediction-markets.html the prediction-markets page, same 8 sections
-styles.css        tokens, layout, responsive rules — carries its own MERGE: markers
+css/site.css      everything availproject.org already supplies — DELETE on merge
+css/flow.css      clip runner, tab pill, configurator, .container — same name the site uses
+css/page.css      the sections both pages share: hero, stats, features, metrics, CTA, FAQ
+css/prediction.css  prediction-markets only, every selector scoped .page-position
 js/deposits.js    page behaviour: mobile nav, flow tabs, FAQ, scroll observers
 assets/           real exports pulled from Figma (no redrawn approximations)
 assets/fonts/     Delight Regular + Medium, self-hosted as woff2
@@ -41,10 +44,10 @@ static host as-is.
 | Item | Value |
 |---|---|
 | Boilerplate/template page | None — single page. The parent site is the template; derive new pages from `avail-web-kit/template.html`, not from this file. |
-| Shared CSS + load order | One file, `styles.css`, in this order: fonts → tokens → reset → layout primitives → buttons → hero/header/nav → sections → footer → responsive. **Order is load-bearing** — several rules depend on it. |
+| Shared CSS + load order | `css/site.css` → `css/flow.css` → `css/page.css` → `css/prediction.css` (that last one only on the prediction page). **Order is load-bearing** — the split preserved the original single-file order within each bucket, and reordering the links will break specificity-dependent rules. |
 | Body class pattern | `page-deposits`, matching the parent's `.page-*` convention (`common.css` already maps `.page-deposits` to a `--hero-base`) |
 | Breakpoints | 1200 / 1000 / 640 / 460 (plus a 1201 min-width refinement). See *Breakpoints* below. |
-| Cache-busting policy | `?v=N` on `styles.css` and `js/deposits.js`, bumped together. Never mixed with unversioned links. |
+| Cache-busting policy | `?v=N` on every `css/*.css` and `js/deposits.js`, bumped together across **both** pages in the same edit. Never mixed with unversioned links. |
 | Dev server | `python3 -m http.server 8899` |
 | Deploy target | GitHub Pages, `main` branch, repo root |
 
@@ -88,10 +91,13 @@ clear boundaries is less work to merge than five files with a name clash.
 This page uses the parent site's class names and tokens, so the chrome drops
 straight into `availproject.org` without a rename pass.
 
-`styles.css` marks its own boundaries: every block the parent already supplies
-is banner-commented **`MERGE: DROP`**, and the token block tags each name the
-parent's `variables.css` defines with `/* (parent) */`. Everything unmarked is
-page-specific and travels. `js/deposits.js` moves into the parent's `js/` as-is
+The stylesheet is split so the merge boundary is a file, not a comment:
+**`css/site.css` is the delete-on-merge file** — every rule in it is supplied by
+`variables.css`, `base.css`, `nav.css`, `footer.css` or `common.css`.
+`css/flow.css` maps 1:1 onto the site's file of the same name. `css/page.css`
+is what folds into the page's own stylesheet, and `css/prediction.css` is
+scoped entirely under `.page-position`. Blocks inside still carry their
+`MERGE: DROP` banners, and parent-owned tokens are tagged `/* (parent) */`. `js/deposits.js` moves into the parent's `js/` as-is
 — it already matches the one-file-per-page-behaviour convention there, and the
 page loads it with `defer`.
 
