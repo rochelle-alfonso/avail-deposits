@@ -13,28 +13,34 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=14">
+<link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body class="page-deposits">
-<div class="frame">
+<section class="landing" aria-label="Hero">
+  <!-- The site's hero backdrop is carried so this markup stays interchangeable
+       with the other pages, and is stood down in CSS: this page brings its own
+       hero-bg plate, and .landing__bg would sit over the whole landing. -->
+  <div class="landing__bg" aria-hidden="true">
+    <div class="landing__bg-spacer"></div>
+    <div class="landing__bg-base"></div>
+    <div class="landing__bg-pixels"><div class="landing__bg-pixel-grid"></div></div>
+  </div>
 
-<!-- ========================= HERO ========================= -->
-<header class="deposit-hero">
-  <div class="nav-header">
-    <a class="nav-logo" href="https://www.availproject.org/" aria-label="Avail home">
-      <img class="nav-logo__mark" src="assets/avail-mark.svg" alt="" width="48" height="48">
-      <img class="nav-logo__wordmark" src="assets/avail-wordmark.svg" alt="Avail" width="91" height="34">
-    </a>
+  <div class="landing__container site-container">
+    <div class="nav-header">
+      <a class="nav-logo" href="https://www.availproject.org/" aria-label="Avail home">
+        <img class="nav-logo__mark" src="assets/avail-mark.svg" alt="" width="48" height="48">
+        <img class="nav-logo__wordmark" src="assets/avail-wordmark.svg" alt="Avail" width="91" height="34">
+      </a>
 
-    <button class="nav-menu" id="navMenu" type="button"
-            aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
-      <span class="nav-menu__icon" aria-hidden="true"></span>
-      <span class="nav-menu__label">Menu</span>
-    </button>
+      <button class="nav-menu" id="navMenu" type="button"
+              aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span class="nav-menu__icon" aria-hidden="true"></span>
+        <span class="nav-menu__label">Menu</span>
+      </button>
 
-    <div class="nav-pill">
-      <nav class="nav" id="primaryNav" aria-label="Primary">
-        <div class="nav-links">
+      <div class="nav-pill">
+        <nav class="nav-links" id="primaryNav" aria-label="Primary">
           <div class="nav-dropdown">
             <button class="nav-links__trigger" type="button" id="trigger-products"
                     aria-haspopup="true" aria-expanded="false" aria-controls="menu-products">Products</button>
@@ -74,12 +80,47 @@
           <a class="nav-links__item" href="https://www.availproject.org/ecosystem">Ecosystem</a>
           <a class="nav-links__item" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
           <a class="nav-links__item" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
-        </div>
+        </nav>
+        <a class="btn btn-primary nav-header__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
+      </div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" hidden></div>
+    <div class="mobile-menu" id="mobileMenu" hidden>
+      <nav class="mobile-menu__nav" aria-label="Mobile">
+        <details class="mobile-menu__details">
+          <summary class="mobile-menu__link">Products</summary>
+          <div class="mobile-menu__sub">
+            <p class="mobile-menu__heading">For Builders</p>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/deposits">Deposits</a>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Nexus</a>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/da">DA</a>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/atomic">Atomic</a>
+            <p class="mobile-menu__heading">For Users</p>
+            <a class="mobile-menu__sublink" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
+            <a class="mobile-menu__sublink" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
+          </div>
+        </details>
+        <details class="mobile-menu__details">
+          <summary class="mobile-menu__link">Solutions</summary>
+          <div class="mobile-menu__sub">
+            <p class="mobile-menu__heading">App Developers</p>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/trading">Trading Platforms</a>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
+            <p class="mobile-menu__heading">Blockchain Developers</p>
+            <a class="mobile-menu__sublink" href="https://www.availproject.org/da">Data Availability</a>
+          </div>
+        </details>
+        <a class="mobile-menu__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
+        <a class="mobile-menu__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
+        <a class="mobile-menu__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a class="btn btn-primary mobile-menu__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
       </nav>
-      <a class="btn btn-primary nav-header__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
     </div>
   </div>
 
+  <header class="deposit-hero">
   <div class="deposit-hero__inner">
     <div class="deposit-hero__copy">
       <h1 class="deposit-hero__title">Drive 40% More Deposit Volume</h1>
@@ -133,9 +174,12 @@
       </div>
     </div>
   </div>
-</header>
+  </header>
+</section>
 
-<main>
+<div class="section-gap" aria-hidden="true"></div>
+
+<div class="lower-sections">
 
 <!-- ================= Fast Cross-Chain Deposits ================= -->
 <section class="deposit-stats">
@@ -172,6 +216,8 @@
 </section>
 
 <!-- ============== One Flow to a Trading Balance ============== -->
+<div class="section-gap" aria-hidden="true"></div>
+
 <section class="flow">
   <div class="container">
     <h2 class="h2 section__title">One Flow to a Trading Balance</h2>
@@ -214,6 +260,8 @@
 </section>
 
 <!-- ============== Get Traders to Their First Trade ============== -->
+<div class="section-gap" aria-hidden="true"></div>
+
 <section class="section-light">
   <div class="container">
     <h2 class="h2 section__title">Get Traders to Their First Trade</h2>
@@ -255,6 +303,8 @@
 </section>
 
 <!-- ================== Built for Trading Metrics ================== -->
+<div class="section-gap" aria-hidden="true"></div>
+
 <section class="metrics">
   <div class="container">
     <h2 class="h2 section__title">Built for Trading Metrics</h2>
@@ -300,6 +350,8 @@
 </section>
 
 <!-- ============== Configure Your Deposit Flow + CTA ============== -->
+<div class="section-gap" aria-hidden="true"></div>
+
 <section class="configure">
   <div class="configure__head">
     <div class="configure__copy">
@@ -339,6 +391,8 @@
 </section>
 
 <!-- ========================= FAQs ========================= -->
+<div class="section-gap" aria-hidden="true"></div>
+
 <section class="faq">
   <div class="container">
     <h2 class="h2 section__title section__title--left">Trading App Deposit FAQs</h2>
@@ -380,121 +434,95 @@
   </div>
 </section>
 
-</main>
+</div><!-- /.lower-sections -->
 
-<!-- ========================= FOOTER ========================= -->
 <footer class="site-footer">
-  <div class="site-footer__top">
-    <div class="site-footer__cta">
-      <h2 class="site-footer__headline">Have questions?</h2>
-      <p class="site-footer__subcopy">Let's talk about how Avail can help your app grow beyond one chain.</p>
-      <a class="btn btn-primary site-footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule A Demo</a>
-      <p class="site-footer__copyright">Copyright &copy; Avail Project. All rights reserved.</p>
+  <div class="site-footer__inner">
+    <div class="site-footer__top">
+      <div class="site-footer__cta">
+        <h2 class="site-footer__headline">Have questions?</h2>
+        <p class="site-footer__subcopy">Let's talk about how Avail can help your app grow beyond one chain.</p>
+        <a class="btn btn-primary site-footer__btn" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Schedule A Demo</a>
+        <p class="site-footer__copyright">Copyright &copy; Avail Project. All rights reserved.</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <div class="site-footer__nav-group site-footer__nav-group--pages">
+          <div class="site-footer__nav-columns">
+            <h3 class="site-footer__nav-heading">Pages</h3>
+            <ul class="site-footer__nav-list site-footer__nav-list--pages">
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/">Home</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/about">About Us</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Nexus</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">DA</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/deposits">Deposits</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/atomic">Atomic</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/token">Token</a></li>
+              <li><a class="site-footer__nav-link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/ecosystem">Ecosystem</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/events">Events</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/terms">T&amp;C</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/whitepaper">Whitepaper</a></li>
+              <li><a class="site-footer__nav-link" href="https://avail.keka.com/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/brand">Brand Assets</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="site-footer__nav-group site-footer__nav-group--solutions">
+          <div class="site-footer__nav-subgroup">
+            <h3 class="site-footer__nav-heading">Solutions</h3>
+            <ul class="site-footer__nav-list">
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/prediction-markets">Prediction Markets</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/trading">Trading Platforms</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">Data Availability</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="site-footer__nav-group site-footer__nav-group--support">
+          <div class="site-footer__nav-subgroup">
+            <h3 class="site-footer__nav-heading">Support</h3>
+            <ul class="site-footer__nav-list">
+              <li><a class="site-footer__nav-link" href="https://www.availproject.org/contact">Contact Us</a></li>
+              <li><a class="site-footer__nav-link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a></li>
+              <li><a class="site-footer__nav-link" href="https://discord.com/invite/AvailProject" target="_blank" rel="noopener noreferrer">Discord</a></li>
+              <li><a class="site-footer__nav-link" href="https://github.com/availproject" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="site-footer__nav-group site-footer__nav-group--socials">
+          <h3 class="site-footer__nav-heading">Socials</h3>
+          <ul class="site-footer__nav-list">
+            <li><a class="site-footer__nav-link" href="https://x.com/AvailProject" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+            <li><a class="site-footer__nav-link" href="https://www.linkedin.com/company/availproject/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a class="site-footer__nav-link" href="https://t.me/AvailCommunity" target="_blank" rel="noopener noreferrer">Telegram</a></li>
+            <li><a class="site-footer__nav-link" href="https://www.youtube.com/@AvailProject" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          </ul>
+        </div>
+
+        <div class="site-footer__nav-group site-footer__nav-group--labs">
+          <div class="site-footer__nav-subgroup">
+            <h3 class="site-footer__nav-heading">Labs</h3>
+            <ul class="site-footer__nav-list">
+              <li><a class="site-footer__nav-link" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a></li>
+              <li><a class="site-footer__nav-link" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </div>
 
-    <nav class="site-footer__nav" aria-label="Footer">
-      <div class="site-footer__nav-group site-footer__nav-group--pages">
-        <h3 class="site-footer__nav-heading">Pages</h3>
-        <ul class="site-footer__nav-list site-footer__nav-list--pages">
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/">Home</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/about">About Us</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Nexus</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">DA</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/deposits">Deposits</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/atomic">Atomic</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/token">Token</a></li>
-          <li><a class="site-footer__nav-link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/ecosystem">Ecosystem</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/events">Events</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/terms">T&amp;C</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/whitepaper">Whitepaper</a></li>
-          <li><a class="site-footer__nav-link" href="https://avail.keka.com/careers" target="_blank" rel="noopener noreferrer">Careers</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/brand">Brand Assets</a></li>
-        </ul>
-      </div>
-
-      <div class="site-footer__nav-group">
-        <h3 class="site-footer__nav-heading">Solutions</h3>
-        <ul class="site-footer__nav-list">
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/prediction-markets">Prediction Markets</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/trading">Trading Platforms</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/da">Data Availability</a></li>
-        </ul>
-      </div>
-
-      <div class="site-footer__nav-group">
-        <h3 class="site-footer__nav-heading">Support</h3>
-        <ul class="site-footer__nav-list">
-          <li><a class="site-footer__nav-link" href="https://www.availproject.org/contact">Contact Us</a></li>
-          <li><a class="site-footer__nav-link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a></li>
-          <li><a class="site-footer__nav-link" href="https://discord.com/invite/AvailProject" target="_blank" rel="noopener noreferrer">Discord</a></li>
-          <li><a class="site-footer__nav-link" href="https://github.com/availproject" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        </ul>
-      </div>
-
-      <div class="site-footer__nav-group">
-        <h3 class="site-footer__nav-heading">Socials</h3>
-        <ul class="site-footer__nav-list">
-          <li><a class="site-footer__nav-link" href="https://x.com/AvailProject" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.linkedin.com/company/availproject/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-          <li><a class="site-footer__nav-link" href="https://t.me/AvailCommunity" target="_blank" rel="noopener noreferrer">Telegram</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.youtube.com/@AvailProject" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-        </ul>
-      </div>
-
-      <div class="site-footer__nav-group">
-        <h3 class="site-footer__nav-heading">Labs</h3>
-        <ul class="site-footer__nav-list">
-          <li><a class="site-footer__nav-link" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a></li>
-          <li><a class="site-footer__nav-link" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a></li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-
-  <div class="site-footer__logo">
-    <img class="site-footer__logo-img" src="assets/footer-wordmark.webp" alt="" loading="lazy">
+    <div class="site-footer__logo">
+      <img class="site-footer__logo-img" src="assets/footer-wordmark.webp" alt="" loading="lazy">
+    </div>
   </div>
 </footer>
 
-</div><!-- /.frame -->
 
-<div class="mobile-menu-overlay" id="mobileMenuOverlay" hidden></div>
-<div class="mobile-menu" id="mobileMenu" hidden>
-  <nav class="mobile-menu__nav" aria-label="Mobile">
-    <details class="mobile-menu__details">
-      <summary class="mobile-menu__link">Products</summary>
-      <div class="mobile-menu__sub">
-        <p class="mobile-menu__heading">For Builders</p>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/deposits">Deposits</a>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Nexus</a>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/da">DA</a>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/atomic">Atomic</a>
-        <p class="mobile-menu__heading">For Users</p>
-        <a class="mobile-menu__sublink" href="https://fastbridge.availproject.org/" target="_blank" rel="noopener noreferrer">FastBridge</a>
-        <a class="mobile-menu__sublink" href="https://www.shieldtx.xyz/" target="_blank" rel="noopener noreferrer">ShieldTX</a>
-      </div>
-    </details>
-    <details class="mobile-menu__details">
-      <summary class="mobile-menu__link">Solutions</summary>
-      <div class="mobile-menu__sub">
-        <p class="mobile-menu__heading">App Developers</p>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/prediction-markets">Prediction Markets</a>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/trading">Trading Platforms</a>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/nexus">Multi-Chain Solutions</a>
-        <p class="mobile-menu__heading">Blockchain Developers</p>
-        <a class="mobile-menu__sublink" href="https://www.availproject.org/da">Data Availability</a>
-      </div>
-    </details>
-    <a class="mobile-menu__link" href="https://www.availproject.org/ecosystem">Ecosystem</a>
-    <a class="mobile-menu__link" href="https://docs.availproject.org/" target="_blank" rel="noopener noreferrer">Docs</a>
-    <a class="mobile-menu__link" href="https://blog.availproject.org/" target="_blank" rel="noopener noreferrer">Blog</a>
-    <a class="btn btn-primary mobile-menu__cta" href="https://calendly.com/d/cwfp-t3y-gt2/avail-discovery-call" target="_blank" rel="noopener noreferrer">Let's Talk</a>
-  </nav>
-</div>
-
-<script src="js/deposits.js?v=14" defer></script>
+<script src="js/deposits.js?v=16" defer></script>
 
 </body>
 </html>
