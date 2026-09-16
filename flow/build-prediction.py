@@ -42,6 +42,7 @@ COINS['citrea']  = datauri(os.path.join(ASSETS, 'citrea-icon.png'), 'image/png')
 COINS['megaeth'] = datauri(os.path.join(ASSETS, 'megaeth-icon.svg'), 'image/svg+xml')
 # ctUSD got a real mark in the Paper file on 2026-09-10 - an orange coin with a
 # Citrea badge - so it no longer has to borrow the plain Citrea hexagon.
+COINS['base']    = datauri(os.path.join(ROOT, 'base-mark.png'), 'image/png')  # official Square
 COINS['ctusd']   = datauri(os.path.join(ASSETS, 'ctusd-icon.png'), 'image/png')
 COINS['ctbadge'] = datauri(os.path.join(ASSETS, 'citrea-badge.png'), 'image/png')
 
@@ -693,7 +694,12 @@ RUNNER = r"""
     hideCursor(); navTo('s-deposit'); await sleep(2600); if(!alive(t))return;
     await tap(q('#deposit-cta'),{dur:800}); if(!alive(t))return;
     hideCursor(); navTo('s-wallet'); await sleep(260);
-    setWallet(20,1100); await sleep(3000);
+    /* The funded balance is the payoff of this whole segment, so it gets room:
+       a slower count so the figure is readable as it lands, then a long hold.
+       Both divide by SPEED, and the page cross-dissolves into Predict 550ms
+       before the clip ends — so the settled number needs more margin than the
+       raw numbers suggest. */
+    setWallet(20,1400); await sleep(4300);
   }
 
   async function segPredict(t){

@@ -103,7 +103,7 @@ player = open(os.path.join(ROOT, 'player.html'), encoding='utf-8').read()
 EXTRA_MARKS = {
     'usdt':     grab_mark(player, 'usdt'),
     'arbitrum': grab_mark(player, 'arbitrum'),
-    'base':     grab_mark(player, 'base'),
+    'base':     datauri(os.path.join(ROOT, 'base-mark.png'), 'image/png'),  # official Square
     'monad':    datauri(os.path.join(ASSETS, 'monad-icon.png'), 'image/png'),
 }
 # Solana has no mark anywhere in the asset set, so it is drawn rather than
@@ -140,13 +140,14 @@ SCENARIOS = [
         {"sym": "USDT", "chain": "on Arbitrum", "amt": "7.60 USDT",   "usd": "$7.60",  "coin": "usdt", "badge": "arb"},
         {"sym": "ETH",  "chain": "on Optimism", "amt": "0.0040 ETH",  "usd": "$10.00", "coin": "eth",  "badge": "optimism"},
      ]},
-    # 2 stablecoins + one native (SOL) + one longtail (MON), per the hero feedback
+    # 2 stablecoins + one native + one longtail. The native was SOL, dropped
+    # because Solana is not supported — ETH on Optimism keeps the shape.
     {"id": "s40", "label": "$40 · 2 stable + native + longtail", "amount": "40", "usd": "40.00",
      "rows": [
         {"sym": "USDC", "chain": "on Ethereum", "amt": "12.40 USDC", "usd": "$12.40", "coin": "usdc",   "badge": "eth"},
         {"sym": "USDT", "chain": "on Arbitrum", "amt": "7.60 USDT",  "usd": "$7.60",  "coin": "usdt",   "badge": "arb"},
-        {"sym": "SOL",  "chain": "on Solana",   "amt": "0.0620 SOL", "usd": "$12.00", "coin": "solana", "badge": "solana"},
-        {"sym": "MON",  "chain": "on Monad",    "amt": "241.9 MON",  "usd": "$8.00",  "coin": "monad",  "badge": "monad"},
+        {"sym": "ETH",  "chain": "on Optimism", "amt": "0.0048 ETH", "usd": "$12.00", "coin": "eth",   "badge": "optimism"},
+        {"sym": "MON",  "chain": "on Monad",    "amt": "241.9 MON",  "usd": "$8.00",  "coin": "monad", "badge": "monad"},
      ]},
 ]
 
@@ -207,6 +208,24 @@ body {
   border-radius: 10px; overflow: hidden;
   box-shadow: 0 24px 70px -30px rgba(20,20,20,.45);
 }
+/* Two pieces of Polymarket branding are baked into the plate. Both sit on flat
+   fills, so they are masked in place rather than needing the artwork re-cut:
+   the chart footer's "Polymarket" credit (x 69.29%-75.77%, on white) is simply
+   covered, and the search placeholder (x 29.83%-41.41%, on the #F6F7F9 pill) is
+   covered and re-set. Coordinates measured off the 2055x1779 plate. */
+.plate-mask { position: absolute; pointer-events: none; }
+.plate-mask--credit {
+  left: 68.1%; width: 8.1%; top: 56.0%; height: 2.1%;
+  background: #fff;
+}
+.plate-mask--search {
+  left: 29.5%; width: 12.6%; top: 13.6%; height: 1.8%;
+  background: #F6F7F9;
+  display: flex; align-items: center;
+  font-family: var(--sans); font-size: 7.4px; line-height: 1;
+  letter-spacing: -.005em; color: #C5C6C9; white-space: nowrap;
+}
+
 /* No layer promotion here. It bought under 2fps, and pinning the plate's raster
    scale made it resample against the stage transform — every frame came out
    fractionally different, which reads as the halftone shimmering. */
@@ -264,15 +283,27 @@ body.rec .hero-stage { transform-origin: top left; border-radius: 0; box-shadow:
      ~0.74 alpha — flat, so a hard ring rather than a soft glow. 16px here
      because the hero scales the card to 0.7467, and 16 x 0.7467 = 12.
      It goes first in the list so it sits under the drop shadows. */
+  /* The drop shadow runs at full strength, unlike the plate fill. Tying it to
+     the 0.65 plate opacity (as the prototype's recorder does) left the card
+     sitting flat on the gradient — the trading page's hero has a clearly
+     readable shadow and this now matches it. The translucent ring stays first
+     in the list so it sits under the shadows. */
   box-shadow: 0 0 0 16px rgba(255,255,255,.74),
-              0 40px 80px -30px rgba(20,20,20,.2275),
-              0 8px 30px -12px rgba(20,20,20,.143),
-              0 0 0 1px rgba(20,20,20,.026);
+              0 40px 80px -30px rgba(20,20,20,.35),
+              0 8px 30px -12px rgba(20,20,20,.22),
+              0 0 0 1px rgba(20,20,20,.04);
   padding: 0;
 }
 .hero-modal .screen { position: relative; opacity: 1; visibility: visible;
   transform: none; filter: none; padding: 16px; gap: 16px; display: flex;
   flex-direction: column; }
+
+/* The prototype sweeps a sheen across .cta.primary on a 3.4s CSS loop. It has
+   no place here twice over: the hero is a still-ish product shot, and the film
+   is recorded on a driven clock that CSS animations do not follow — so it would
+   freeze at whatever phase it happened to be in and read as a stray diagonal
+   band rather than a sweep. */
+.hero-modal .cta.primary::after { display: none; }
 
 /* ---- the control panel --------------------------------------------------- */
 .panel {
@@ -321,6 +352,8 @@ body.rec .hero-stage { transform-origin: top left; border-radius: 0; box-shadow:
  <div id="vstage">
   <div class="hero-stage" id="stage">
     <img class="hero-plate" src="hero-plate@3x.png" alt="">
+    <span class="plate-mask plate-mask--credit" aria-hidden="true"></span>
+    <span class="plate-mask plate-mask--search" aria-hidden="true">Search markets&hellip;</span>
     <div class="hero-modal">
       <div class="device">
         <section class="screen" id="s-deposit">
@@ -357,6 +390,8 @@ body.rec .hero-stage { transform-origin: top left; border-radius: 0; box-shadow:
               <div class="pw-rows" id="h-rows"></div>
             </div>
           </div>
+
+          <div class="pfoot"><button class="cta disabled" id="h-cta">Enter an Amount</button></div>
         </section>
       </div>
     </div>
@@ -695,6 +730,14 @@ function __renderFrame(tSec) {
     amtEl.innerHTML = shown.slice(0, -1) +
       `<span style="display:inline-block;opacity:${e.toFixed(3)};` +
       `transform:translateY(${dy.toFixed(2)}px)">${shown.slice(-1)}</span>`;
+  }
+
+  // the action button follows the form: nothing typed, nothing to deposit
+  const cta = document.getElementById('h-cta');
+  if (cta) {
+    const ready = !!shown && +shown > 0 && live.length > 0;
+    cta.className = ready ? 'cta primary' : 'cta disabled';
+    cta.textContent = ready ? 'Deposit Now' : 'Enter an Amount';
   }
 
   // a soft sine blink rather than a hard on/off

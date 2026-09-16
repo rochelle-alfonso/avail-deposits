@@ -19,6 +19,11 @@ PAGES = ['index.html', os.path.join('prediction-markets', 'index.html')]
 # only the recorded assets: styles.css and js are versioned by hand on purpose,
 # since their stamp is a deliberate cache-break for visitors
 PATTERN = re.compile(r'((?:\.\./)?assets/position/[A-Za-z0-9\-@]+\.(?:mp4|webp))(\?v=[0-9]+)?')
+# The configurator is embedded as an iframe and carries its own query string, so
+# it needs the stamp appended rather than substituted. It is a build artefact
+# that changes as often as the clips do, and a stale iframe is just as
+# invisible — it cost a round of "the token still says USDT0".
+IFRAME = re.compile(r'((?:\.\./)?flow/[A-Za-z0-9\-]+\.html\?[^"\s]*?)(&amp;v=[0-9]+)?(?=")')
 
 
 def stamp_for(url_path):
@@ -51,7 +56,19 @@ def main():
                 changed.append(os.path.basename(url))
             return url + new
 
-        out = PATTERN.sub(repl, src)
+        def repl_iframe(m):
+            url, old_stamp = m.group(1), (m.group(2) or '')
+            path = url.split('?')[0]
+            stamp, full = stamp_for(path)
+            if stamp is None:
+                missing.append(path)
+                return m.group(0)
+            new_stamp = '&amp;v=' + stamp
+            if new_stamp != old_stamp:
+                changed.append(os.path.basename(path))
+            return url + new_stamp
+
+        out = IFRAME.sub(repl_iframe, PATTERN.sub(repl, src))
         if out != src:
             open(p, 'w', encoding='utf-8').write(out)
         total += len(changed)

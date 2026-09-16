@@ -7,7 +7,7 @@ the prototype:
 
     python3 flow/build-configurator.py
 """
-import os, sys
+import os, re, sys
 
 SRC = os.path.expanduser('~/avail-configurator-prototype.html')
 DST = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configurator.html')
@@ -21,42 +21,97 @@ def sub(old, new, what):
     return src.replace(old, new, 1)
 
 
+# 0a ── Base's mark ------------------------------------------------------------
+# The prototype's chain_base was a blue gradient disc — not Base's logo at all.
+# Replaced with the official Square from the brand pack, set on a white circle
+# so it sits with the other round chain marks in the dropdown.
+import base64 as _b64
+_mark = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'base-mark.png'), 'rb').read()
+_mark_uri = 'data:image/png;base64,' + _b64.b64encode(_mark).decode()
+_before = src
+src = re.sub(r'("chain_base"\s*:\s*")data:image/[^"]+(")',
+             lambda m: m.group(1) + _mark_uri + m.group(2), src, count=1)
+if src == _before:
+    sys.exit('build: could not find the chain_base mark to replace')
+
 # 0 ── app identity, switchable per page --------------------------------------
 # Both site pages embed this one file, so the Aave branding cannot simply be
 # replaced: the trading page still wants it. `?app=prediction` swaps every
 # Aave-branded string for the generic prediction-market equivalent, the same way
 # `?bg=` swaps the plate. Anything else keeps the prototype's own defaults.
+#
+# ORDER MATTERS. The literal replacements run FIRST and the APP object is
+# injected LAST. Done the other way round, the global replaces rewrite APP's own
+# Aave defaults into `ph:APP.ph` — a self-reference that throws in the branch
+# that evaluates it, taking the whole script with it. That shipped once; the
+# static markup in the page reads the same either way, so it looked fine.
+for old, new, what in (
+    ("{n:'Aave - Arbitrum', img:IMG.aave}", "{n:APP.presetA, img:IMG[APP.imgA]}", 'preset A'),
+    ("{n:'Aave - Ethereum', img:IMG.aave}", "{n:APP.presetB, img:IMG[APP.imgB]}", 'preset B'),
+    ("const CHAIN_IDX=9;", "const CHAIN_IDX=APP.chainIdx;", 'the destination chain index'),
+):
+    src = sub(old, new, what)
+
+for old, new in (
+    ("S.appName='Aave'",                    "S.appName=APP.name"),
+    ("S.heading='Deposit on Aave Arbitrum'", "S.heading=APP.heading"),
+    ("'Deposit on Aave'",                   "APP.ph"),
+    ("'Earn yield on Aave'",                "APP.typed"),
+    ("S.tokens=[0,1]",                      "S.tokens=APP.tokens.slice()"),
+    # the chapter tapped a hardcoded Arbitrum row and ended on a hardcoded
+    # three-token list, both of which contradict a Base/USDC preset
+    ('[data-chain="9"]',                    '[data-chain="\'+CHAIN_IDX+\'"]'),
+    ("S.tokens=[0,1,2]",                    "S.tokens=APP.tokensAfterSearch.slice()"),
+):
+    if old not in src:
+        sys.exit('build: could not find %r — has the prototype changed?' % old)
+    src = src.replace(old, new)
+
+# Show the switch itself. The step sets the "before" token, then swaps to the
+# real one 820ms later — slow enough to read, and it rides inside the existing
+# 140ms-per-step cadence rather than shifting every step after it.
+src = sub(
+    "()=>{ S.tokens=APP.tokens.slice(); renderPanel(); flash('tokenField'); },",
+    """()=>{ const after = APP.tokens.slice();
+          if (APP.tokensBefore) {
+            S.tokens = APP.tokensBefore.slice(); renderPanel(); flash('tokenField');
+            demoTimers.push(setTimeout(()=>{ S.tokens = after; renderPanel();
+                                             flash('tokenField'); }, 820));
+          } else { S.tokens = after; renderPanel(); flash('tokenField'); } },""",
+    'the token step')
+src = sub(
+    "  return sleep(seq.length*140+240);",
+    "  return sleep(seq.length*140+240 + (APP.tokensBefore ? 900 : 0));",
+    'the preset-fill dwell')
+
 src = sub(
     "const PRESETS=[",
     """const APP = ((new URLSearchParams(location.search)).get('app') === 'prediction')
   ? { name:'Prediction Market', heading:'Deposit on Prediction Market',
       ph:'Deposit on Prediction Market', typed:'Fund your next position',
-      presetA:'Prediction Market - Base', presetB:'Prediction Market - Arbitrum',
+      presetA:'Polymarket (Demo) - Base', presetB:'Polymarket (Demo) - Arbitrum',
       // the preset icon names the app; with no app brand it falls to the chain
-      imgA:'chain_base', imgB:'chain_arbitrum' }
+      imgA:'chain_base', imgB:'chain_arbitrum',
+      // CHAINS[8] is Base (8453); TOKENS[3] is plain USDT, TOKENS[2] is USDC.
+      //
+      // The preset lands on USDT and the search chapter is where USDC arrives.
+      // That ordering is the point: with USDC already selected, the chapter
+      // searched for a token that was there and added nothing, which read as a
+      // dead step. tokensBefore is null because the switch is no longer a
+      // sleight of hand inside the preset fill — it is the gesture the demo is
+      // there to show.
+      chainIdx:8, tokens:[3], tokensBefore:null,
+      tokensAfterSearch:[2] }
   : { name:'Aave', heading:'Deposit on Aave Arbitrum',
       ph:'Deposit on Aave', typed:'Earn yield on Aave',
       presetA:'Aave - Arbitrum', presetB:'Aave - Ethereum',
-      imgA:'aave', imgB:'aave' };
+      imgA:'aave', imgB:'aave',
+      // CHAINS[9] is Arbitrum (42161); TOKENS[0,1] are USDT0 and AAVE.
+      // No tokensBefore: the trading demo fills the field in one go, as it did.
+      chainIdx:9, tokens:[0,1], tokensBefore:null,
+      tokensAfterSearch:[0,1,2] };
 const PRESETS=[""",
     'the preset table (to seat the app-identity switch)')
-
-for old, new, what in (
-    ("{n:'Aave - Arbitrum', img:IMG.aave}", "{n:APP.presetA, img:IMG[APP.imgA]}", 'preset A'),
-    ("{n:'Aave - Ethereum', img:IMG.aave}", "{n:APP.presetB, img:IMG[APP.imgB]}", 'preset B'),
-):
-    src = sub(old, new, what)
-
-# these repeat, so replace every occurrence rather than the first
-for old, new in (
-    ("S.appName='Aave'",                   "S.appName=APP.name"),
-    ("S.heading='Deposit on Aave Arbitrum'", "S.heading=APP.heading"),
-    ("'Deposit on Aave'",                  "APP.ph"),
-    ("'Earn yield on Aave'",               "APP.typed"),
-):
-    if old not in src:
-        sys.exit('build: could not find %r — has the prototype changed?' % old)
-    src = src.replace(old, new)
 
 # 1 ── scale-correct the demo cursor ------------------------------------------
 # The prototype measures targets with getBoundingClientRect (painted pixels) but
