@@ -1314,8 +1314,11 @@ if(/[?&]auto/.test(location.search)) play();
     await tap(q('#fund-continue')); if(!alive(t)) return;
     navTo('s-empty'); await sleep(850); if(!alive(t)) return;
     await tap(q('#empty-amount')); if(!alive(t)) return;
-    navTo('s-typing'); hideCursor(); await sleep(2200); if(!alive(t)) return;
-    navTo('s-resolved'); await sleep(2100);
+    /* Ends on the routing screen. It used to run on into s-resolved, but that
+       is the screen the Unified Balance tab now opens on, and showing it at the
+       end of one tab and the start of the next reads as a stutter. Longer hold
+       here so the tab lands rather than cuts. */
+    navTo('s-typing'); hideCursor(); await sleep(3200);
   }
 
   /* Beats trimmed: the picker used to sit for 1.1s on entry and another 0.9s
@@ -1323,13 +1326,15 @@ if(/[?&]auto/.test(location.search)) play();
      hop the whole screen read as frozen for ~2s. What is left is mostly cursor
      travel, so the screen stays alive. */
   async function segBalance(t){
-    /* Opens straight on the picker. The resolved screen used to bookend this
-       segment - 2 assets before, 3 after - but the opening copy duplicated
-       what the funding tab already ends on, so only the closing one is kept.
-       That is the payoff anyway: it is where the extra chain shows up.
-       setBaseChain(false) first, so ticking Base actually changes something. */
-    setBaseChain(false);
-    navTo('s-picker'); snapCursor(300, 300); await sleep(520); if(!alive(t)) return;
+    /* The resolved screen bookends this segment: 2 assets on the way in, 3 on
+       the way out, so the tab shows what the unified balance actually changed.
+       The opening copy was dropped for a while because it repeats where the
+       funding tab ends; it is back by request. setBaseChain(false) first, so
+       ticking Base has something to change. */
+    navTo('s-resolved'); setBaseChain(false);
+    snapCursor(300, 430); await sleep(500); if(!alive(t)) return;
+    await tap(q('#go-picker')); if(!alive(t)) return;
+    navTo('s-picker'); await sleep(400); if(!alive(t)) return;   // let the rescale settle
     const cb = q('#picker-base-row .cb');
     // faster cursor here than elsewhere: the picker is a tall, busy, static
     // screen, and a 950ms glide across it does not read as motion at all
@@ -1402,7 +1407,7 @@ if(/[?&]auto/.test(location.search)) play();
   // Re-entering the same screen on start replays its entrance behaviour
   // (step progression, count-up, confetti) from the top.
   // balance parks on the picker now, not the resolved screen it used to open on
-  const FIRST = { funding:'s-fund', balance:'s-picker', steps:'s-flow',
+  const FIRST = { funding:'s-fund', balance:'s-resolved', steps:'s-flow',
                   funded:'s-success', full:'s-fund' };
   hideCursor();
   if(SEG === 'funding' || SEG === 'full'){ selectFundRow(null); setBaseChain(false); }
