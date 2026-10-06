@@ -534,11 +534,9 @@
   .ctas .primary,.ctas .secondary,.pr-cta .bd-btn{padding:0 24px}
   .sw-btn{border-radius:4px}
   .api-row input{height:56px;font:400 16px/1 var(--body)}
-  /* app switcher: 39px segmented control, 4px corners, dark active fill */
-  .sw-switch{width:100%;padding:4px;border-radius:4px;gap:0}
-  .sw-opt{flex:1;justify-content:center;height:39px;padding:0 4px;border-radius:4px;font:500 12px/13px var(--body)}
-  .sw-pill{border-radius:4px;background:var(--ink);box-shadow:none}
-  .sw-opt[aria-selected="true"],.sw-opt[aria-selected="true"] i{color:#fff}
+  /* app switcher keeps the desktop pill on phones, sized to fit */
+  .sw-switch{display:flex;width:100%}
+  .sw-opt{flex:1 1 0;min-width:0;justify-content:center;padding:10px 6px;font:500 13px/20px var(--body);gap:6px}
 }
 
 /* ---- Phone hero + header, measured from availproject.org/prediction-markets at 390px ---- */
@@ -648,6 +646,7 @@
   .pr-incl{padding:16px 20px 6px}
   .pr-row{padding:10px 0}
 }
+@media (max-width:370px){ .sw-opt i{display:none} .sw-opt{font-size:12.5px;padding:10px 4px} }
 </style>
 </head>
 <body>
