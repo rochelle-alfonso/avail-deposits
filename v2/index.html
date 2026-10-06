@@ -429,6 +429,27 @@
 .api-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
 .api-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 10px;border-radius:999px;background:#eaf1ff;color:#2d69eb;font:500 13px/18px var(--body);letter-spacing:.01em;white-space:nowrap}
 .api-tag i{width:6px;height:6px;border-radius:50%;background:#2d69eb}
+
+/* ---- Mobile fixes ---- */
+/* closing CTA: aspect-ratio + min-height widened it past the viewport below ~790px */
+.cta{max-width:100%}
+@media (max-width:1000px){
+  /* header: only "Let's Talk" is left, so drop the grey pill the full nav sat in */
+  .nav{padding:0;background:none}
+}
+@media (max-width:760px){
+  /* review HUD is a desktop tuning tool; on phones it just covers content */
+  .hud{display:none}
+  /* pricing: CTA full width on the dark ground, art gets its own band underneath */
+  .pr-price{padding-bottom:168px}
+  .pr-price>.pr-art{height:150px}
+  .pr-cta .bd-btn{width:100%;justify-self:stretch}
+}
+@media (max-width:560px){
+  /* API sign-up stacks: the input must keep its height once the row turns into a column */
+  .api-row input{flex:none;height:52px}
+  .api-row .bd-btn{width:100%}
+}
 </style>
 </head>
 <body>
@@ -1104,7 +1125,7 @@ const API_FORM_URL = "";
         window.open("https://www.availproject.org/contact", "_blank", "noopener");
         msg.textContent = "We've opened our contact page in a new tab. Mention API early access and we'll add you."; return;
       }
-      await fetch(API_FORM_URL, { method: "POST", mode: "no-cors", body: new URLSearchParams({ email: email.value.trim() }) });
+      await fetch(API_FORM_URL, { method: "POST", mode: "no-cors", body: new URLSearchParams({ email: email.value.trim(), page: location.href }) });
       form.classList.add("done"); msg.textContent = "Thanks, you're on the list. We'll be in touch.";
     } catch (err) {
       msg.textContent = "Something went wrong. Please try again."; msg.classList.add("err");
