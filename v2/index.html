@@ -507,6 +507,38 @@
   .sw-panel h3{font-size:26px;line-height:32px}
   .pr-amount b{font-size:56px}
 }
+
+/* ---- Phone type + controls, measured from availproject.org/prediction-markets at 390px ---- */
+@media (max-width:760px){
+  /* section titles: Delight 36/50.4 w500 */
+  .f-head h2,.bd-head h2,.sw-head h2,.pr-head h2{font-size:36px;line-height:50.4px;font-weight:500;letter-spacing:normal}
+  /* closing CTA title 28/39.2 w500; footer title 28/36.4 w500 */
+  .cta h2{font-size:28px;line-height:39.2px;font-weight:500;letter-spacing:normal}
+  .foot-cta h2{font-size:28px;line-height:36.4px;font-weight:500;letter-spacing:-.02em}
+  .foot-cta p{font-size:14px;line-height:21px}
+  .foot-cta small{font-size:12px;line-height:18px}
+  .foot-cta a{font:500 15px/15px var(--body)}
+  /* stats: numbers Delight 32/32 w500, labels Geist 14/20 */
+  .stat b{font-size:32px;line-height:32px;font-weight:500}
+  .stat span{font-family:var(--body);font-size:14px;line-height:20px}
+  /* every subheading under a section title: Geist 19/25.65 w500 */
+  .f-mobile .f-title,.f-mobile .f-ch.active .f-title{margin-top:8px;font:500 19px/25.65px var(--body);letter-spacing:-.02em;color:#fff}
+  .sw-panel h3{font:500 28px/36.4px var(--display);letter-spacing:-.02em}
+  /* body copy: Geist 16/24.8 (lists 15/23.25) */
+  .tab p,.bd-copy p,.pr-row p,.sw-panel p,.pr-price p{font-size:16px;line-height:24.8px}
+  .f-mobile .f-checks li{font-size:15px;line-height:23.25px}
+  /* buttons: 56px tall, 24px sides, Geist 15 w500 */
+  .ctas a,.bd-btn,.sw-btn,.cta-actions a{height:56px;padding:0 24px;font:500 15px/15px var(--body)}
+  .sw-btn{display:inline-flex;align-items:center}
+  .ctas .primary,.ctas .secondary,.pr-cta .bd-btn{padding:0 24px}
+  .sw-btn{border-radius:4px}
+  .api-row input{height:56px;font:400 16px/1 var(--body)}
+  /* app switcher: 39px segmented control, 4px corners, dark active fill */
+  .sw-switch{width:100%;padding:4px;border-radius:4px;gap:0}
+  .sw-opt{flex:1;justify-content:center;height:39px;padding:0 4px;border-radius:4px;font:500 12px/13px var(--body)}
+  .sw-pill{border-radius:4px;background:var(--ink);box-shadow:none}
+  .sw-opt[aria-selected="true"],.sw-opt[aria-selected="true"] i{color:#fff}
+}
 </style>
 </head>
 <body>
