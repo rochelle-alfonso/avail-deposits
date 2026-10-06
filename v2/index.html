@@ -469,6 +469,7 @@
   .tab h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em}
   .tab p{display:none;margin:2px 0 0;font-size:15px;line-height:23px}
   .tab.on p{display:block}
+  .tab.on{order:-1}
   .tab .bar{margin-top:8px}
   /* stats: 2x2 inside the margins */
   .dark{padding:56px 10px 64px}
@@ -969,6 +970,8 @@ function select(i, user) {
   }
   active = i;
   elapsed = 0;
+  // Phones: the active method moves to the top of the list. FLIP the rows so they slide rather than jump.
+  const flip = MOBILE.matches && !reduce.matches ? tabEls.map(el => el.getBoundingClientRect().top) : null;
   tabEls.forEach((el, j) => {
     el.classList.toggle("on", j === i);
     el.setAttribute("aria-selected", j === i);
@@ -976,6 +979,10 @@ function select(i, user) {
     el.querySelector(".bar i").style.transform = j === i && reduce.matches ? "scaleX(1)" : "scaleX(0)";
   });
   widgets[i].classList.add("on");
+  if (flip) tabEls.forEach((el, j) => {
+    const dy = flip[j] - el.getBoundingClientRect().top;
+    if (dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 450, easing: "cubic-bezier(.22,.8,.24,1)" });
+  });
   if (user) last = performance.now();
 }
 
