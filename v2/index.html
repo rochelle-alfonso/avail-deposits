@@ -594,6 +594,31 @@
   .tab-desc h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em;color:var(--ink)}
   .tab-desc p{margin-top:6px;font-size:16px;line-height:24.8px;color:#6b6b6a}
 }
+
+/* ---- Phone methods switcher, v2: glass control floating on the plate ---- */
+.tab-pill{display:none}
+@media (max-width:760px){
+  .tabs{position:relative;z-index:3;margin:-80px 22px 0;padding:5px;gap:0;border:1px solid rgba(255,255,255,.75);border-radius:10px;
+        background:rgba(255,255,255,.62);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);
+        box-shadow:0 14px 34px rgba(20,20,19,.16),inset 0 1px 0 rgba(255,255,255,.9)}
+  .tab,.tab.on{position:relative;z-index:1;height:54px;background:transparent;border-radius:7px}
+  .tab .short{display:flex;flex-direction:column;align-items:center;gap:5px;color:#4a4a47;transition:color .35s}
+  .tab .short svg{width:18px;height:18px}
+  .tab .short em{font:500 11.5px/12px var(--body);font-style:normal;letter-spacing:.01em}
+  .tab.on .short{color:#fff}
+  .tab .bar{display:none}
+  .tab-pill{display:block;position:absolute;z-index:0;top:5px;bottom:5px;left:0;border-radius:7px;overflow:hidden;background:#141413;
+            box-shadow:0 6px 16px rgba(20,20,19,.28);transition:transform .5s cubic-bezier(.22,.8,.24,1),width .5s cubic-bezier(.22,.8,.24,1)}
+  .tab-pill i{position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.18));transform-origin:left;transform:scaleX(0)}
+  /* the active method: index, display title, description; slides in on change */
+  .tab-desc{padding:28px 20px 4px}
+  .tab-desc>*{animation:tdIn .5s cubic-bezier(.22,.8,.24,1) both}
+  .tab-desc .k{display:block;font:500 11px/14px var(--body);letter-spacing:.08em;text-transform:uppercase;color:#858582}
+  .tab-desc h3{margin-top:10px;font:500 26px/31px var(--display);letter-spacing:-.02em;animation-delay:.04s}
+  .tab-desc p{margin-top:8px;animation-delay:.08s}
+  @keyframes tdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.tab-desc>*{animation:none}.tab-pill{transition:none}}
 </style>
 </head>
 <body>
@@ -921,9 +946,9 @@ function renderMobile() {
   // The desktop market mock is hidden on phones; only the widget sits on the art plate.
   // Slot units (s=1): the widgets span y -71.5..444 inside a 367.6-wide slot (see SHOTS), so size the
   // plate to that span and centre each widget in it.
-  const W = box.clientWidth, PAD = 24;
+  const W = box.clientWidth, PAD = 24, PADB = 92; // PADB: room for the glass switcher that floats over the plate
   const slotW = Math.min(W * 0.86, 330), sc = slotW / 367.6;
-  const pw = 775.5 * sc, ph = pw * PRODUCT_RATIO, ch = Math.round(515.5 * sc + PAD * 2);
+  const pw = 775.5 * sc, ph = pw * PRODUCT_RATIO, ch = Math.round(515.5 * sc + PAD + PADB);
   box.style.height = ch + "px"; box.style.marginTop = "40px";
   Object.assign(card.style, { width: W + "px", height: ch + "px", left: "0px", top: "0px" });
   let aw = W, ah = W / ART_RATIO; if (ah < ch) { ah = ch; aw = ch * ART_RATIO; }
@@ -994,10 +1019,10 @@ render();
 
 // ---- Tabs: auto-advance once the card has expanded, click or arrow keys to jump ----
 const METHODS = [
-  { s: "Wallets", l: "Wallets & chains", t: "Fund from wallets and chains", d: "Use tokens from Unified Balance and deposit without manually bridging first.", k: null },
-  { s: "Fiat", l: "Fiat on ramp", t: "Fund with fiat", d: "Compare supported on-ramp routes and receive the token your app needs.", k: "Fiat on-ramp" },
-  { s: "QR / Send", l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
-  { s: "Apps", l: "Other apps", t: "Fund from another app", d: "Withdraw, convert and deposit a supported app balance in one flow.", k: "App balance" },
+  { s: "Wallets", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="5" width="15" height="11" rx="2.2" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15" stroke="currentColor" stroke-width="1.6"/><circle cx="14" cy="11.8" r="1.1" fill="currentColor"/></svg>', l: "Wallets & chains", t: "Fund from wallets and chains", d: "Use tokens from Unified Balance and deposit without manually bridging first.", k: null },
+  { s: "Fiat", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="5.5" width="15" height="9" rx="1.8" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.1" stroke="currentColor" stroke-width="1.6"/><path d="M5 8v4M15 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', l: "Fiat on ramp", t: "Fund with fiat", d: "Compare supported on-ramp routes and receive the token your app needs.", k: "Fiat on-ramp" },
+  { s: "QR / Send", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 11.5h2.2v2.2M17 11.5v2.5M11.5 16.6h2.7M16.6 16.6v.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
+  { s: "Apps", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/><rect x="11.2" y="3" width="5.8" height="5.8" rx="2.9" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11.2" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/><rect x="11.2" y="11.2" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/></svg>', l: "Other apps", t: "Fund from another app", d: "Withdraw, convert and deposit a supported app balance in one flow.", k: "App balance" },
 ];
 // Real UI stills for the other tabs: the card from each chapter film, cut at the slot's width (343 at s=1).
 // top/h place the glass frame (card + 12.3 ring) inside the 531.5-tall product.
@@ -1011,7 +1036,7 @@ METHODS.forEach((m, i) => {
   const b = document.createElement("button");
   b.className = "tab"; b.type = "button"; b.setAttribute("role", "tab"); b.id = "tab-" + i;
   b.setAttribute("aria-controls", "card");
-  b.innerHTML = `<span class="short">${m.s}</span><span class="label">${m.l}</span><h3>${m.t}</h3><p>${m.d}</p><span class="bar"><i></i></span>`;
+  b.innerHTML = `<span class="short">${m.i}<em>${m.s}</em></span><span class="label">${m.l}</span><h3>${m.t}</h3><p>${m.d}</p><span class="bar"><i></i></span>`;
   b.addEventListener("click", () => select(i, true));
   tabsEl.appendChild(b);
 
@@ -1027,6 +1052,12 @@ METHODS.forEach((m, i) => {
 const tabEls = [...tabsEl.children];
 // Phones: the active method's title + description sit once, under the switcher
 const tabDesc = document.createElement("div"); tabDesc.className = "tab-desc"; tabsEl.after(tabDesc);
+// Phones: one dark pill slides between the labels; the auto-advance timer sweeps across it
+const tabPill = document.createElement("span"); tabPill.className = "tab-pill"; tabPill.setAttribute("aria-hidden", "true");
+tabPill.innerHTML = "<i></i>"; tabsEl.prepend(tabPill);
+const placePill = () => { const t = tabEls[active]; if (!t || !MOBILE.matches) return;
+  tabPill.style.width = t.offsetWidth + "px"; tabPill.style.transform = `translateX(${t.offsetLeft}px)`; };
+addEventListener("resize", placePill);
 // Phones: swipe the card to move between methods
 (() => { let x0 = null, y0 = 0;
   card.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
@@ -1051,7 +1082,8 @@ function select(i, user) {
     el.querySelector(".bar i").style.transform = j === i && reduce.matches ? "scaleX(1)" : "scaleX(0)";
   });
   widgets[i].classList.add("on");
-  tabDesc.innerHTML = `<h3>${METHODS[i].t}</h3><p>${METHODS[i].d}</p>`;
+  tabDesc.innerHTML = `<span class="k">${String(i + 1).padStart(2, "0")} / ${String(METHODS.length).padStart(2, "0")} · ${METHODS[i].l}</span><h3>${METHODS[i].t}</h3><p>${METHODS[i].d}</p>`;
+  placePill();
   if (user) last = performance.now();
 }
 
@@ -1073,7 +1105,11 @@ function tick(now) {
     elapsed += dt;
     if (elapsed >= DURATION) select((active + 1) % METHODS.length, false);
   }
-  if (!reduce.matches) tabEls[active].querySelector(".bar i").style.transform = `scaleX(${Math.min(1, elapsed / DURATION)})`;
+  if (!reduce.matches) {
+    const f = `scaleX(${Math.min(1, elapsed / DURATION)})`;
+    tabEls[active].querySelector(".bar i").style.transform = f;
+    tabPill.firstChild.style.transform = f;
+  }
   requestAnimationFrame(tick);
 }
 select(0, false);
