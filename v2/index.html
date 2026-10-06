@@ -657,6 +657,11 @@
   .dark{padding-left:20px;padding-right:20px}
   .f-head{padding:0}
 }
+
+/* funding chapter tag (QR / send) */
+.f-num{display:flex;align-items:center;gap:10px}
+.f-soon{display:inline-flex;align-items:center;gap:6px;padding:3px 9px 3px 8px;border-radius:999px;background:rgba(49,114,243,.16);box-shadow:inset 0 0 0 1px rgba(49,114,243,.35);color:#8fb0ff;font:500 11px/14px var(--body);letter-spacing:.04em;text-transform:uppercase}
+.f-soon:before{content:"";width:5px;height:5px;border-radius:50%;background:#5b8cff}
 </style>
 </head>
 <body>
@@ -1177,12 +1182,12 @@ render(); // re-measure now the tabs exist
     { n: "02", t: "Move balances between apps", l: "Withdraw, convert and deposit supported app balances in one flow.",
       b: ["Surface supported app balances", "Guide withdrawal, conversion and deposit", "Route into the destination token", "Handle gas across supported steps"], k: "App balance",
       v: HL, p: HL_POSTER, a: "Depositing USDC from a Hyperliquid account" },
-    { n: "03", t: "Scan, send and deposit", l: "Detect, process and track deposits sent to each user’s unique address.",
-      b: ["Create a unique address for each user", "Accept transfers through a scannable QR code", "Detect and process deposits automatically", "Track status and auto-refund when applicable"], k: "QR / address",
-      v: QR, p: QR_POSTER, a: "Depositing USDC by sending crypto to a QR deposit address" },
-    { n: "04", t: "Find the right on-ramp", l: "Compare supported providers and fund with the token your app needs.",
+    { n: "03", t: "Find the right on-ramp", l: "Compare supported providers and fund with the token your app needs.",
       b: ["Aggregate supported providers and payment methods", "Compare routes by location and currency", "Deliver the destination token your app needs", "Supply gas for supported fresh-wallet flows"], k: "Fiat on-ramp",
       v: ONRAMP, p: ONRAMP_POSTER, a: "Funding an app with a card through a fiat on-ramp" },
+    { n: "04", soon: true, t: "Scan, send and deposit", l: "Detect, process and track deposits sent to each user’s unique address.",
+      b: ["Create a unique address for each user", "Accept transfers through a scannable QR code", "Detect and process deposits automatically", "Track status and auto-refund when applicable"], k: "QR / address",
+      v: QR, p: QR_POSTER, a: "Depositing USDC by sending crypto to a QR deposit address" },
   ];
   const CHECK = '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="8.5" stroke="#3A3A37"/><path d="M5.5 9.2L7.8 11.5L12.5 6.8" stroke="#D8D8D3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const list = document.getElementById("f-chapters"), stage = document.getElementById("f-stage"), track = document.getElementById("f-track");
@@ -1190,7 +1195,7 @@ render(); // re-measure now the tabs exist
   M.forEach((m, i) => {
     const li = document.createElement("li");
     li.className = "f-ch";
-    li.innerHTML = `<span class="f-rail"><i></i></span><div class="f-body"><div class="f-num">${m.n}</div><h3 class="f-title">${m.t}</h3>
+    li.innerHTML = `<span class="f-rail"><i></i></span><div class="f-body"><div class="f-num">${m.n}${m.soon ? '<span class="f-soon">Coming soon</span>' : ""}</div><h3 class="f-title">${m.t}</h3>
       <div class="f-more"><div><div class="f-in"><p class="f-lede">${m.l}</p>
       ${m.b.length ? `<ul class="f-checks">${m.b.map(x => `<li>${CHECK}${x}</li>`).join("")}</ul>` : ""}</div></div></div></div>`;
     if (m.v) li.classList.add("vid");
