@@ -621,6 +621,33 @@
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.tab-desc>*{animation:none}.tab-pill{transition:none}}
 
 @media (max-width:760px){ .tab-desc{padding:36px 20px 56px;box-sizing:border-box} }
+
+/* ---- Phones: price + everything-included fit in one screen ---- */
+@media (max-width:760px){
+  .pr-price{gap:16px;padding:24px 20px}
+  /* art becomes a soft backdrop on the right of the price instead of its own band */
+  .pr-price>.pr-art{top:0;bottom:0;height:100%;opacity:.7;object-position:right bottom;
+    -webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.55) 35%,transparent 70%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.55) 35%,transparent 70%)}
+  .pr-amount b{font-size:48px}
+  .pr-amount span{font-size:16px;line-height:22px}
+  .pr-price p{margin-top:8px;font-size:15px;line-height:22px}
+  .pr-cta{margin-top:4px}
+  .pr-incl{padding:18px 20px 8px;gap:0}
+  .pr-incl .bd-eyebrow{margin-bottom:6px}
+  .pr-row{grid-template-columns:32px minmax(0,1fr);gap:12px;padding:12px 0}
+  .bd-eyebrow+.pr-row{padding-top:6px}
+  .pr .bd-ic{width:32px;height:32px;border-radius:8px}
+  .pr .bd-ic svg{width:16px;height:16px}
+  .pr-row h3{font:500 16px/22px var(--body);letter-spacing:-.01em}
+  .pr-row p{margin-top:2px;font-size:14px;line-height:20px}
+}
+
+@media (max-width:760px){
+  .pr-price{gap:14px;padding:20px}
+  .pr-price>.pr-art{opacity:.6;-webkit-mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.4) 25%,transparent 48%);mask-image:linear-gradient(to left,#000 0%,rgba(0,0,0,.4) 25%,transparent 48%)}
+  .pr-incl{padding:16px 20px 6px}
+  .pr-row{padding:10px 0}
+}
 </style>
 </head>
 <body>
