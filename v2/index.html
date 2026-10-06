@@ -1006,7 +1006,7 @@ function renderMobile() {
   expanded = true;
 }
 // each method's widget box inside the slot, in slot units (wallet fills the slot; the rest come from SHOTS)
-const WGEO = [{ top: 0, h: 413.6, w: 367.6 }, { top: -71.5, h: 515.5, w: 349 }, { top: -62.6, h: 506.6, w: 367.6 }, { top: 0, h: 351.6, w: 367.6 }];
+const WGEO = [{ top: 0, h: 413.6, w: 367.6 }, { top: -71.5, h: 515.5, w: 349 }, { top: 0, h: 351.6, w: 367.6 }, { top: -62.6, h: 506.6, w: 367.6 }]; // wallet, fiat, apps, qr — same order as METHODS
 function render() {
   if (MOBILE.matches) return renderMobile();
   const { W, k, H, grow, pGrow } = metrics();
@@ -1064,8 +1064,8 @@ render();
 const METHODS = [
   { s: "Wallets", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="5" width="15" height="11" rx="2.2" stroke="currentColor" stroke-width="1.6"/><path d="M2.5 8h15" stroke="currentColor" stroke-width="1.6"/><circle cx="14" cy="11.8" r="1.1" fill="currentColor"/></svg>', l: "Wallets & chains", t: "Fund from wallets and chains", d: "Use tokens from Unified Balance and deposit without manually bridging first.", k: null },
   { s: "Fiat", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2.5" y="5.5" width="15" height="9" rx="1.8" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="10" r="2.1" stroke="currentColor" stroke-width="1.6"/><path d="M5 8v4M15 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', l: "Fiat on ramp", t: "Fund with fiat", d: "Compare supported on-ramp routes and receive the token your app needs.", k: "Fiat on-ramp" },
-  { s: "QR / Send", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 11.5h2.2v2.2M17 11.5v2.5M11.5 16.6h2.7M16.6 16.6v.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
   { s: "Apps", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/><rect x="11.2" y="3" width="5.8" height="5.8" rx="2.9" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11.2" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/><rect x="11.2" y="11.2" width="5.8" height="5.8" rx="1.6" stroke="currentColor" stroke-width="1.6"/></svg>', l: "Other apps", t: "Fund from another app", d: "Withdraw, convert and deposit a supported app balance in one flow.", k: "App balance" },
+  { s: "QR / Send", i: '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.6"/><path d="M11.5 11.5h2.2v2.2M17 11.5v2.5M11.5 16.6h2.7M16.6 16.6v.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>', l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
 ];
 // Real UI stills for the other tabs: the card from each chapter film, cut at the slot's width (343 at s=1).
 // top/h place the glass frame (card + 12.3 ring) inside the 531.5-tall product.
