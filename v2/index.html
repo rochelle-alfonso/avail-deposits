@@ -619,6 +619,8 @@
   @keyframes tdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 }
 @media (max-width:760px) and (prefers-reduced-motion:reduce){.tab-desc>*{animation:none}.tab-pill{transition:none}}
+
+@media (max-width:760px){ .tab-desc{padding:36px 20px 56px;box-sizing:border-box} }
 </style>
 </head>
 <body>
@@ -1058,6 +1060,11 @@ tabPill.innerHTML = "<i></i>"; tabsEl.prepend(tabPill);
 const placePill = () => { const t = tabEls[active]; if (!t || !MOBILE.matches) return;
   tabPill.style.width = t.offsetWidth + "px"; tabPill.style.transform = `translateX(${t.offsetLeft}px)`; };
 addEventListener("resize", placePill);
+// Phones: hold the description block at the tallest method's height so auto-advance never shifts the page
+const sizeDesc = () => { if (!MOBILE.matches) return; const keep = tabDesc.innerHTML; tabDesc.style.minHeight = "";
+  let h = 0; METHODS.forEach((m, k) => { tabDesc.innerHTML = `<span class="k">00 / 00 · ${m.l}</span><h3>${m.t}</h3><p>${m.d}</p>`; h = Math.max(h, tabDesc.offsetHeight); });
+  tabDesc.innerHTML = keep; tabDesc.style.minHeight = h + "px"; };
+addEventListener("resize", sizeDesc); document.fonts && document.fonts.ready.then(sizeDesc);
 // Phones: swipe the card to move between methods
 (() => { let x0 = null, y0 = 0;
   card.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
@@ -1113,6 +1120,7 @@ function tick(now) {
   requestAnimationFrame(tick);
 }
 select(0, false);
+sizeDesc();
 requestAnimationFrame(tick);
 render(); // re-measure now the tabs exist
 
