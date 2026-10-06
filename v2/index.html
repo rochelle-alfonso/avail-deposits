@@ -540,6 +540,35 @@
   .sw-pill{border-radius:4px;background:var(--ink);box-shadow:none}
   .sw-opt[aria-selected="true"],.sw-opt[aria-selected="true"] i{color:#fff}
 }
+
+/* ---- Phone hero + header, measured from availproject.org/prediction-markets at 390px ---- */
+.menu-btn{display:none}
+@media (max-width:760px){
+  .header{padding:43px 30px 0;z-index:20}
+  .brand svg{display:block;height:24px;width:auto}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:8px 12px;border:0;border-radius:4px;background:rgba(255,255,255,.85);font:400 16px/1 var(--body);color:var(--ink);cursor:pointer}
+  .menu-btn svg{width:16px;height:16px}
+  /* the nav becomes a dropdown under the header */
+  .nav,.header.open .nav{display:none}
+  .header.open .nav{display:flex;position:absolute;top:88px;left:20px;right:20px;flex-direction:column;align-items:stretch;gap:0;padding:8px;border-radius:4px;background:#fff;box-shadow:0 12px 32px rgba(20,20,19,.14),0 0 0 1px #ececea}
+  .header.open .nav a,.header.open .nav a:not(.talk){display:block;padding:14px 12px;font:500 16px/20px var(--body);color:var(--ink)}
+  .header.open .nav .talk{margin-top:8px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:0;color:#fff}
+  /* hero copy: left-aligned, no product mark (the reference leads with the headline) */
+  .intro{align-items:flex-start;text-align:left;gap:0;padding:51px 10px 0}
+  .intro .mark{display:none}
+  .intro p{margin-top:18px}
+  .ctas{flex-direction:row;width:auto;gap:12px;margin-top:37px}
+  .ctas{width:100%;flex-wrap:wrap}
+  .ctas a{flex:1 0 auto;justify-content:center}
+  .ctas .primary,.ctas .secondary{padding:0 22px}
+  .ctas a svg{display:none}
+  .ctas .primary{background:#202224;color:#f7f7f7}
+  .ctas .secondary{background:transparent;color:#202224;box-shadow:inset 0 0 0 2px #202224}
+  /* image inset 20px like the reference film */
+  .box{margin-left:10px;margin-right:10px}
+  /* square buttons everywhere on phones, as on availproject.org */
+  .ctas a,.bd-btn,.sw-btn,.cta-actions a,.api-row input{border-radius:0}
+}
 </style>
 </head>
 <body>
@@ -594,7 +623,8 @@
 <rect width="56.9957" height="20.9943" fill="white" transform="translate(34 4.50284)"/>
 </clipPath>
 </defs></svg></a>
-        <nav class="nav" aria-label="Primary">
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Menu</button>
+        <nav class="nav" id="site-nav" aria-label="Primary">
           <a href="#">Products</a><a href="#">Solutions</a><a href="#">Ecosystem</a><a href="#">Docs</a><a href="#">Blog</a>
           <a class="talk" href="#">Let's Talk</a>
         </nav>
@@ -864,8 +894,8 @@ const MOBILE = matchMedia("(max-width: 760px)");
 MOBILE.addEventListener("change", () => location.reload());
 function renderMobile() {
   const W = box.clientWidth;
-  const pw = W - 24, ph = pw * PRODUCT_RATIO, ch = Math.round(ph + 36);
-  box.style.height = ch + "px"; box.style.marginTop = "32px";
+  const pw = W - 24, ph = pw * PRODUCT_RATIO, ch = Math.max(Math.round(ph + 36), Math.round(W * 303 / 350));
+  box.style.height = ch + "px"; box.style.marginTop = "40px";
   Object.assign(card.style, { width: W + "px", height: ch + "px", left: "0px", top: "0px" });
   let aw = W, ah = W / ART_RATIO; if (ah < ch) { ah = ch; aw = ch * ART_RATIO; }
   Object.assign(art.style, { width: aw + "px", height: ah + "px", left: (W - aw) / 2 + "px", top: (ch - ah) / 2 + "px" });
@@ -1256,6 +1286,16 @@ const API_FORM_URL = "";
       msg.textContent = "Something went wrong. Please try again."; msg.classList.add("err");
     } finally { btn.disabled = false; btn.textContent = "Register interest"; }
   });
+})();
+
+// ---- Phone header: Menu toggles the nav as a dropdown ----
+(() => {
+  const head = document.querySelector(".header"), btn = head.querySelector(".menu-btn");
+  const set = open => { head.classList.toggle("open", open); btn.setAttribute("aria-expanded", open); };
+  btn.addEventListener("click", e => { e.stopPropagation(); set(!head.classList.contains("open")); });
+  head.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => set(false)));
+  document.addEventListener("click", e => { if (!head.contains(e.target)) set(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && head.classList.contains("open")) { set(false); btn.focus(); } });
 })();
 </script>
 </body>
