@@ -676,6 +676,17 @@
 }
 /* phones: the glass switcher sits 14px inside the card on all three sides (card is inset 20px from the screen) */
 @media (max-width:760px){ .tabs{margin-left:34px;margin-right:34px} }
+
+/* ---- Buttons: the phone style at every width (square, 56px, 24px sides, Inter 15/500) ---- */
+.ctas a,.bd-btn,.sw-btn,.cta-actions a{height:56px;border-radius:0;font:500 15px/15px "Inter",var(--body)}
+.ctas .primary,.ctas .secondary,.bd-btn,.pr-cta .bd-btn,.sw-btn,.cta-actions a{padding:0 24px}
+.ctas .primary{background:#202224;color:#f7f7f7}
+.ctas .secondary{background:transparent;color:#202224;box-shadow:inset 0 0 0 2px #202224}
+.sw-btn{display:inline-flex;align-items:center}
+.api-row input{height:56px;border-radius:0;font-family:"Inter",var(--body)}
+.foot-cta a{font-size:15px;border-radius:0}
+.nav .talk{border-radius:0}
+@media (max-width:760px){ .ctas .primary,.ctas .secondary{padding:0 22px} }
 </style>
 </head>
 <body>
