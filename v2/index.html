@@ -647,6 +647,16 @@
   .pr-row{padding:10px 0}
 }
 @media (max-width:370px){ .sw-opt i{display:none} .sw-opt{font-size:12.5px;padding:10px 4px} }
+/* Phones: no outer frame (top/left/right); sections keep a 20px gutter, header stays at the reference's 40px */
+@media (max-width:760px){
+  .page{padding:0}
+  .header{padding:53px 40px 0}
+  .header.open .nav{top:98px}
+  .intro{padding-left:20px;padding-right:20px}
+  .box{margin-left:20px;margin-right:20px}
+  .dark{padding-left:20px;padding-right:20px}
+  .f-head{padding:0}
+}
 </style>
 </head>
 <body>
