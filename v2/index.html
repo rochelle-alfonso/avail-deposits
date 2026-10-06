@@ -469,7 +469,7 @@
   .tab h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em}
   .tab p{display:none;margin:2px 0 0;font-size:15px;line-height:23px}
   .tab.on p{display:block}
-  .tab.on{order:-1}
+
   .tab .bar{margin-top:8px}
   /* stats: 2x2 inside the margins */
   .dark{padding:56px 10px 64px}
@@ -568,6 +568,31 @@
   .box{margin-left:10px;margin-right:10px}
   /* square buttons everywhere on phones, as on availproject.org */
   .ctas a,.bd-btn,.sw-btn,.cta-actions a,.api-row input{border-radius:0}
+}
+
+/* ---- Phone hero + methods switcher ---- */
+.tab .short,.tab-desc{display:none}
+@media (max-width:760px){
+  /* hero copy keeps the desktop identity: product mark, centred */
+  .intro{align-items:center;text-align:center;gap:0;padding-top:40px}
+  .intro .mark{display:block;margin-bottom:20px}
+  .ctas{justify-content:center}
+  /* the card shows the widget alone */
+  .mock{display:none}
+  /* switcher: four short labels in a 39px segmented control */
+  .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:12px 10px 0;padding:4px;border:1px solid #e3e3df;border-radius:4px;background:#f5f5f3}
+  .tab{position:relative;display:flex;align-items:center;justify-content:center;height:39px;padding:0 4px;border-radius:4px;overflow:hidden;transition:background-color .3s}
+  .tab .label,.tab h3,.tab p,.tab.on p{display:none}
+  .tab .short{display:block;font:500 12px/13px var(--body);color:#6b6b6a;white-space:nowrap;transition:color .3s}
+  .tab.on{background:var(--ink)}
+  .tab.on .short{color:#fff}
+  .tab .bar{position:absolute;left:0;right:0;bottom:0;height:2px;margin:0;border-radius:0;background:transparent}
+  .tab .bar i{background:rgba(255,255,255,.55)}
+  .tab:focus-visible{outline-offset:2px}
+  /* the active method, once, under the switcher */
+  .tab-desc{display:block;padding:20px 20px 8px;text-align:center}
+  .tab-desc h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em;color:var(--ink)}
+  .tab-desc p{margin-top:6px;font-size:16px;line-height:24.8px;color:#6b6b6a}
 }
 </style>
 </head>
@@ -893,17 +918,27 @@ function progress() {
 const MOBILE = matchMedia("(max-width: 760px)");
 MOBILE.addEventListener("change", () => location.reload());
 function renderMobile() {
-  const W = box.clientWidth;
-  const pw = W - 24, ph = pw * PRODUCT_RATIO, ch = Math.max(Math.round(ph + 36), Math.round(W * 303 / 350));
+  // The desktop market mock is hidden on phones; only the widget sits on the art plate.
+  // Slot units (s=1): the widgets span y -71.5..444 inside a 367.6-wide slot (see SHOTS), so size the
+  // plate to that span and centre each widget in it.
+  const W = box.clientWidth, PAD = 24;
+  const slotW = Math.min(W * 0.86, 330), sc = slotW / 367.6;
+  const pw = 775.5 * sc, ph = pw * PRODUCT_RATIO, ch = Math.round(515.5 * sc + PAD * 2);
   box.style.height = ch + "px"; box.style.marginTop = "40px";
   Object.assign(card.style, { width: W + "px", height: ch + "px", left: "0px", top: "0px" });
   let aw = W, ah = W / ART_RATIO; if (ah < ch) { ah = ch; aw = ch * ART_RATIO; }
   Object.assign(art.style, { width: aw + "px", height: ah + "px", left: (W - aw) / 2 + "px", top: (ch - ah) / 2 + "px" });
-  Object.assign(product.style, { width: pw + "px", height: ph + "px", left: "12px", top: (ch - ph) / 2 + "px" });
-  product.style.setProperty("--s", (pw / 775.5).toFixed(4));
+  Object.assign(product.style, { width: pw + "px", height: ph + "px", left: (W - slotW) / 2 + "px", top: PAD + 71.5 * sc - 0.14958 * ph + "px" });
+  product.style.setProperty("--s", sc.toFixed(4));
+  document.querySelectorAll("#wslot .w").forEach((w, k) => {
+    const g = WGEO[k] || WGEO[0];
+    w.style.translate = `${((367.6 - g.w) / 2 * sc).toFixed(1)}px ${((186.25 - (g.top + g.h / 2)) * sc).toFixed(1)}px`;
+  });
   intro.style.opacity = "1"; intro.style.transform = "none";
   expanded = true;
 }
+// each method's widget box inside the slot, in slot units (wallet fills the slot; the rest come from SHOTS)
+const WGEO = [{ top: 0, h: 413.6, w: 367.6 }, { top: -71.5, h: 515.5, w: 349 }, { top: -62.6, h: 506.6, w: 367.6 }, { top: 0, h: 351.6, w: 367.6 }];
 function render() {
   if (MOBILE.matches) return renderMobile();
   const { W, k, H, grow, pGrow } = metrics();
@@ -959,10 +994,10 @@ render();
 
 // ---- Tabs: auto-advance once the card has expanded, click or arrow keys to jump ----
 const METHODS = [
-  { l: "Wallets & chains", t: "Fund from wallets and chains", d: "Use tokens from Unified Balance and deposit without manually bridging first.", k: null },
-  { l: "Fiat on ramp", t: "Fund with fiat", d: "Compare supported on-ramp routes and receive the token your app needs.", k: "Fiat on-ramp" },
-  { l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
-  { l: "Other apps", t: "Fund from another app", d: "Withdraw, convert and deposit a supported app balance in one flow.", k: "App balance" },
+  { s: "Wallets", l: "Wallets & chains", t: "Fund from wallets and chains", d: "Use tokens from Unified Balance and deposit without manually bridging first.", k: null },
+  { s: "Fiat", l: "Fiat on ramp", t: "Fund with fiat", d: "Compare supported on-ramp routes and receive the token your app needs.", k: "Fiat on-ramp" },
+  { s: "QR / Send", l: "QR/Send", t: "Scan or send", d: "Scan a QR code or send tokens to a unique deposit address.", k: "QR / address" },
+  { s: "Apps", l: "Other apps", t: "Fund from another app", d: "Withdraw, convert and deposit a supported app balance in one flow.", k: "App balance" },
 ];
 // Real UI stills for the other tabs: the card from each chapter film, cut at the slot's width (343 at s=1).
 // top/h place the glass frame (card + 12.3 ring) inside the 531.5-tall product.
@@ -976,7 +1011,7 @@ METHODS.forEach((m, i) => {
   const b = document.createElement("button");
   b.className = "tab"; b.type = "button"; b.setAttribute("role", "tab"); b.id = "tab-" + i;
   b.setAttribute("aria-controls", "card");
-  b.innerHTML = `<span class="label">${m.l}</span><h3>${m.t}</h3><p>${m.d}</p><span class="bar"><i></i></span>`;
+  b.innerHTML = `<span class="short">${m.s}</span><span class="label">${m.l}</span><h3>${m.t}</h3><p>${m.d}</p><span class="bar"><i></i></span>`;
   b.addEventListener("click", () => select(i, true));
   tabsEl.appendChild(b);
 
@@ -990,6 +1025,15 @@ METHODS.forEach((m, i) => {
   wslot.appendChild(w);
 });
 const tabEls = [...tabsEl.children];
+// Phones: the active method's title + description sit once, under the switcher
+const tabDesc = document.createElement("div"); tabDesc.className = "tab-desc"; tabsEl.after(tabDesc);
+// Phones: swipe the card to move between methods
+(() => { let x0 = null, y0 = 0;
+  card.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  card.addEventListener("touchend", e => { if (x0 === null || !MOBILE.matches) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) select((active + (dx < 0 ? 1 : -1) + METHODS.length) % METHODS.length, true); }, { passive: true });
+})();
 const widgets = [...wslot.children];
 
 function select(i, user) {
@@ -1000,8 +1044,6 @@ function select(i, user) {
   }
   active = i;
   elapsed = 0;
-  // Phones: the active method moves to the top of the list. FLIP the rows so they slide rather than jump.
-  const flip = MOBILE.matches && !reduce.matches ? tabEls.map(el => el.getBoundingClientRect().top) : null;
   tabEls.forEach((el, j) => {
     el.classList.toggle("on", j === i);
     el.setAttribute("aria-selected", j === i);
@@ -1009,10 +1051,7 @@ function select(i, user) {
     el.querySelector(".bar i").style.transform = j === i && reduce.matches ? "scaleX(1)" : "scaleX(0)";
   });
   widgets[i].classList.add("on");
-  if (flip) tabEls.forEach((el, j) => {
-    const dy = flip[j] - el.getBoundingClientRect().top;
-    if (dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 450, easing: "cubic-bezier(.22,.8,.24,1)" });
-  });
+  tabDesc.innerHTML = `<h3>${METHODS[i].t}</h3><p>${METHODS[i].d}</p>`;
   if (user) last = performance.now();
 }
 
