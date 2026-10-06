@@ -450,6 +450,63 @@
   .api-row input{flex:none;height:52px}
   .api-row .bd-btn{width:100%}
 }
+
+/* ---- Phone layout, type matched to availproject.org/prediction-markets (390px) ---- */
+@media (max-width:760px){
+  /* hero: 34px headline, 16px body, static image */
+  .intro{padding:8px 10px 0;gap:20px}
+  .intro h1{font-size:34px;line-height:39px;letter-spacing:-.03em}
+  .intro p{font-size:16px;line-height:24.8px}
+  .ctas{gap:12px}
+  .ctas a{min-width:0;height:52px;font:500 15px/1 var(--body)}
+  /* hero tabs: one column, only the active method shows its description */
+  .tabs{display:flex;flex-direction:column;gap:0;padding:24px 10px 8px}
+  .tab{display:flex;flex-direction:column;gap:6px;padding:16px 0 0;width:100%}
+  /* the dotted hero background is a fixed 844px tall; keep it under the tabs once the hero is shorter */
+  .hero-bg{height:100%}
+  .tabs{position:relative}
+  .tab .label{margin:0;font-size:11px;line-height:14px}
+  .tab h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em}
+  .tab p{display:none;margin:2px 0 0;font-size:15px;line-height:23px}
+  .tab.on p{display:block}
+  .tab .bar{margin-top:8px}
+  /* stats: 2x2 inside the margins */
+  .dark{padding:56px 10px 64px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .stat{height:auto;padding:24px 10px}
+  .stat b{font-size:34px;line-height:38px}
+  .stat span{width:auto;margin-top:8px;font-size:14px;line-height:20px}
+  /* section titles 34px, intros 16px */
+  .f-head{margin-top:64px;padding:0 4px}
+  .f-head h2,.bd-head h2,.sw-head h2,.pr-head h2{font-size:34px;line-height:40px;letter-spacing:-.02em}
+  .f-head p,.bd-head p,.sw-head p,.pr-head p{font-size:16px;line-height:24.8px}
+  .cta h2{font-size:30px;line-height:36px}
+  .cta p{font-size:16px;line-height:24.8px}
+  /* funding: stacked chapters, each with its own film */
+  .f-mobile .f-track{height:auto;margin-top:32px}
+  .f-mobile .f-pin{position:static;display:block;padding:0}
+  .f-mobile .f-stage{display:none}
+  .f-mobile .f-ch{display:block;cursor:default;border-top:1px solid var(--f-line)}
+  .f-mobile .f-ch:first-child{border-top:0}
+  .f-mobile .f-rail{display:none}
+  .f-mobile .f-body,.f-mobile .f-ch.active .f-body{padding:28px 0 32px}
+  .f-mobile .f-ch.active .f-title{margin-top:8px;font-size:26px;line-height:32px}
+  .f-mobile .f-more .f-in{padding-top:10px}
+  .f-mobile .f-lede{font-size:16px;line-height:24.8px}
+  .f-mobile .f-checks{display:grid;margin-top:14px}
+  .f-mobile .f-checks li{font-size:15px;line-height:22px}
+  .f-mobile .f-in .f-art{position:relative;inset:auto;display:block;width:100%;height:auto;aspect-ratio:1350/1330;margin-top:20px;border-radius:16px;opacity:1;transform:none;object-fit:cover;background:#1a1a18}
+  /* build tiles: media keeps its shape; titles 19px Geist medium */
+  .bd-media,.bd-media.skv,.bd-media.soon{aspect-ratio:582/400;padding:0}
+  .bd-copy{padding:20px 12px 14px;gap:8px}
+  .bd-copy h3,.pr-row h3{font:500 19px/25.65px var(--body);letter-spacing:-.02em}
+  .bd-copy p,.pr-row p{font-size:15px;line-height:23px}
+  .bd-copy p+.bd-btn,.bd-copy p+.api-form{margin-top:16px}
+  .bd-btn{height:48px;padding:0 20px;font:500 15px/1 var(--body)}
+  /* use cases + pricing */
+  .sw-panel h3{font-size:26px;line-height:32px}
+  .pr-amount b{font-size:56px}
+}
 </style>
 </head>
 <body>
@@ -769,7 +826,23 @@ function progress() {
   return Math.min(1, Math.max(0, scrollY / (endScroll * lengthMul)));
 }
 
+// Phones get a static hero (no scroll-driven grow); crossing the breakpoint reloads into the other layout.
+const MOBILE = matchMedia("(max-width: 760px)");
+MOBILE.addEventListener("change", () => location.reload());
+function renderMobile() {
+  const W = box.clientWidth;
+  const pw = W - 24, ph = pw * PRODUCT_RATIO, ch = Math.round(ph + 36);
+  box.style.height = ch + "px"; box.style.marginTop = "32px";
+  Object.assign(card.style, { width: W + "px", height: ch + "px", left: "0px", top: "0px" });
+  let aw = W, ah = W / ART_RATIO; if (ah < ch) { ah = ch; aw = ch * ART_RATIO; }
+  Object.assign(art.style, { width: aw + "px", height: ah + "px", left: (W - aw) / 2 + "px", top: (ch - ah) / 2 + "px" });
+  Object.assign(product.style, { width: pw + "px", height: ph + "px", left: "12px", top: (ch - ph) / 2 + "px" });
+  product.style.setProperty("--s", (pw / 775.5).toFixed(4));
+  intro.style.opacity = "1"; intro.style.transform = "none";
+  expanded = true;
+}
 function render() {
+  if (MOBILE.matches) return renderMobile();
   const { W, k, H, grow, pGrow } = metrics();
   // Box holds the final height; pull it up so the small start card still sits 47px under the buttons.
   box.style.height = H + "px";
@@ -951,6 +1024,7 @@ render(); // re-measure now the tabs exist
   });
   const chs = [...list.children], arts = [...stage.querySelectorAll(".f-art")], shots = [...stage.querySelectorAll(".f-shot")];
   let current = -1;
+  const MOB = matchMedia("(max-width: 760px)").matches;
   // Films only run while the stage is on screen; arriving at the section starts the current chapter from 0.
   let stageSeen = false;
   new IntersectionObserver(([e]) => {
@@ -1014,12 +1088,24 @@ render(); // re-measure now the tabs exist
   arts.forEach((v, i) => {
     if (v.tagName !== "VIDEO") return;
     v.addEventListener("ended", () => {
-      if (i !== current) return;
+      if (MOB || i !== current) return;
       if (pinned()) goTo((i + 1) % M.length);
       else if (stageSeen) { v.currentTime = 0; v.play().catch(() => {}); }
     });
   });
 
+  // Phones: no pinned stage. Every chapter is open and carries its own film, which loops while it's on screen.
+  if (MOB) {
+    track.closest(".dark").classList.add("f-mobile");
+    chs.forEach((c, i) => {
+      c.classList.add("active");
+      const v = arts[i]; if (!v || v.tagName !== "VIDEO") return;
+      v.loop = true; v.classList.add("on");
+      c.querySelector(".f-in").appendChild(v);
+      new IntersectionObserver(([e]) => { if (e.isIntersecting && !reduce.matches) v.play().catch(() => {}); else v.pause(); }, { threshold: 0.5 }).observe(v);
+    });
+    return;
+  }
   let tk = false;
   addEventListener("scroll", () => { if (!tk) { requestAnimationFrame(() => { update(); tk = false; }); tk = true; } }, { passive: true });
   addEventListener("resize", update);
