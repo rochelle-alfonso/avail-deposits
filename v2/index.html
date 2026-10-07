@@ -887,8 +887,8 @@
 <div class="bd-group"><div class="bd-eyebrow">Primary integration · Deposit Widget</div><div class="bd-grid">
 <article class="bd-tile"><div class="bd-media skv"><video id="bd-skills" muted loop playsinline preload="none" data-poster="media/img/poster-skills.webp" aria-label="Avail docs: from the docs home to Widgets, then MCP and Agent Skills, zooming into the skills install command and copying it"></video></div>
 <div class="bd-copy"><h3>Integrate with AI Skills</h3><p>Give supported coding agents the context needed to understand and integrate the Deposit Widget.</p><a class="bd-btn" href="https://docs.availproject.org/docs/nexus/widgets/mcp-and-agent-skills">Explore AI Skills <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></article>
-<article class="bd-tile"><div class="bd-media cfg"><iframe class="bd-cfg" id="bd-cfg" title="Widget Configurator walkthrough: presets, chain and tokens, destination, theming and the embed code" tabindex="-1" scrolling="no"></iframe></div>
-<div class="bd-copy"><h3>Configure your widget</h3><p>Choose destinations, sources, tokens, appearance and deposit behaviour in a visual workspace.</p><a class="bd-btn" href="https://configurator.availproject.org/">Open Configurator <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></article>
+<article class="bd-tile"><div class="bd-media cfg skv"><video id="bd-cfg" muted loop playsinline preload="none" data-poster="media/img/poster-configurator.webp" aria-label="Widget Configurator: switching presets, opening Configure for your app, toggling a funding option, retitling and recolouring the widget in the live preview, then the config code"></video></div>
+<div class="bd-copy"><h3>Configure your widget</h3><p>Choose destinations, sources, tokens, appearance and deposit behaviour in a visual workspace.</p><a class="bd-btn" href="https://widgets.availproject.org/" target="_blank" rel="noopener noreferrer">Open Configurator <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4.5 11.5L11.5 4.5M11.5 4.5H5.5M11.5 4.5V10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></article>
 </div></div>
 <div class="bd-group"><div class="bd-eyebrow">Other ways to integrate</div><div class="bd-grid">
 <article class="bd-tile"><div class="bd-media skv"><video id="bd-sdk" muted loop playsinline preload="none" data-poster="media/img/poster-sdk.webp" aria-label="Avail docs: from the docs home to the Nexus SDK installation guide, stepping through the pnpm, yarn and bun install commands, back to npm, and copying it"></video></div>
@@ -1378,29 +1378,12 @@ render(); // re-measure now the tabs exist
   setActive(0); update();
 })();
 
-// ---- Configure your widget: the live Widget Configurator walkthrough from the solutions page ----
-// Runs the prototype itself (laid out at 845x581 for this tile) in a same-origin iframe, scaled to the
-// tile; it only loads and runs while the tile is on screen.
+// ---- Configure your widget: Widget Configurator walkthrough film, loading near and playing only while on screen ----
 (() => {
-  const box = document.querySelector(".bd-media.cfg"), frame = document.getElementById("bd-cfg");
-  if (!box || !frame) return;
-    const fit = () => { frame.style.transform = `scale(${box.clientWidth / 845})`; };
-  fit(); new ResizeObserver(fit).observe(box);
-  let started = false;
-  const win = () => { try { return frame.contentWindow; } catch (e) { return null; } };
-  function start() {
-    const w = win(); if (!w || reduce.matches) return;
-    if (!started && typeof w.__startSegment === "function") { started = true; w.__startSegment(); }
-    else if (typeof w.play === "function") w.play();
-  }
-  function enter() {
-    if (!frame.src) {
-      frame.addEventListener("load", () => { fit(); start(); });
-      frame.src = "media/configurator.html";
-    } else start();
-  }
-  function leave() { const w = win(); if (w && typeof w.pause === "function") w.pause(); }
-  new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? enter() : leave()), { threshold: 0.15, rootMargin: "200px 0px" }).observe(box);
+  const v = document.getElementById("bd-cfg"); if (!v) return;
+  new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { v.poster = v.dataset.poster; v.preload = "auto"; v.src = "media/configurator-docs.mp4"; o.disconnect();
+    v.addEventListener("loadeddata", () => { const r = v.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight && !reduce.matches) v.play().catch(() => {}); }, { once: true }); } }, { rootMargin: "400px 0px" }).observe(v);
+  new IntersectionObserver(([e]) => { if (e.isIntersecting && !reduce.matches) v.play().catch(() => {}); else v.pause(); }, { threshold: 0.25 }).observe(v);
 })();
 
 // ---- Integrate with AI Skills: docs walkthrough film, playing only while on screen ----
